@@ -1,13 +1,16 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Homepage from "../pages/user/Homepage";
+import Header from "../layout/Header";
 
 const UserRoutes = () => {
   return (
-    <Router>
+    <>
+      <Header />
       <Routes>
-        <Route></Route>
+        <Route path="/" element={<Homepage />} />
       </Routes>
-    </Router>
+    </>
   );
 };
 
