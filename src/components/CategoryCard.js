@@ -22,7 +22,7 @@ const CategoryCard = ({ title, link, src }) => {
   return (
     <CategoryCardStyle>
       <div className="image">
-        <img src={src} />
+        <img src={src} alt={title} />
       </div>
       <div className="title">{title}</div>
     </CategoryCardStyle>

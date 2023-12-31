@@ -20,11 +20,11 @@ const BannerStyle = styled.div`
       line-height: 46px;
     }
     .subtitle {
-      color: #000;
-      font-size: 25px;
+      color: #fff;
+      font-size: 18px;
       font-weight: 500;
       line-height: normal;
-      margin: 21px 0;
+      margin: 15px 0;
     }
     &.dark {
       .title,

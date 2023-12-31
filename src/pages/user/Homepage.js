@@ -6,8 +6,8 @@ import styled from "styled-components";
 
 const HompageStyle = styled.div`
   .category_list {
-    padding-top: 97px;
-    padding-bottom: 133px;
+    padding-top: 72px;
+    padding-bottom: 100px;
   }
 `;
 
@@ -18,14 +18,22 @@ const Homepage = () => {
         title={"Create your dream home"}
         subtitle={"An advanced and easy-to-use 2D/3D <br /> home design tool. "}
         imageSrc={bannerImage}
-        leftDistance={251}
+        leftDistance={188}
         textDark={true}
         buttonTitle={"Get Started"}
       />
 
-      <div className="category_list">
+      <div className="container category_list">
         <CategoryList title={"Shop by Categories"} />
       </div>
+
+      <Banner
+        title={"Elevate Your Space"}
+        subtitle={"Discover the Art of Interior"}
+        imageSrc={bannerImage}
+        leftDistance={108}
+        buttonTitle={"Get Started"}
+      />
     </HompageStyle>
   );
 };

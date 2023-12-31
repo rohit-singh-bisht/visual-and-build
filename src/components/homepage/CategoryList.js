@@ -7,6 +7,13 @@ const CategoryListStyle = styled.div`
     display: flex;
     justify-content: space-between;
     margin-bottom: 69px;
+    .title {
+      color: #303030;
+      font-size: 27px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 34.5px;
+    }
   }
 `;
 
