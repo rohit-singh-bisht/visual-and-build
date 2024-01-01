@@ -3,6 +3,7 @@ import Banner from "../../components/Banner";
 import bannerImage from "../../assets/log-banner.jpg";
 import CategoryList from "../../components/homepage/CategoryList";
 import styled from "styled-components";
+import ProductCard from "../../components/ProductCard";
 
 const HompageStyle = styled.div`
   .category_list {
@@ -34,6 +35,12 @@ const Homepage = () => {
         leftDistance={108}
         buttonTitle={"Get Started"}
       />
+
+      <div className="container">
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+      </div>
     </HompageStyle>
   );
 };
