@@ -1,5 +1,5 @@
 import React from "react";
-import CategoryCard from "../CategoryCard";
+import CategoryCard from "./CategoryCard";
 import styled from "styled-components";
 
 const CategoryListStyle = styled.div`

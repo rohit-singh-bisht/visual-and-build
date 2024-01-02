@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Homepage from "../pages/user/Homepage";
+import Homepage from "../views/user/Homepage";
 import Header from "../layout/Header";
 
 const UserRoutes = () => {

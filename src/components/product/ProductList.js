@@ -1,6 +1,7 @@
 import React from "react";
-import ProductCard from "../ProductCard";
+import ProductCard from "./ProductCard";
 import styled from "styled-components";
+import Pagination from "@mui/material/Pagination";
 
 const ProductListStyle = styled.div`
   .product__list__title__wrapper {
@@ -47,6 +48,8 @@ const ProductList = ({
         <ProductCard isLoading={true} />
         <ProductCard isLoading={true} />
       </div>
+
+      <Pagination count={10} shape="rounded" />
     </ProductListStyle>
   );
 };

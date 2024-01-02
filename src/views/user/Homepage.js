@@ -1,9 +1,9 @@
 import React from "react";
-import Banner from "../../components/Banner";
+import Banner from "../../components/common/Banner";
 import bannerImage from "../../assets/log-banner.jpg";
-import CategoryList from "../../components/homepage/CategoryList";
+import CategoryList from "../../components/category/CategoryList";
 import styled from "styled-components";
-import ProductList from "../../components/homepage/ProductList";
+import ProductList from "../../components/product/ProductList";
 
 const HompageStyle = styled.div`
   .category_list {

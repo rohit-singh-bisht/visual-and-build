@@ -1,6 +1,6 @@
 import React from "react";
 import Skeleton from "@mui/material/Skeleton";
-import { ProductCardStyle } from "../components/ProductCard";
+import { ProductCardStyle } from "../product/ProductCard";
 
 const ProductCardSkeleton = () => {
   return (
