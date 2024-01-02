@@ -3,12 +3,16 @@ import Banner from "../../components/Banner";
 import bannerImage from "../../assets/log-banner.jpg";
 import CategoryList from "../../components/homepage/CategoryList";
 import styled from "styled-components";
-import ProductCard from "../../components/ProductCard";
+import ProductList from "../../components/homepage/ProductList";
 
 const HompageStyle = styled.div`
   .category_list {
     padding-top: 72px;
     padding-bottom: 100px;
+  }
+  .product_list {
+    padding-top: 86px;
+    padding-bottom: 86px;
   }
 `;
 
@@ -36,10 +40,8 @@ const Homepage = () => {
         buttonTitle={"Get Started"}
       />
 
-      <div className="container">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+      <div className="container product_list">
+        <ProductList />
       </div>
     </HompageStyle>
   );

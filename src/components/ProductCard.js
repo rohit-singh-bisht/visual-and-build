@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import Skeleton from "@mui/material/Skeleton";
+import ProductCardSkeleton from "../skeleton/ProductCardSkeleton";
 
-const ProductCardStyle = styled.div`
+export const ProductCardStyle = styled.div`
   border-radius: 4px;
   border: 0.75px solid #d9d9d9;
   padding: 18.75px 18.75px 37.75px;
+  width: 100%;
   .image {
     img {
       width: 100%;
@@ -56,50 +57,31 @@ const ProductCard = ({
   productTitle,
   productDiscountedPrice,
   productPrice,
+  isLoading,
 }) => {
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
   return (
-    <ProductCardStyle>
-      <div className="image">
-        {productImage ? (
-          <img src={productImage} alt="" />
-        ) : (
-          <Skeleton variant="rounded" height={150} />
-        )}
-      </div>
-      <div className="content">
-        <p className="product__tag">
-          {productTag ? (
-            productTag
-          ) : (
-            <Skeleton variant="rounded" width={40} height={12} />
-          )}
-        </p>
-        <p className="product__title">
-          {productTitle ? (
-            productTitle
-          ) : (
-            <Skeleton variant="rounded" height={32} />
-          )}
-        </p>
-        <div className="product__price__wrapper">
-          <div className="product__discounted__price">
-            {productDiscountedPrice ? (
-              priceSymbol + productDiscountedPrice
-            ) : (
-              <Skeleton variant="rounded" width={62} height={22} />
-            )}
+    <>
+      {!isLoading ? (
+        <ProductCardStyle>
+          <div className="image">
+            <img src={productImage} alt="" />
           </div>
-          <div className="product__price">
-            {productPrice ? (
-              priceSymbol + productPrice
-            ) : (
-              <Skeleton variant="rounded" width={44} height={16} />
-            )}
+          <div className="content">
+            <p className="product__tag">{productTag}</p>
+            <p className="product__title">{productTitle}</p>
+            <div className="product__price__wrapper">
+              <div className="product__discounted__price">
+                {priceSymbol + productDiscountedPrice}
+              </div>
+              <div className="product__price">{priceSymbol + productPrice}</div>
+            </div>
           </div>
-        </div>
-      </div>
-    </ProductCardStyle>
+        </ProductCardStyle>
+      ) : (
+        <ProductCardSkeleton />
+      )}
+    </>
   );
 };
 
