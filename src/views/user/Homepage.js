@@ -4,6 +4,7 @@ import bannerImage from "../../assets/log-banner.jpg";
 import CategoryList from "../../components/category/CategoryList";
 import styled from "styled-components";
 import ProductList from "../../components/product/ProductList";
+import GroupBuy from "../../components/common/GroupBuy";
 
 const HompageStyle = styled.div`
   .category_list {
@@ -42,6 +43,9 @@ const Homepage = () => {
 
       <div className="container product_list">
         <ProductList />
+      </div>
+      <div className="container group_buy">
+        <GroupBuy isLoading={true} />
       </div>
     </HompageStyle>
   );

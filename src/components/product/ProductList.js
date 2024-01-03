@@ -26,6 +26,11 @@ const ProductListStyle = styled.div`
     display: flex;
     gap: 18px;
   }
+  .product__list__pagination {
+    margin-top: 44.25px;
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const ProductList = ({
@@ -48,8 +53,9 @@ const ProductList = ({
         <ProductCard isLoading={true} />
         <ProductCard isLoading={true} />
       </div>
-
-      <Pagination count={10} shape="rounded" />
+      <div className="product__list__pagination">
+        <Pagination count={10} shape="rounded" />
+      </div>
     </ProductListStyle>
   );
 };
