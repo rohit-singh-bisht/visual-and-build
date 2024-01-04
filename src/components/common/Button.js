@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 const ButtonStyle = styled.button`
-  padding: 16px 40px;
-  border-radius: 10px;
+  padding: 12px 30px;
+  border-radius: 7.5px;
   background: #ae0000;
   color: #fff;
-  font-size: 20px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 700;
   line-height: 30px;
