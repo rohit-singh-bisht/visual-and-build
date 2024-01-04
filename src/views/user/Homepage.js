@@ -5,6 +5,7 @@ import CategoryList from "../../components/category/CategoryList";
 import styled from "styled-components";
 import ProductList from "../../components/product/ProductList";
 import GroupBuy from "../../components/common/GroupBuy";
+import FaqList from "../../components/common/FaqList";
 
 const HompageStyle = styled.div`
   .category_list {
@@ -47,6 +48,7 @@ const Homepage = () => {
       <div className="container group_buy">
         <GroupBuy isLoading={true} />
       </div>
+      <FaqList />
     </HompageStyle>
   );
 };
