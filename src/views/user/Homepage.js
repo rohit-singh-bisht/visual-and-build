@@ -6,6 +6,8 @@ import styled from "styled-components";
 import ProductList from "../../components/product/ProductList";
 import GroupBuy from "../../components/common/GroupBuy";
 import FaqList from "../../components/common/FaqList";
+import HomeBlogs from "../../components/blogs/HomeBlogs";
+import IconWithTextList from "../../components/common/IconWithTextList";
 
 const HompageStyle = styled.div`
   .category_list {
@@ -13,8 +15,14 @@ const HompageStyle = styled.div`
     padding-bottom: 100px;
   }
   .product_list {
-    padding-top: 86px;
-    padding-bottom: 86px;
+    padding: 86px 0;
+  }
+  .blogs {
+    padding: 60px 0;
+  }
+  .icon_with_text {
+    padding: 60px 0;
+    border-top: 1px solid rgba(48, 48, 48, 0.25);
   }
 `;
 
@@ -49,6 +57,14 @@ const Homepage = () => {
         <GroupBuy isLoading={true} />
       </div>
       <FaqList />
+      <div className="container blogs">
+        <HomeBlogs />
+      </div>
+      <div className="icon_with_text">
+        <div className="container">
+          <IconWithTextList />
+        </div>
+      </div>
     </HompageStyle>
   );
 };
