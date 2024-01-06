@@ -30,3 +30,11 @@ button {
   max-width: 1140px;
   margin: auto;
 }
+
+input {
+  border: 0px;
+  &:focus {
+    border: 0px;
+    outline: none;
+  }
+}

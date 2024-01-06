@@ -8,6 +8,7 @@ import GroupBuy from "../../components/common/GroupBuy";
 import FaqList from "../../components/common/FaqList";
 import HomeBlogs from "../../components/blogs/HomeBlogs";
 import IconWithTextList from "../../components/common/IconWithTextList";
+import Subscribe from "../../components/subscribe/Subscribe";
 
 const HompageStyle = styled.div`
   .category_list {
@@ -65,6 +66,9 @@ const Homepage = () => {
           <IconWithTextList />
         </div>
       </div>
+      <footer>
+        <Subscribe />
+      </footer>
     </HompageStyle>
   );
 };
