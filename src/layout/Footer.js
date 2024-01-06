@@ -36,7 +36,7 @@ const FooterStyle = styled.footer`
   }
   .bottom__footer {
     padding-top: 6px;
-    border-top: 0.75px solid rgba(255, 255, 255, 0.75);
+    border-top: 0.75px solid rgba(255, 255, 255, 0.25);
     display: flex;
     justify-content: space-between;
     color: rgba(255, 255, 255, 0.75);
