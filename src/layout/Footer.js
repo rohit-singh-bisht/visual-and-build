@@ -5,7 +5,6 @@ import { supportLinks } from "../constants/FooterLinks";
 import { links } from "../constants/FooterLinks";
 import { aboutLinks } from "../constants/FooterLinks";
 import FooterLinks from "../components/common/FooterLinks";
-import Subscribe from "../components/subscribe/Subscribe";
 import { Link } from "react-router-dom";
 import { ReactComponent as VisaIcon } from "../assets/visa.svg";
 import { ReactComponent as MasterCardIcon } from "../assets/masterCard.svg";
@@ -13,6 +12,7 @@ import { ReactComponent as PaypalIcon } from "../assets/paypal.svg";
 import { ReactComponent as ApplePayIcon } from "../assets/applePay.svg";
 import { socialLinks } from "../constants/FooterLinks";
 import { ReactComponent as LogoIcon } from "../assets/logo-square.svg";
+import Subscribe from "../components/forms/subscribe/Subscribe";
 
 const FooterStyle = styled.footer`
   background: #000;

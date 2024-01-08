@@ -72,7 +72,7 @@ const HomeBlogs = () => {
       <div className="blogs__wrapper">
         <div className="main__blog">
           <div className="blog__image">
-            <img src="" />
+            <img src="" alt={""} />
           </div>
           <h2 className="main__blog__title">
             Our Choices for Top 10 Lumber in 2023
