@@ -108,7 +108,13 @@ const RegisterStyle = styled.div`
 `;
 
 const Register = () => {
-  const [userDetails, setUserDetails] = useState({});
+  const [userDetails, setUserDetails] = useState({
+    email: "",
+    password: "",
+    username: "",
+    isNewsletterEnabled: false,
+    isNotificationEnabled: false,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -119,15 +125,13 @@ const Register = () => {
     }));
   };
 
-  console.log(userDetails);
-
   return (
     <RegisterStyle>
       <div className="page__title">Register</div>
       <div className="container">
         <form className="form">
           <div className="form__group">
-            <label for="email">Email Address</label>
+            <label htmlFor="email">Email Address</label>
             <input
               type="email"
               name="email"
@@ -137,7 +141,7 @@ const Register = () => {
             />
           </div>
           <div className="form__group">
-            <label for="password">Password</label>
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               name="password"
@@ -150,7 +154,7 @@ const Register = () => {
             </div>
           </div>
           <div className="form__group">
-            <label for="username">Username</label>
+            <label htmlFor="username">Username</label>
             <input
               type="text"
               name="username"
