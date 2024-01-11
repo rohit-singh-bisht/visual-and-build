@@ -16,6 +16,7 @@ const BlogTagsStyle = styled.div`
     display: flex;
     column-gap: 9px;
     row-gap: 6px;
+    flex-wrap: wrap;
     .blog__tag__pill {
       color: #303030;
       font-size: 10.5px;
@@ -25,6 +26,7 @@ const BlogTagsStyle = styled.div`
       padding: 9px 14px;
       border-radius: 3.75px;
       background: #fff;
+      cursor: pointer;
     }
   }
 `;
