@@ -4,6 +4,7 @@ import BlogCard from "../../components/blogs/BlogCard";
 import categoryDummy from "../../assets/category-dummy.jpg";
 import BlogSearch from "../../components/blogs/BlogSearch";
 import BlogCategoryList from "../../components/blogs/BlogCategoryList";
+import BlogTags from "../../components/blogs/BlogTags";
 
 const BlogsStyle = styled.section`
   .blogs__body {
@@ -41,6 +42,16 @@ const Blogs = () => {
                 "Categories",
                 "Categories",
                 "Categories",
+              ]}
+            />
+            <div className="gap-30" />
+            <BlogTags
+              blogTagsList={[
+                "Categories",
+                "Categories",
+                "Categories",
+                "Cat",
+                "Dpgs",
               ]}
             />
           </aside>
