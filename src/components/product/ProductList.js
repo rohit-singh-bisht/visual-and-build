@@ -37,6 +37,7 @@ const ProductList = ({
   listTitle = "Exterior",
   buttonText = "See All",
   handleButtonClick,
+  pagination = true,
 }) => {
   return (
     <ProductListStyle>
@@ -53,9 +54,11 @@ const ProductList = ({
         <ProductCard isLoading={true} />
         <ProductCard isLoading={true} />
       </div>
-      <div className="product__list__pagination">
-        <Pagination count={10} shape="rounded" />
-      </div>
+      {pagination && (
+        <div className="product__list__pagination">
+          <Pagination className="pagination" count={10} shape="rounded" />
+        </div>
+      )}
     </ProductListStyle>
   );
 };

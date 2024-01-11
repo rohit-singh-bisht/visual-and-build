@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const CategoryCardStyle = styled.div`
+  cursor: pointer;
   .image {
     margin-bottom: 26px;
     img {
@@ -16,11 +17,33 @@ const CategoryCardStyle = styled.div`
     font-weight: 400;
     line-height: normal;
   }
+  &.text__in__image {
+    border-radius: 6px;
+    overflow: clip;
+    border: 0.75px solid #d9d9d9;
+    position: relative;
+    .image {
+      margin-bottom: 0;
+    }
+    .title {
+      color: #fff;
+      text-align: center;
+      font-size: 16.5px;
+      font-weight: 600;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+  }
 `;
 
-const CategoryCard = ({ title, link, src }) => {
+const CategoryCard = ({ title, link, src, type }) => {
   return (
-    <CategoryCardStyle>
+    <CategoryCardStyle
+      className={type === "text-in-image" ? "text__in__image" : ""}
+    >
       <div className="image">
         <img src={src} alt={title} />
       </div>
@@ -29,4 +52,4 @@ const CategoryCard = ({ title, link, src }) => {
   );
 };
 
-export default CategoryCard;
+export default React.memo(CategoryCard);

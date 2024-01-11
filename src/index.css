@@ -27,7 +27,7 @@ button {
 }
 
 .container {
-  max-width: 1140px;
+  max-width: 1180px;
   margin: auto;
 }
 
@@ -46,4 +46,18 @@ input {
 svg,
 img {
   display: block;
+}
+
+.pagination button {
+  color: #303030;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22.5px;
+}
+
+.pagination .Mui-selected {
+  border-radius: 3.75px;
+  background-color: #ae0000 !important;
+  color: #fff;
 }
