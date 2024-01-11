@@ -3,6 +3,7 @@ import styled from "styled-components";
 import BlogCard from "../../components/blogs/BlogCard";
 import categoryDummy from "../../assets/category-dummy.jpg";
 import BlogSearch from "../../components/blogs/BlogSearch";
+import BlogCategoryList from "../../components/blogs/BlogCategoryList";
 
 const BlogsStyle = styled.section`
   .blogs__body {
@@ -18,6 +19,11 @@ const BlogsStyle = styled.section`
       row-gap: 12px;
     }
   }
+  @media (min-width: 1024px) {
+    .gap-30 {
+      height: 30px;
+    }
+  }
 `;
 
 const Blogs = () => {
@@ -27,6 +33,16 @@ const Blogs = () => {
         <div className="blogs__body">
           <aside>
             <BlogSearch />
+            <div className="gap-30" />
+            <BlogCategoryList
+              title={"Categories"}
+              blogCategories={[
+                "Categories",
+                "Categories",
+                "Categories",
+                "Categories",
+              ]}
+            />
           </aside>
           <div className="blogs__wrapper">
             {Array.from({ length: 10 }, (_, index) => index + 1)?.map(

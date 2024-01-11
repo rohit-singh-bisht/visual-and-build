@@ -7,7 +7,7 @@ const BlogCardStyle = styled.div`
   padding: 30px;
   border-radius: 18px;
   background: #fff;
-  border: 1px solid rgba(48, 48, 48, 0);
+  border: 0.75px solid rgba(48, 48, 48, 0);
   transition: all 0.3s;
   &:hover {
     border-color: rgba(48, 48, 48, 0.25);
