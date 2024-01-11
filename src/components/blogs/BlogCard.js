@@ -9,8 +9,12 @@ const BlogCardStyle = styled.div`
   background: #fff;
   border: 0.75px solid rgba(48, 48, 48, 0);
   transition: all 0.3s;
+  cursor: pointer;
   &:hover {
     border-color: rgba(48, 48, 48, 0.25);
+    .blog__card__title {
+      text-decoration: underline;
+    }
   }
   .blog__card__image {
     margin-bottom: 18px;
