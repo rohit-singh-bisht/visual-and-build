@@ -6,7 +6,7 @@ const CategoryListStyle = styled.div`
   .title_wrapper {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 69px;
+    margin-bottom: 50px;
     .title {
       color: #303030;
       font-size: 27px;
@@ -14,6 +14,11 @@ const CategoryListStyle = styled.div`
       font-weight: 600;
       line-height: 34.5px;
     }
+  }
+  .list_wrapper {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
   }
 `;
 
@@ -25,7 +30,9 @@ const CategoryList = ({ title, allText, allLink, list }) => {
         {allLink && allText && <p className="all_button">{allText}</p>}
       </div>
       <div className="list_wrapper">
-        {list && list?.length && list?.map((item) => <CategoryCard />)}
+        {list &&
+          list?.length &&
+          list?.map((item) => <CategoryCard {...item} />)}
       </div>
     </CategoryListStyle>
   );

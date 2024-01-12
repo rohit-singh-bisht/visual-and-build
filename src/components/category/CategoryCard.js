@@ -4,18 +4,17 @@ import styled from "styled-components";
 const CategoryCardStyle = styled.div`
   cursor: pointer;
   .image {
-    margin-bottom: 26px;
+    margin-bottom: 18px;
     img {
       width: 100%;
       height: 100%;
     }
   }
   .title {
-    color: #000;
-    text-align: center;
-    font-size: 19px;
+    font-size: 14.25px;
+    font-style: normal;
     font-weight: 400;
-    line-height: normal;
+    text-align: center;
   }
   &.text__in__image {
     border-radius: 6px;
