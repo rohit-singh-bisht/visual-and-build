@@ -5,6 +5,7 @@ import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Category from "../views/user/Category";
 import Blogs from "../views/user/Blogs";
+import Vendor from "../views/user/Vendor";
 
 const UserRoutes = () => {
   return (
@@ -14,6 +15,7 @@ const UserRoutes = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/categories" element={<Category />} />
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/store/:vendorId" element={<Vendor />} />
       </Routes>
       <Footer />
     </>

@@ -34,19 +34,22 @@ const ProductListStyle = styled.div`
 `;
 
 const ProductList = ({
-  listTitle = "Exterior",
-  buttonText = "See All",
+  listTitle,
+  buttonText,
   handleButtonClick,
   pagination = true,
+  productList,
 }) => {
   return (
     <ProductListStyle>
-      <div className="product__list__title__wrapper">
-        <p className="product__list__title">{listTitle}</p>
-        <button className="product__list__button" onClick={handleButtonClick}>
-          {buttonText}
-        </button>
-      </div>
+      {listTitle && (
+        <div className="product__list__title__wrapper">
+          <p className="product__list__title">{listTitle}</p>
+          <button className="product__list__button" onClick={handleButtonClick}>
+            {buttonText}
+          </button>
+        </div>
+      )}
       <div className="product__list__wrapper">
         <ProductCard isLoading={true} />
         <ProductCard isLoading={true} />

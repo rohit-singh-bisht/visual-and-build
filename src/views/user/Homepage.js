@@ -1,6 +1,5 @@
 import React from "react";
 import Banner from "../../components/common/Banner";
-import bannerImage from "../../assets/log-banner.jpg";
 import CategoryList from "../../components/category/CategoryList";
 import styled from "styled-components";
 import ProductList from "../../components/product/ProductList";
@@ -47,7 +46,7 @@ const Homepage = () => {
       <Banner
         title={"Create your dream home"}
         subtitle={"An advanced and easy-to-use 2D/3D <br /> home design tool. "}
-        imageSrc={bannerImage}
+        imageSrc={"images/log-banner.jpg"}
         leftDistance={188}
         textDark={true}
         buttonTitle={"Get Started"}
@@ -60,7 +59,7 @@ const Homepage = () => {
       <Banner
         title={"Elevate Your Space"}
         subtitle={"Discover the Art of Interior"}
-        imageSrc={bannerImage}
+        imageSrc={"images/log-banner.jpg"}
         leftDistance={108}
         buttonTitle={"Get Started"}
       />
