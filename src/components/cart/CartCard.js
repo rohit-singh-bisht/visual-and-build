@@ -7,6 +7,7 @@ const CartProductCardStyle = styled.div`
   align-items: center;
   padding: 30px 24px;
   gap: 10px;
+  position: relative;
   .cart__product__wrapper {
     flex: 1;
     display: flex;
@@ -55,7 +56,7 @@ const CartProductCardStyle = styled.div`
     color: #303030;
     font-size: 15px;
     font-weight: 600;
-    line-height: 22.5px; /* 150% */
+    line-height: 22.5px;
     text-align: center;
   }
   .cart__product__qty {
@@ -65,6 +66,16 @@ const CartProductCardStyle = styled.div`
   .cart__product__total {
     flex: 0 0 90px;
     text-align: right;
+  }
+  .cart__product__wishlist {
+    color: #ae0000;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    position: absolute;
+    right: 25px;
+    bottom: 18px;
+    background-color: #fff;
   }
 `;
 
@@ -90,7 +101,7 @@ const CartProductCard = ({ src, title }) => {
         <QuantityInput />
       </div>
       <h2 className="cart__cell cart__product__total">$1,659.00</h2>
-      {/* <div className="cart__cell cart__product__wishlist"></div> */}
+      <button className="cart__product__wishlist">Add to wishlist</button>
     </CartProductCardStyle>
   );
 };

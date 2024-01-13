@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const CartOrderSummaryStyle = styled.div`
-  max-width: 380px;
-  width: 100%;
+  width: 380px;
   border-radius: 11.25px;
   border: 0.75px solid #ccc2c2;
   background: #fff;
@@ -92,6 +91,7 @@ const CartOrderSummaryStyle = styled.div`
       background: #fff;
     }
     .checkout {
+      font-weight: 700;
       margin-top: 12px;
       color: #fff;
       background: #ae0000;
@@ -132,7 +132,7 @@ const CartOrderSummary = () => {
       </div>
       <div className="cart__summary__buttons">
         <button className="continue__shopping">Continue Shopping</button>
-        <button className="checkout">Continue Shopping</button>
+        <button className="checkout">Checkout</button>
       </div>
     </CartOrderSummaryStyle>
   );

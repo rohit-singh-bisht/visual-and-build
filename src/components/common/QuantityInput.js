@@ -8,9 +8,14 @@ const QuantityInputStyle = styled.div`
   align-items: center;
   gap: 12px;
   .icon {
-    font-size: 12px;
+    font-size: 14px;
     user-select: none;
     cursor: pointer;
+    &:focus,
+    &:active,
+    &:hover {
+      outline: 1px solid rgb(48, 48, 48);
+    }
   }
   .number__input {
     width: 30px;
