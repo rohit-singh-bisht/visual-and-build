@@ -29,7 +29,7 @@ const QuantityInput = () => {
   const [count, setCount] = useState(1);
 
   const handleClick = (e) => {
-    if (e === "remove" && count.current !== 1) {
+    if (e === "remove" && count !== 1) {
       setCount((prev) => prev - 1);
     }
     if (e === "add") {
