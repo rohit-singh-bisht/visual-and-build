@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import IconWithTextList from "../../components/common/IconWithTextList";
 import CartTable from "../../components/cart/CartTable";
+import CartOrderSummary from "../../components/cart/CartOrderSummary";
 
 const CartStyle = styled.div`
   padding-top: 70px;
@@ -14,9 +15,7 @@ const CartStyle = styled.div`
   }
   .cart__wrapper {
     display: flex;
-  }
-  .cart__order__summary {
-    flex: 0 0 380px;
+    gap: 15px;
   }
   .icon__with__text {
     padding: 60px 0;
@@ -32,7 +31,9 @@ const Cart = () => {
         <div className="page__title">Your Cart</div>
         <div className="cart__wrapper">
           <CartTable />
-          <div className="cart__order__summary"></div>
+          <div>
+            <CartOrderSummary />
+          </div>
         </div>
       </div>
       <div className="icon__with__text">
