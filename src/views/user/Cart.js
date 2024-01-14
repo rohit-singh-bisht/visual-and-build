@@ -3,6 +3,7 @@ import styled from "styled-components";
 import IconWithTextList from "../../components/common/IconWithTextList";
 import CartTable from "../../components/cart/CartTable";
 import CartOrderSummary from "../../components/cart/CartOrderSummary";
+import CollapsibleCart from "../../components/cart/CollapsibleCart";
 
 const CartStyle = styled.div`
   padding-top: 70px;
@@ -35,6 +36,7 @@ const Cart = () => {
             <CartOrderSummary />
           </div>
         </div>
+        <CollapsibleCart />
       </div>
       <div className="icon__with__text">
         <div className="container">

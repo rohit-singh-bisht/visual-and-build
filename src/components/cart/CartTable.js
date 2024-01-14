@@ -38,7 +38,7 @@ const CartTableStyle = styled.div`
   }
 `;
 
-const CartTable = () => {
+const CartTable = ({ isSchedule }) => {
   return (
     <CartTableStyle>
       <div className="cart__items">
@@ -50,17 +50,17 @@ const CartTable = () => {
           <div className="table__heading">Total</div>
         </div>
         <div>
-          <CartCard />
+          <CartCard isSchedule={isSchedule} />
           <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />
-          <CartCard />
+          <CartCard isSchedule={isSchedule} />
           <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />
-          <CartCard />
+          <CartCard isSchedule={isSchedule} />
           <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />
-          <CartCard />
+          <CartCard isSchedule={isSchedule} />
           <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />
-          <CartCard />
+          <CartCard isSchedule={isSchedule} />
           <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />
-          <CartCard />
+          <CartCard isSchedule={isSchedule} />
         </div>
       </div>
     </CartTableStyle>

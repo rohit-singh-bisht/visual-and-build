@@ -79,7 +79,7 @@ const CartProductCardStyle = styled.div`
   }
 `;
 
-const CartProductCard = ({ src, title }) => {
+const CartProductCard = ({ src, title, isSchedule }) => {
   return (
     <CartProductCardStyle>
       <div className="cart__product__wrapper">
@@ -101,7 +101,9 @@ const CartProductCard = ({ src, title }) => {
         <QuantityInput />
       </div>
       <h2 className="cart__cell cart__product__total">$1,659.00</h2>
-      <button className="cart__product__wishlist">Add to wishlist</button>
+      <button className="cart__product__wishlist">
+        {isSchedule ? "Schedule" : "Add to wishlist"}
+      </button>
     </CartProductCardStyle>
   );
 };
