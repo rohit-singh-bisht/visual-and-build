@@ -7,6 +7,7 @@ import Category from "../views/user/Category";
 import Blogs from "../views/user/Blogs";
 import Vendor from "../views/user/Vendor";
 import Cart from "../views/user/Cart";
+import Account from "../views/user/Account";
 
 const UserRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const UserRoutes = () => {
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/store/:vendorId" element={<Vendor />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
       <Footer />
     </>

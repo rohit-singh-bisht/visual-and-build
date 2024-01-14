@@ -66,7 +66,7 @@ const Header = () => {
       </nav>
       <Search />
       <div className="other__links">
-        <Link to={""} className="two__liners">
+        <Link to={"/account"} className="two__liners">
           Hello, sign in
           <span>Account & Lists</span>
         </Link>
