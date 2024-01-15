@@ -1,10 +1,58 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const AccountSidebarStyle = styled.div``;
+const AccountSidebarStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 160px;
+  .link {
+    color: #666;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 18px;
+  }
+`;
 
 const AccountSidebar = () => {
-  return <AccountSidebarStyle>AccountSidebar</AccountSidebarStyle>;
+  const links = [
+    {
+      title: "My Account",
+      to: "/",
+    },
+    {
+      title: "Purchase History",
+      to: "/",
+      sublinks: [{}],
+    },
+    {
+      title: "My List",
+      to: "/",
+    },
+    {
+      title: "Shipping Addresses",
+      to: "/",
+    },
+    {
+      title: "Payment Methods",
+      to: "/",
+    },
+    {
+      title: "Profile Information",
+      to: "/",
+    },
+  ];
+
+  return (
+    <AccountSidebarStyle>
+      {links?.map((items) => (
+        <Link to={items?.to} className="link">
+          {items?.title}
+        </Link>
+      ))}
+    </AccountSidebarStyle>
+  );
 };
 
 export default AccountSidebar;

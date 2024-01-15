@@ -1,13 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "../../components/common/Button";
+import AccountSidebar from "../../components/account/AccoutSidebar";
 
 const ProfileInformationStyle = styled.div`
+  padding: 60px 0;
+  .page__title {
+    color: #000;
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 34px;
+    margin-bottom: 36px;
+  }
   .text {
     color: #333;
     font-size: 11.25px;
     font-weight: 400;
     line-height: 18px;
+    margin-bottom: 12px;
   }
   .input__wrapper {
     margin-bottom: 11.75px;
@@ -44,105 +54,122 @@ const ProfileInformationStyle = styled.div`
     margin-bottom: 18px;
     margin-top: 24px;
   }
+  .information__flex {
+    display: flex;
+    gap: 26px;
+    .form__info__wrapper {
+      flex: 1;
+    }
+  }
 `;
 
 const ProfileInformation = () => {
   return (
     <ProfileInformationStyle>
-      <p className="text">
-        Make changes to your business details, as well as update your email and
-        password.
-      </p>
-      <div className="input__wrapper">
-        <div className="input_group">
-          <label className="required">First name</label>
-          <input type="text" />
-        </div>
-        <div className="input_group">
-          <label className="required">Last name</label>
-          <input type="text" />
-        </div>
-      </div>
-      <Button type={"save"} title={"Save Changes"} />
-      <div className="page__subtitle">Business Details</div>
-      <p className="text">
-        Your Home Depot rewards will be sent to your registered business
-        address.
-      </p>
-      <div className="input_group">
-        <label className="required">Business Name</label>
-        <input type="text" />
-      </div>
-      <div className="input__wrapper">
-        <div className="input_group">
-          <label className="required">Primary Business Phone</label>
-          <input type="text" />
-        </div>
-        <div className="input_group">
-          <label className="required">
-            Secondary Business Phone (Optional)
-          </label>
-          <input type="text" />
-        </div>
-      </div>
-      <div className="input__wrapper">
-        <div className="input_group">
-          <label className="required">Business Address</label>
-          <input type="text" />
-        </div>
-        <div className="input_group">
-          <label className="required">City</label>
-          <input type="text" />
-        </div>
-      </div>
-      <div className="input__wrapper">
-        <div className="input_group">
-          <label className="required">Province</label>
-          <select>
-            <option>India</option>
-            <option>British Columbia </option>
-          </select>
-        </div>
-        <div className="input_group">
-          <label className="required">Postal Code – A0A 0A0</label>
-          <input type="text" />
-        </div>
-      </div>
-      <div className="input__wrapper">
-        <div className="input_group">
-          <label className="required">Business or Trade</label>
-          <select>
-            <option>India</option>
-            <option>British Columbia </option>
-          </select>
-        </div>
-      </div>
-      <Button type={"save"} title={"Save Changes"} />
-      <div className="page__subtitle">Update Email</div>
-      <p className="text">
-        After saving your new email, you will be signed out and prompted to sign
-        in with your new email ID.
-      </p>
-      <div className="input__wrapper">
-        <div className="input_group">
-          <label className="required">Email</label>
-          <input type="email" />
-        </div>
-      </div>
-      <Button type={"save"} title={"Save Changes"} />
+      <div className="container">
+        <div className="page__title">Profile Information</div>
+        <div className="information__flex">
+          <div>
+            <AccountSidebar />
+          </div>
+          <div className="form__info__wrapper">
+            <p className="text">
+              Make changes to your business details, as well as update your
+              email and password.
+            </p>
+            <div className="input__wrapper">
+              <div className="input_group">
+                <label className="required">First name</label>
+                <input type="text" />
+              </div>
+              <div className="input_group">
+                <label className="required">Last name</label>
+                <input type="text" />
+              </div>
+            </div>
+            <Button type={"save"} title={"Save Changes"} />
+            <div className="page__subtitle">Business Details</div>
+            <p className="text">
+              Your Home Depot rewards will be sent to your registered business
+              address.
+            </p>
+            <div className="input_group">
+              <label className="required">Business Name</label>
+              <input type="text" />
+            </div>
+            <div className="input__wrapper">
+              <div className="input_group">
+                <label className="required">Primary Business Phone</label>
+                <input type="text" />
+              </div>
+              <div className="input_group">
+                <label className="required">
+                  Secondary Business Phone (Optional)
+                </label>
+                <input type="text" />
+              </div>
+            </div>
+            <div className="input__wrapper">
+              <div className="input_group">
+                <label className="required">Business Address</label>
+                <input type="text" />
+              </div>
+              <div className="input_group">
+                <label className="required">City</label>
+                <input type="text" />
+              </div>
+            </div>
+            <div className="input__wrapper">
+              <div className="input_group">
+                <label className="required">Province</label>
+                <select>
+                  <option>India</option>
+                  <option>British Columbia </option>
+                </select>
+              </div>
+              <div className="input_group">
+                <label className="required">Postal Code – A0A 0A0</label>
+                <input type="text" />
+              </div>
+            </div>
+            <div className="input__wrapper">
+              <div className="input_group">
+                <label className="required">Business or Trade</label>
+                <select>
+                  <option>India</option>
+                  <option>British Columbia </option>
+                </select>
+              </div>
+            </div>
+            <Button type={"save"} title={"Save Changes"} />
+            <div className="page__subtitle">Update Email</div>
+            <p className="text">
+              After saving your new email, you will be signed out and prompted
+              to sign in with your new email ID.
+            </p>
+            <div className="input__wrapper">
+              <div className="input_group">
+                <label className="required">Email</label>
+                <input type="email" />
+              </div>
+            </div>
+            <Button type={"save"} title={"Save Changes"} />
 
-      <div className="page__subtitle">Update Password</div>
-      <div className="input__wrapper">
-        <div className="input_group">
-          <label className="required">Current Password</label>
-          <input type="password" />
-        </div>
-        <div className="input_group">
-          <label className="required">New Password</label>
-          <input type="password" />
+            <div className="page__subtitle">Update Password</div>
+            <div className="input__wrapper">
+              <div className="input_group">
+                <label className="required">Current Password</label>
+                <input type="password" />
+              </div>
+              <div className="input_group">
+                <label className="required">New Password</label>
+                <input type="password" />
+              </div>
+            </div>
+            <Button type={"save"} title={"Save Changes"} />
+          </div>
         </div>
       </div>
-      <Button type={"save"} title={"Save Changes"} />
     </ProfileInformationStyle>
   );
 };
