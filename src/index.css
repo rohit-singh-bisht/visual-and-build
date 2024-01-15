@@ -65,3 +65,9 @@ img {
 .w-100 {
   width: 100%;
 }
+
+label.required::after {
+  content: "*";
+  color: #d40003;
+  margin-left: 2px;
+}
