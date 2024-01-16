@@ -9,6 +9,7 @@ import Vendor from "../views/user/Vendor";
 import Cart from "../views/user/Cart";
 import Account from "../views/user/Account";
 import ProfileInformation from "../views/user/ProfileInformation";
+import Contact from "../views/user/Contact";
 
 const UserRoutes = () => {
   return (
@@ -22,6 +23,7 @@ const UserRoutes = () => {
         <Route path="/store/:vendorId" element={<Vendor />} />
         <Route path="/account" element={<Account />} />
         <Route path="/profile-information" element={<ProfileInformation />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
     </>
