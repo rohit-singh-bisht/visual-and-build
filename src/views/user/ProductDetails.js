@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as ReviewStars } from "../../assets/reviewStars.svg";
 import IconWithTextList from "../../components/common/IconWithTextList";
 import { productIcons } from "../../constants/IconsWithTextData";
+import ProductVariants from "../../components/product/ProductVariants";
 
 const ProductDetailsStyle = styled.div`
   display: flex;
@@ -126,7 +127,9 @@ const ProductDetails = () => {
             <h2 className="product__options__title">Finish</h2>
             <p className="product__options__value">Matte</p>
           </div>
-          <div className="product__options__variants"></div>
+          <div className="product__options__variants">
+            <ProductVariants name={"Variant"} />
+          </div>
         </div>
       </div>
     </ProductDetailsStyle>
