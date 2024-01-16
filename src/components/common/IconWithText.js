@@ -11,9 +11,11 @@ const IconWithTextStyle = styled.div`
     }
   }
   .content {
-    color: #303030;
-    font-size: 12px;
-    line-height: 18px;
+    * {
+      color: #303030;
+      font-size: 12px;
+      line-height: 18px;
+    }
     .title {
       font-weight: 700;
       margin-bottom: 1.5px;
