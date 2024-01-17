@@ -4,6 +4,7 @@ import { ReactComponent as ReviewStars } from "../../assets/reviewStars.svg";
 import IconWithTextList from "../../components/common/IconWithTextList";
 import { productIcons } from "../../constants/IconsWithTextData";
 import ProductVariants from "../../components/product/ProductVariants";
+import ProductActions from "../../components/product/ProductActions";
 
 const ProductDetailsStyle = styled.div`
   display: flex;
@@ -130,6 +131,7 @@ const ProductDetails = () => {
           <div className="product__options__variants">
             <ProductVariants name={"Variant"} />
           </div>
+          <ProductActions />
         </div>
       </div>
     </ProductDetailsStyle>
