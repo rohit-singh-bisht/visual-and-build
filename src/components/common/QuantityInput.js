@@ -7,10 +7,12 @@ const QuantityInputStyle = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  .icon__wrapper {
+    cursor: pointer;
+  }
   .icon {
     font-size: 14px;
     user-select: none;
-    cursor: pointer;
     &:focus,
     &:active,
     &:hover {
@@ -30,7 +32,7 @@ const QuantityInputStyle = styled.div`
   }
 `;
 
-const QuantityInput = () => {
+const QuantityInput = ({ className }) => {
   const [count, setCount] = useState(1);
 
   const handleClick = (e) => {
@@ -43,10 +45,17 @@ const QuantityInput = () => {
   };
 
   return (
-    <QuantityInputStyle>
-      <IoIosRemove className="icon" onClick={() => handleClick("remove")} />
+    <QuantityInputStyle className={className}>
+      <div
+        className="icon__wrapper remove"
+        onClick={() => handleClick("remove")}
+      >
+        <IoIosRemove className="icon" />
+      </div>
       <input value={count} className="number__input" />
-      <IoIosAdd className="icon" onClick={() => handleClick("add")} />
+      <div className="icon__wrapper add" onClick={() => handleClick("add")}>
+        <IoIosAdd className="icon" />
+      </div>
     </QuantityInputStyle>
   );
 };
