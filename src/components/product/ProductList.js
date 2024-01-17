@@ -2,6 +2,7 @@ import React from "react";
 import ProductCard from "./ProductCard";
 import styled from "styled-components";
 import Pagination from "@mui/material/Pagination";
+import { ReactComponent as ArrowIcon } from "../../assets/arrow.svg";
 
 const ProductListStyle = styled.div`
   .product__list__title__wrapper {
@@ -20,6 +21,9 @@ const ProductListStyle = styled.div`
       font-size: 16.5px;
       font-weight: 600;
       background: none;
+      display: flex;
+      gap: 12px;
+      align-items: center;
     }
   }
   .product__list__wrapper {
@@ -36,6 +40,7 @@ const ProductListStyle = styled.div`
 const ProductList = ({
   listTitle,
   buttonText,
+  buttonArrow = false,
   handleButtonClick,
   pagination = true,
   productList,
@@ -47,6 +52,7 @@ const ProductList = ({
           <p className="product__list__title">{listTitle}</p>
           <button className="product__list__button" onClick={handleButtonClick}>
             {buttonText}
+            <ArrowIcon className="icon" />
           </button>
         </div>
       )}

@@ -9,10 +9,10 @@ const QuantityInputStyle = styled.div`
   gap: 12px;
   .icon__wrapper {
     cursor: pointer;
+    user-select: none;
   }
   .icon {
     font-size: 14px;
-    user-select: none;
     &:focus,
     &:active,
     &:hover {

@@ -14,6 +14,7 @@ const commonStyles = `
 const ProductActionsStyle = styled.div`
   display: flex;
   gap: 12px;
+  margin-top: 48px;
   .product__details__quantity {
     .icon__wrapper {
       width: 42px;
