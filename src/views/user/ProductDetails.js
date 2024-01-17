@@ -5,6 +5,7 @@ import IconWithTextList from "../../components/common/IconWithTextList";
 import { productIcons } from "../../constants/IconsWithTextData";
 import ProductVariants from "../../components/product/ProductVariants";
 import ProductActions from "../../components/product/ProductActions";
+import ImageGallery from "react-image-gallery";
 
 const ProductDetailsStyle = styled.div`
   display: flex;
@@ -13,6 +14,31 @@ const ProductDetailsStyle = styled.div`
   .image__gallery,
   .product__details {
     width: 100%;
+  }
+  .image__gallery {
+    .image-gallery-image {
+      border-radius: 7.5px;
+    }
+    .image-gallery-icon:hover {
+      color: #ae0000;
+    }
+    .image-gallery-fullscreen-button {
+      top: 0;
+      bottom: auto;
+    }
+    .image-gallery-thumbnails-container {
+      text-align: left;
+      margin-top: 20px;
+      margin-bottom: 48px;
+      .image-gallery-thumbnail {
+        border-radius: 7.5px;
+        border: 0px;
+        overflow: clip;
+      }
+      .image-gallery-thumbnail + .image-gallery-thumbnail {
+        margin-left: 18px;
+      }
+    }
   }
   .product__details {
     .vendor__details__reviews {
@@ -87,9 +113,29 @@ const ProductDetailsStyle = styled.div`
 `;
 
 const ProductDetails = () => {
+  const images = [
+    {
+      original: "https://picsum.photos/id/1018/1000/600/",
+      thumbnail: "https://picsum.photos/id/1018/250/150/",
+    },
+    {
+      original: "https://picsum.photos/id/1015/1000/600/",
+      thumbnail: "https://picsum.photos/id/1015/250/150/",
+    },
+    {
+      original: "https://picsum.photos/id/1019/1000/600/",
+      thumbnail: "https://picsum.photos/id/1019/250/150/",
+    },
+  ];
   return (
     <ProductDetailsStyle className="container">
       <div className="image__gallery">
+        <ImageGallery
+          items={images}
+          showBullets={false}
+          showNav={false}
+          showPlayButton={false}
+        />
         <IconWithTextList data={productIcons} />
       </div>
       <div className="product__details">
