@@ -33,6 +33,7 @@ const BillingDetailsStyle = styled.div`
     padding: 22px;
     cursor: pointer;
     gap: 14.25px;
+    width: 100%;
   }
   .billing__radio__icon {
     .empty {
