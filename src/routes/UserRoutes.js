@@ -18,7 +18,7 @@ const UserRoutes = () => {
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        <Route exact path="/" element={<Homepage />} />
         <Route path="/categories" element={<Category />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/cart" element={<Cart />} />
