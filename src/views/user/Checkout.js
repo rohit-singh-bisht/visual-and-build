@@ -55,6 +55,7 @@ const CheckoutStyle = styled.div`
         border: 0.75px solid rgba(48, 48, 48, 0.25);
         background: #fff;
         height: 130px;
+        resize: vertical;
       }
     }
   }
