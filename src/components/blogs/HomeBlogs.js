@@ -56,6 +56,41 @@ const HomeBlogsStyle = styled.section`
     .other__blogs {
       width: 100%;
       max-width: 372px;
+      .other__blogs__card {
+        border-bottom: 0.75px solid rgba(48, 48, 48, 0.25);
+        padding: 24px 0;
+        &:first-child {
+          padding-top: 0;
+        }
+        &:last-child {
+          padding-bottom: 0;
+          border-bottom: 0px solid rgba(48, 48, 48, 0.25);
+        }
+        .other__blogs__card__category {
+          color: #fff;
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 18px;
+          padding: 5px 15px;
+          border-radius: 7.5px;
+          background: #ae0000;
+          display: inline-block;
+          margin-bottom: 18px;
+        }
+        .other__blogs__card__title {
+          color: #303030;
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 22.5px;
+          margin-bottom: 12px;
+        }
+        .other__blogs__card__date {
+          color: #303030;
+          font-size: 10.5px;
+          font-weight: 400;
+          line-height: 15px;
+        }
+      }
     }
   }
 `;
@@ -86,7 +121,29 @@ const HomeBlogs = () => {
             vulputate libero et velit interdum, ac aliquet odio mattis.
           </p>
         </div>
-        <div className="other__blogs"></div>
+        <div className="other__blogs">
+          <div className="other__blogs__card">
+            <span className="other__blogs__card__category">Review</span>
+            <h3 className="other__blogs__card__title">
+              Rorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </h3>
+            <div className="other__blogs__card__date">16 April 2023</div>
+          </div>
+          <div className="other__blogs__card">
+            <span className="other__blogs__card__category">Review</span>
+            <h3 className="other__blogs__card__title">
+              Rorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </h3>
+            <div className="other__blogs__card__date">16 April 2023</div>
+          </div>
+          <div className="other__blogs__card">
+            <span className="other__blogs__card__category">Review</span>
+            <h3 className="other__blogs__card__title">
+              Rorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </h3>
+            <div className="other__blogs__card__date">16 April 2023</div>
+          </div>
+        </div>
       </div>
     </HomeBlogsStyle>
   );
