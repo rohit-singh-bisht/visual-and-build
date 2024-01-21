@@ -3,6 +3,7 @@ import styled from "styled-components";
 import BillingDetails from "../../checkout/BillingDetails";
 import CheckoutOrderSummary from "../../checkout/CheckoutOrderSummary";
 import Steps from "../../components/common/Steps";
+import CheckoutSubscribe from "../../components/forms/subscribe/CheckoutSubscribe";
 
 const CheckoutStyle = styled.div`
   padding: 70px 0;
@@ -126,6 +127,7 @@ const Checkout = () => {
           </div>
         </div>
       </div>
+      <CheckoutSubscribe />
     </CheckoutStyle>
   );
 };
