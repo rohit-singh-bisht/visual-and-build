@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import ProfileInformation from "../views/user/profile/ProfileInformation";
 import Address from "../views/user/profile/Address";
 import Account from "../views/user/Account";
@@ -24,7 +24,7 @@ const UserAccountRoutesStyle = styled.div`
 const routesInformation = [
   {
     id: 0,
-    title: "",
+    title: "Account",
     component: <Account />,
     path: "/",
     pathname: "/account",
@@ -33,14 +33,14 @@ const routesInformation = [
     id: 1,
     title: "Profile Information",
     component: <ProfileInformation />,
-    path: "/account/profile-information",
+    path: "/profile-information/",
     pathname: "/account/profile-information",
   },
   {
     id: 2,
     title: "My Addresses",
     component: <Address />,
-    path: "/account/address",
+    path: "/address",
     pathname: "/account/address",
   },
 ];
@@ -49,19 +49,28 @@ const UserAccountRoutes = () => {
   const [activeRouteId, setActiveRouteId] = useState(0);
   const [pageTitle, setPageTitle] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const locationPath = location.pathname;
+    const hasTrailingSlash = locationPath.endsWith("/");
+
+    // Redirect if there's a trailing slash
+    if (hasTrailingSlash && locationPath !== "/") {
+      navigate(locationPath.slice(0, -1), { replace: true });
+    }
+
     const filteredRoute = routesInformation?.find(
       (route) => route?.pathname === locationPath
     );
+
     setPageTitle(filteredRoute?.title);
     setActiveRouteId(filteredRoute?.id);
-  }, [location.pathname]);
+  }, [location.pathname, navigate]);
 
   return (
     <UserAccountRoutesStyle className="container">
-      {pageTitle && (
+      {pageTitle && activeRouteId !== 0 && (
         <div className="account__routes__page__title">{pageTitle}</div>
       )}
       <div className="account__routes__wrapper">

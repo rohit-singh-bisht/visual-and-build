@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const AccountSidebarStyle = styled.div`
@@ -12,10 +12,15 @@ const AccountSidebarStyle = styled.div`
     font-size: 11px;
     font-weight: 400;
     line-height: 18px;
+    &.active {
+      color: #ae0000;
+    }
   }
 `;
 
 const AccountSidebar = () => {
+  const location = useLocation();
+
   const links = [
     {
       title: "My Account",
@@ -40,14 +45,18 @@ const AccountSidebar = () => {
     },
     {
       title: "Profile Information",
-      to: "/profile-information",
+      to: "/account/profile-information",
+      isActive: location?.pathname === "/account/profile-information",
     },
   ];
 
   return (
     <AccountSidebarStyle>
       {links?.map((items) => (
-        <Link to={items?.to} className="link">
+        <Link
+          to={items?.to}
+          className={`link ${items?.isActive ? "active" : ""}`}
+        >
           {items?.title}
         </Link>
       ))}
