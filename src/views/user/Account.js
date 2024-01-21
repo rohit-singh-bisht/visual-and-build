@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import InfoCard from "../../components/account/InfoCard";
+import { useNavigate } from "react-router-dom";
 
 const AccountStyle = styled.div`
-  padding: 60px 0;
   .page__title {
     color: #000;
     font-size: 27px;
@@ -20,6 +20,8 @@ const AccountStyle = styled.div`
 `;
 
 const Account = () => {
+  const navigate = useNavigate();
+
   const accountData = [
     {
       title: `Hi Harmandeep`,
@@ -28,6 +30,9 @@ const Account = () => {
       sub2: `wanderhomes21@gmail.com`,
       sub3: `6043495244`,
       buttonText: `Edit Profile Information`,
+      onClick: () => {
+        navigate("/account/profile-information");
+      },
     },
     {
       title: `Purchase History`,

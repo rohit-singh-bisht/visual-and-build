@@ -19,7 +19,7 @@ const AccountSidebar = () => {
   const links = [
     {
       title: "My Account",
-      to: "/",
+      to: "/account",
     },
     {
       title: "Purchase History",
@@ -32,7 +32,7 @@ const AccountSidebar = () => {
     },
     {
       title: "Shipping Addresses",
-      to: "/",
+      to: "/account/address",
     },
     {
       title: "Payment Methods",
@@ -40,7 +40,7 @@ const AccountSidebar = () => {
     },
     {
       title: "Profile Information",
-      to: "/",
+      to: "/profile-information",
     },
   ];
 

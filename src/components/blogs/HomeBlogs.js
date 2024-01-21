@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as ArrowIcon } from "../../assets/arrow.svg";
+import categoryDummy from "../../assets/category-dummy.jpg";
 
 const HomeBlogsStyle = styled.section`
   .blogs__title {
@@ -48,6 +49,9 @@ const HomeBlogsStyle = styled.section`
         font-weight: 400;
         line-height: 22.5px;
       }
+      .blog__image {
+        margin-bottom: 24px;
+      }
     }
     .other__blogs {
       width: 100%;
@@ -72,7 +76,7 @@ const HomeBlogs = () => {
       <div className="blogs__wrapper">
         <div className="main__blog">
           <div className="blog__image">
-            <img src="" alt={""} />
+            <img src={categoryDummy} alt={"blog"} />
           </div>
           <h2 className="main__blog__title">
             Our Choices for Top 10 Lumber in 2023
