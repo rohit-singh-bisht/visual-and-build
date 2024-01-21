@@ -12,7 +12,7 @@ const CheckoutOrderSummaryStyle = styled.div`
     justify-content: space-between;
     gap: 45px;
     padding-top: 15px;
-    border-top: 0.75px solid rgba(40, 40, 40, 0.25);
+    border-top: 0.75px solid rgba(48, 48, 48, 0.25);
     margin-top: 35px;
     &:first-child {
       border-top: 0px;

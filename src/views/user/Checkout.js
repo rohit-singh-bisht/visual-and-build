@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import BillingDetails from "../../checkout/BillingDetails";
 import CheckoutOrderSummary from "../../checkout/CheckoutOrderSummary";
+import Steps from "../../components/common/Steps";
 
 const CheckoutStyle = styled.div`
   padding: 70px 0;
@@ -16,6 +17,7 @@ const CheckoutStyle = styled.div`
   .checkout__wrapper {
     display: flex;
     gap: 36px;
+    margin-top: 60px;
     .checkout__billing__wrapper {
       flex: 1;
       .checkout__billing__title {
@@ -75,6 +77,9 @@ const Checkout = () => {
     <CheckoutStyle>
       <div className="container">
         <div className="page__title">Checkout</div>
+        <div className="checkout__steps">
+          <Steps activeIndex={1} />
+        </div>
         <div className="checkout__wrapper">
           <div className="checkout__billing__wrapper">
             <h2 className="checkout__billing__title">Billing Details</h2>
