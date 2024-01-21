@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const BannerStyle = styled.div`
   position: relative;
+  min-height: 375px;
   img {
     width: 100%;
     display: block;
