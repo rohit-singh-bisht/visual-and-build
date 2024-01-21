@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import BillingDetails from "../../checkout/BillingDetails";
+import CheckoutOrderSummary from "../../checkout/CheckoutOrderSummary";
 
 const CheckoutStyle = styled.div`
   padding: 70px 0;
@@ -14,6 +15,7 @@ const CheckoutStyle = styled.div`
   }
   .checkout__wrapper {
     display: flex;
+    gap: 36px;
     .checkout__billing__wrapper {
       flex: 1;
       .checkout__billing__title {
@@ -114,7 +116,9 @@ const Checkout = () => {
               ></textarea>
             </div>
           </div>
-          <div className="checkout__order__summary__wrapper"></div>
+          <div className="checkout__order__summary__wrapper">
+            <CheckoutOrderSummary />
+          </div>
         </div>
       </div>
     </CheckoutStyle>
