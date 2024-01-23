@@ -11,10 +11,12 @@ import Contact from "../views/user/Contact";
 import ProductDetails from "../views/user/ProductDetails";
 import Checkout from "../views/user/Checkout";
 import UserAccountRoutes from "./UserAccountRoutes";
+import AuthenticationForm from "../components/forms/authentication/AuthenticationForm";
 
 const UserRoutes = () => {
   return (
     <>
+      <AuthenticationForm />
       <Header />
       <Routes>
         <Route exact path="/" element={<Homepage />} />
