@@ -36,6 +36,9 @@ const HeaderStyle = styled.header`
     display: flex;
     align-items: flex-end;
     gap: 25px;
+    > div {
+      cursor: pointer;
+    }
   }
   .two__liners {
     color: #fff;
@@ -51,7 +54,7 @@ const HeaderStyle = styled.header`
   }
 `;
 
-const Header = () => {
+const Header = ({ setIsAuthForm }) => {
   return (
     <HeaderStyle>
       <Link to={"/"} className="logo">
@@ -66,10 +69,16 @@ const Header = () => {
       </nav>
       <Search />
       <div className="other__links">
-        <Link to={"/account"} className="two__liners">
+        <div
+          onClick={() => {
+            setIsAuthForm(true);
+          }}
+          to={"/account"}
+          className="two__liners"
+        >
           Hello, sign in
           <span>Account & Lists</span>
-        </Link>
+        </div>
         <Link to={""} className="two__liners">
           Returns
           <span>& Orders</span>

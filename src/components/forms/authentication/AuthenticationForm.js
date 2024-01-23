@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 const AuthenticationFormStyle = styled.div`
@@ -8,6 +8,15 @@ const AuthenticationFormStyle = styled.div`
   box-shadow: 0px 10px 24px 0px rgba(33, 52, 48, 0.08);
   display: flex;
   flex-direction: column;
+  max-width: 699px;
+  width: 100%;
+  height: 90vh;
+  overflow: auto;
+  position: relative;
+  z-index: 9;
+  .flex__wrapper {
+    flex: 1;
+  }
   .auth__form__title {
     color: #000;
     text-align: center;
@@ -35,6 +44,7 @@ const AuthenticationFormStyle = styled.div`
       padding: 18.5px;
       flex: 1;
       text-align: center;
+      cursor: pointer;
       &.active {
         background: #f0f0f0;
       }
@@ -81,8 +91,6 @@ const AuthenticationFormStyle = styled.div`
     text-align: center;
     font-size: 14px;
     font-weight: 500;
-    max-height: 1120px;
-    height: 100%;
     a {
       color: #111;
       text-decoration-line: underline;
@@ -90,39 +98,54 @@ const AuthenticationFormStyle = styled.div`
   }
 `;
 
-const AuthenticationForm = ({ formType = "login" }) => {
+const WrapStyle = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+`;
+
+const AuthenticationForm = ({ formType = "login", setIsAuthForm }) => {
+  useEffect(() => {
+    document.body.classList.add("bodyfixed");
+    return () => document.body.classList.remove("bodyfixed");
+  }, []);
+
   return (
-    <AuthenticationFormStyle>
-      <div>
-        <div className="auth__form__title">
-          {formType === "login" ? "Login" : "Signup"}
-        </div>
-        <div className="auth__form__subtitle">
-          Enter your details to get started
-        </div>
-        <div className="auth__form__panels__wrapper">
-          <div className="auth__form__panel active">Email Address</div>
-          <div className="auth__form__panel">Phone Number</div>
-        </div>
-        <form className="auth__form__body">
-          <div className="auth__form__group">
-            <label>Email Address</label>
-            <input type="email" className="auth__form__input" />
+    <>
+      <WrapStyle onClick={() => setIsAuthForm(false)} />
+      <AuthenticationFormStyle>
+        <div className="flex__wrapper">
+          <div className="auth__form__title">
+            {formType === "login" ? "Login" : "Signup"}
           </div>
-          <div className="auth__form__group">
-            <label>Password</label>
-            <input type="password" className="auth__form__input" />
+          <div className="auth__form__subtitle">
+            Enter your details to get started
           </div>
-          <div className="auth__form__button">
-            <button type="submit">Sign In</button>
+          <div className="auth__form__panels__wrapper">
+            <div className="auth__form__panel active">Email Address</div>
+            <div className="auth__form__panel">Phone Number</div>
           </div>
-        </form>
-      </div>
-      <p className="auth__form__consent">
-        By continuing, you are agreeing to the{" "}
-        <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy.</a>
-      </p>
-    </AuthenticationFormStyle>
+          <form className="auth__form__body">
+            <div className="auth__form__group">
+              <label>Email Address</label>
+              <input type="email" className="auth__form__input" />
+            </div>
+            <div className="auth__form__group">
+              <label>Password</label>
+              <input type="password" className="auth__form__input" />
+            </div>
+            <div className="auth__form__button">
+              <button type="submit">Sign In</button>
+            </div>
+          </form>
+        </div>
+        <p className="auth__form__consent">
+          By continuing, you are agreeing to the{" "}
+          <a href="#">Terms and Conditions</a> and{" "}
+          <a href="#">Privacy Policy.</a>
+        </p>
+      </AuthenticationFormStyle>
+    </>
   );
 };
 
