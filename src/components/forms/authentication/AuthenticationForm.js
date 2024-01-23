@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const AuthenticationFormStyle = styled.div`
@@ -105,6 +105,8 @@ const WrapStyle = styled.div`
 `;
 
 const AuthenticationForm = ({ formType = "login", setIsAuthForm }) => {
+  const [loginType, setLoginType] = useState("email");
+
   useEffect(() => {
     document.body.classList.add("bodyfixed");
     return () => document.body.classList.remove("bodyfixed");
@@ -122,13 +124,33 @@ const AuthenticationForm = ({ formType = "login", setIsAuthForm }) => {
             Enter your details to get started
           </div>
           <div className="auth__form__panels__wrapper">
-            <div className="auth__form__panel active">Email Address</div>
-            <div className="auth__form__panel">Phone Number</div>
+            <div
+              className={`auth__form__panel ${
+                loginType === "email" && "active"
+              }`}
+              onClick={() => setLoginType("email")}
+            >
+              Email Address
+            </div>
+            <div
+              className={`auth__form__panel ${
+                loginType === "phone" && "active"
+              }`}
+              onClick={() => setLoginType("phone")}
+            >
+              Phone Number
+            </div>
           </div>
           <form className="auth__form__body">
             <div className="auth__form__group">
-              <label>Email Address</label>
-              <input type="email" className="auth__form__input" />
+              <label>
+                {loginType === "email" ? "Email Address" : "Phone Number"}
+              </label>
+              <input
+                type={loginType === "email" ? "email" : "number"}
+                pattern="/d*"
+                className="auth__form__input"
+              />
             </div>
             <div className="auth__form__group">
               <label>Password</label>
