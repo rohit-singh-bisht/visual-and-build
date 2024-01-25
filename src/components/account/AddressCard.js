@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as More } from "../../assets/vertical-options.svg";
+import Dropdown from "../common/Dropdown";
+import StyledMask from "../common/StyledMask";
 
 const AddressCardStyle = styled.div`
   padding: 18px;
@@ -28,7 +30,6 @@ const AddressCardStyle = styled.div`
   }
   .user__address__details {
     color: #797979;
-    font-family: Inter;
     font-size: 11.25px;
     font-style: normal;
     font-weight: 400;
@@ -54,7 +55,22 @@ const AddressCardStyle = styled.div`
   }
 `;
 
+const dropDownOptions = [
+  {
+    id: 1,
+    label: "Edit Address",
+    value: "edit",
+  },
+  {
+    id: 2,
+    label: "Delete Address",
+    value: "delete",
+  },
+];
+
 const AddressCard = () => {
+  const [isOptionsActive, setIsOptionsActive] = useState(false);
+
   return (
     <AddressCardStyle>
       <div className="user__address__type">Home</div>
@@ -67,9 +83,18 @@ const AddressCard = () => {
         <span className="user__phone__number__title">Phone number</span>
         7503063585, 7503063585
       </div>
-      <div className="user__address__icon">
+      <div
+        className="user__address__icon"
+        onClick={() => setIsOptionsActive(true)}
+      >
         <More className="icon" />
       </div>
+      {isOptionsActive && (
+        <>
+          <StyledMask onClick={() => setIsOptionsActive(false)} zIndex={2} />
+          <Dropdown right={18} top={50} options={dropDownOptions} zIndex={4} />
+        </>
+      )}
     </AddressCardStyle>
   );
 };
