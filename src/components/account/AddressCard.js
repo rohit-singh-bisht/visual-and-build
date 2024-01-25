@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ReactComponent as More } from "../../assets/vertical-options.svg";
 
 const AddressCardStyle = styled.div`
   padding: 18px;
@@ -9,6 +10,7 @@ const AddressCardStyle = styled.div`
   max-width: 700px;
   width: 100%;
   margin-bottom: 24px;
+  position: relative;
   .user__address__type {
     padding: 7.5px;
     border-radius: 5.25px;
@@ -37,11 +39,18 @@ const AddressCardStyle = styled.div`
     color: #000;
     font-size: 11.25px;
     font-weight: 400;
-    color: #000;
+    color: #797979;
     .user__phone__number__title {
-      color: #797979;
+      color: #000;
       display: block;
     }
+  }
+  .user__address__icon {
+    padding: 18px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
   }
 `;
 
@@ -57,6 +66,9 @@ const AddressCard = () => {
       <div className="user__phone__number">
         <span className="user__phone__number__title">Phone number</span>
         7503063585, 7503063585
+      </div>
+      <div className="user__address__icon">
+        <More className="icon" />
       </div>
     </AddressCardStyle>
   );
