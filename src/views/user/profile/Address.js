@@ -1,10 +1,29 @@
 import React from "react";
 import styled from "styled-components";
+import Button from "../../../components/common/Button";
+import AddressCard from "../../../components/account/AddressCard";
 
-const AddressStyled = styled.div``;
+const AddressStyled = styled.div`
+  flex: 0 0 700px;
+  .add__address__button {
+    margin-bottom: 18.75px;
+    button {
+      font-size: 12px;
+    }
+  }
+`;
 
 const Address = () => {
-  return <AddressStyled></AddressStyled>;
+  return (
+    <AddressStyled>
+      <div className="add__address__button">
+        <Button title={"Add New Address"} />
+      </div>
+      <AddressCard />
+      <AddressCard />
+      <AddressCard />
+    </AddressStyled>
+  );
 };
 
 export default Address;

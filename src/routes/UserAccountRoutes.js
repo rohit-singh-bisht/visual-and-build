@@ -11,6 +11,7 @@ const UserAccountRoutesStyle = styled.div`
   padding: 60px 0;
   .account__routes__wrapper {
     display: flex;
+    gap: 30px;
   }
   .account__routes__page__title {
     color: #000;

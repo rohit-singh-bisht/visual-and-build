@@ -53,6 +53,9 @@ const Account = () => {
       title: `My Addresses`,
       sub1: `Add and manage your addresses like shipping`,
       buttonText: `View My Address`,
+      onClick: () => {
+        navigate("/account/address");
+      },
     },
     {
       title: `Payment Methods`,
