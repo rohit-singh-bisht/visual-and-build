@@ -6,6 +6,7 @@ import Account from "../views/user/Account";
 import AccountSidebar from "../components/account/AccoutSidebar";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
+import Lists from "../views/user/profile/Lists";
 
 const UserAccountRoutesStyle = styled.div`
   padding: 60px 0;
@@ -43,6 +44,13 @@ const routesInformation = [
     component: <Address />,
     path: "/address",
     pathname: "/account/address",
+  },
+  {
+    id: 3,
+    title: "My List",
+    component: <Lists />,
+    path: "/lists",
+    pathname: "/account/lists",
   },
 ];
 

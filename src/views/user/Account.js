@@ -43,6 +43,9 @@ const Account = () => {
       title: `My List`,
       sub1: `You have not saved any products yet.`,
       buttonText: `View My List`,
+      onClick: () => {
+        navigate("/account/lists");
+      },
     },
     {
       title: `My Wallet`,

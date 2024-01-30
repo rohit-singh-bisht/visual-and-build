@@ -33,7 +33,8 @@ const AccountSidebar = () => {
     },
     {
       title: "My List",
-      to: "/",
+      to: "/account/lists",
+      isActive: location?.pathname === "/account/lists",
     },
     {
       title: "Shipping Addresses",
