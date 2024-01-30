@@ -33,6 +33,11 @@ const ListCardStyled = styled.div`
     font-weight: 500;
     line-height: 22.5px;
     width: 100%;
+    transition: all 0.3s;
+    &:hover {
+      background: #ae0000;
+      color: #fff;
+    }
   }
 `;
 
