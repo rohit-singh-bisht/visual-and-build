@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../../../components/common/Button";
 import AddressCard from "../../../components/account/AddressCard";
+import AddAddressModal from "../../../components/modals/AddAddressModal";
 
 const AddressStyled = styled.div`
   flex: 0 0 700px;
@@ -15,14 +16,17 @@ const AddressStyled = styled.div`
 
 const Address = () => {
   return (
-    <AddressStyled>
-      <div className="add__address__button">
-        <Button title={"Add New Address"} />
-      </div>
-      <AddressCard />
-      <AddressCard />
-      <AddressCard />
-    </AddressStyled>
+    <>
+      <AddressStyled>
+        <div className="add__address__button">
+          <Button title={"Add New Address"} />
+        </div>
+        <AddressCard />
+        <AddressCard />
+        <AddressCard />
+      </AddressStyled>
+      <AddAddressModal />
+    </>
   );
 };
 
