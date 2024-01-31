@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../../components/common/Button";
 import AddressCard from "../../../components/account/AddressCard";
@@ -15,17 +15,24 @@ const AddressStyled = styled.div`
 `;
 
 const Address = () => {
+  const [isAddressModal, setIsAddressModal] = useState(false);
+
   return (
     <>
       <AddressStyled>
         <div className="add__address__button">
-          <Button title={"Add New Address"} />
+          <Button
+            title={"Add New Address"}
+            onClick={() => setIsAddressModal(true)}
+          />
         </div>
         <AddressCard />
         <AddressCard />
         <AddressCard />
       </AddressStyled>
-      <AddAddressModal />
+      {isAddressModal && (
+        <AddAddressModal setIsAddressModal={setIsAddressModal} />
+      )}
     </>
   );
 };

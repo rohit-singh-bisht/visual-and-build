@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import StyledMask from "../common/StyledMask";
+import Button from "../common/Button";
 
 const AddAddressModalStyle = styled.div`
   position: fixed;
@@ -61,15 +62,45 @@ const AddAddressModalStyle = styled.div`
           height: 100px;
         }
       }
+      .radio__group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        input {
+          accent-color: #ae0000;
+          &:selected {
+            & + label {
+              color: #ae0000;
+            }
+          }
+        }
+        label {
+          font-size: 13.5px;
+          font-weight: 400;
+          line-height: 22.5px;
+          margin-left: 2px;
+        }
+      }
+      .submit__button {
+        margin-top: 120px;
+        text-align: right;
+        button {
+          border-radius: 3.75px;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 22.5px;
+        }
+      }
     }
   }
 `;
 
-const AddAddressModal = () => {
+const AddAddressModal = ({ setIsAddressModal }) => {
   return (
     <>
       <AddAddressModalStyle>
-        <StyledMask />
+        <StyledMask onClick={() => setIsAddressModal(false)} />
         <div className="add__address__modal">
           <div className="modal__title">Add Address</div>
 
@@ -117,6 +148,19 @@ const AddAddressModal = () => {
                 <label>Alternate Mobile Number</label>
                 <input type="tel" placeholder="Enter alternate mobile number" />
               </div>
+            </div>
+            <div className="row">
+              <div className="radio__group">
+                <input id="home" name="address_type" type="radio" />
+                <label htmlFor="home">Home</label>
+              </div>
+              <div className="radio__group">
+                <input id="work" name="address_type" type="radio" />
+                <label htmlFor="work">Work</label>
+              </div>
+            </div>
+            <div className="submit__button">
+              <Button title={"Save Address"} />
             </div>
           </div>
         </div>
