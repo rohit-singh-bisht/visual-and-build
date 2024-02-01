@@ -3,17 +3,14 @@ import styled from "styled-components";
 import Button from "../../common/Button";
 
 const AddressFormStyle = styled.div`
+  border-radius: 7.5px;
+  border: 0.75px solid #d9d9d9;
+  background: #fff;
   .add__address__modal {
     max-width: 880px;
     width: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
     background-color: #fff;
-    padding: 40px;
-    max-height: 80vh;
+    padding: 20px;
     overflow: auto;
     .modal__title {
       color: #000;
@@ -77,8 +74,7 @@ const AddressFormStyle = styled.div`
         }
       }
       .submit__button {
-        margin-top: 120px;
-        text-align: right;
+        margin-top: 40px;
         button {
           border-radius: 3.75px;
           font-size: 12px;

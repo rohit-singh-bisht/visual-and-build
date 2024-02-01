@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as More } from "../../assets/vertical-options.svg";
 import Dropdown from "../common/Dropdown";
 import StyledMask from "../common/StyledMask";
+import AddressForm from "../forms/address/AddressForm";
 
 const AddressCardStyle = styled.div`
   padding: 18px;
@@ -70,32 +71,48 @@ const dropDownOptions = [
 
 const AddressCard = () => {
   const [isOptionsActive, setIsOptionsActive] = useState(false);
+  const [dropdownAction, setDropdownAction] = useState("");
 
   return (
-    <AddressCardStyle>
-      <div className="user__address__type">Home</div>
-      <div className="user__address__name">Nishant Choudhary</div>
-      <div className="user__address__details">
-        House no 11 Sawaswati colony naya pul sehatpur, Naya pul Faridabad -
-        121003, Haryana
-      </div>
-      <div className="user__phone__number">
-        <span className="user__phone__number__title">Phone number</span>
-        7503063585, 7503063585
-      </div>
-      <div
-        className="user__address__icon"
-        onClick={() => setIsOptionsActive(true)}
-      >
-        <More className="icon" />
-      </div>
-      {isOptionsActive && (
-        <>
-          <StyledMask onClick={() => setIsOptionsActive(false)} zIndex={2} />
-          <Dropdown right={18} top={50} options={dropDownOptions} zIndex={4} />
-        </>
+    <>
+      {dropdownAction === "edit" ? (
+        <AddressForm />
+      ) : (
+        <AddressCardStyle>
+          <div className="user__address__type">Home</div>
+          <div className="user__address__name">Nishant Choudhary</div>
+          <div className="user__address__details">
+            House no 11 Sawaswati colony naya pul sehatpur, Naya pul Faridabad -
+            121003, Haryana
+          </div>
+          <div className="user__phone__number">
+            <span className="user__phone__number__title">Phone number</span>
+            7503063585, 7503063585
+          </div>
+          <div
+            className="user__address__icon"
+            onClick={() => setIsOptionsActive(true)}
+          >
+            <More className="icon" />
+          </div>
+          {isOptionsActive && (
+            <>
+              <StyledMask
+                onClick={() => setIsOptionsActive(false)}
+                zIndex={2}
+              />
+              <Dropdown
+                right={18}
+                top={50}
+                setValue={setDropdownAction}
+                options={dropDownOptions}
+                zIndex={4}
+              />
+            </>
+          )}
+        </AddressCardStyle>
       )}
-    </AddressCardStyle>
+    </>
   );
 };
 

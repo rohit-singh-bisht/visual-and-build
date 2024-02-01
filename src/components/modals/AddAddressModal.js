@@ -9,6 +9,19 @@ const AddAddressModalStyle = styled.div`
   height: 100vh;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.4);
+  .add__address__modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    max-height: 80vh;
+    padding: 40px;
+  }
+  .submit__button {
+    text-align: right;
+    margin-top: 120px;
+  }
 `;
 
 const AddAddressModal = ({ setIsAddressModal }) => {
