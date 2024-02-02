@@ -10,6 +10,9 @@ const ButtonStyle = styled.button`
   font-style: normal;
   font-weight: 700;
   line-height: 30px;
+  &.dark {
+    background: #000;
+  }
 `;
 
 const SaveButtonStyle = styled.button`
