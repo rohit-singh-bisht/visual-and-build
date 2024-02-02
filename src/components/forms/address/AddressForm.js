@@ -6,6 +6,7 @@ const AddressFormStyle = styled.div`
   border-radius: 7.5px;
   border: 0.75px solid #d9d9d9;
   background: #fff;
+  overflow: clip;
   .add__address__modal {
     max-width: 880px;
     width: 100%;
@@ -86,11 +87,11 @@ const AddressFormStyle = styled.div`
   }
 `;
 
-const AddressForm = () => {
+const AddressForm = ({ title = "Add Address" }) => {
   return (
     <AddressFormStyle>
       <div className="add__address__modal">
-        <div className="modal__title">Add Address</div>
+        {title && <div className="modal__title">{title}</div>}
 
         <div className="add__address__modal__body">
           <div className="row">

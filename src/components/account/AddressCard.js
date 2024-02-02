@@ -69,6 +69,10 @@ const dropDownOptions = [
   },
 ];
 
+const AddressFormStyle = styled.div`
+  margin-bottom: 24px;
+`;
+
 const AddressCard = () => {
   const [isOptionsActive, setIsOptionsActive] = useState(false);
   const [dropdownAction, setDropdownAction] = useState("");
@@ -76,7 +80,9 @@ const AddressCard = () => {
   return (
     <>
       {dropdownAction === "edit" ? (
-        <AddressForm />
+        <AddressFormStyle>
+          <AddressForm title="" />
+        </AddressFormStyle>
       ) : (
         <AddressCardStyle>
           <div className="user__address__type">Home</div>
