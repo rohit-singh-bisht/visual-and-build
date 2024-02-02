@@ -18,10 +18,10 @@ const AddToCartModalStyle = styled.div`
   }
 `;
 
-const AddToCartModal = () => {
+const AddToCartModal = ({ onMaskClick }) => {
   return (
     <AddToCartModalStyle>
-      <GenericModal>
+      <GenericModal onMaskClick={onMaskClick}>
         <div className="modal__body__normal__cart">
           <div className="modal__body__title">Normal Cart</div>
           <div className="checkbox__group">

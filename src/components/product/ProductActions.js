@@ -52,16 +52,31 @@ const ProductActionsStyle = styled.div`
     background: #fff;
     width: 48px;
     height: 48px;
+    cursor: pointer;
+    transition: all 0.3s;
     ${commonStyles}
+    &:hover {
+      background-color: #ae0000;
+      svg {
+        path {
+          fill: white;
+        }
+      }
+    }
+    svg {
+      path {
+        fill: #ae0000;
+      }
+    }
   }
 `;
 
-const ProductActions = () => {
+const ProductActions = ({ onAddToCart }) => {
   return (
     <ProductActionsStyle>
       <QuantityInput className={"product__details__quantity"} />
       <Button title={"Buy Now"} className="buy__now" />
-      <div className="add__to__cart">
+      <div className="add__to__cart" onClick={onAddToCart}>
         <AddToCart />
       </div>
       <div className="add__to__wishlist">

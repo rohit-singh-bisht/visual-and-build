@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as ReviewStars } from "../../assets/reviewStars.svg";
 import IconWithTextList from "../../components/common/IconWithTextList";
@@ -122,6 +122,8 @@ const ProductDetailsStyle = styled.div`
 `;
 
 const ProductDetails = () => {
+  const [isAddToCartActive, setIsAddToCartActive] = useState(false);
+
   const images = [
     {
       original: "https://picsum.photos/id/1018/1000/600/",
@@ -191,7 +193,9 @@ const ProductDetails = () => {
                 <div className="product__options__variants">
                   <ProductVariants name={"Variant"} />
                 </div>
-                <ProductActions />
+                <ProductActions
+                  onAddToCart={() => setIsAddToCartActive(true)}
+                />
               </div>
             </div>
           </div>
@@ -211,7 +215,9 @@ const ProductDetails = () => {
           />
         </div>
       </ProductDetailsStyle>
-      <AddToCartModal />
+      {isAddToCartActive && (
+        <AddToCartModal onMaskClick={() => setIsAddToCartActive(false)} />
+      )}
     </>
   );
 };
