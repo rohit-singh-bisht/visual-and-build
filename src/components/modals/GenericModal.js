@@ -31,6 +31,9 @@ const GenericModalStyle = styled.div`
     padding: 36px 40px 60px;
     max-height: 400px;
     overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     .checkbox__group {
       display: flex;
       gap: 24px;
@@ -68,6 +71,7 @@ const GenericModalStyle = styled.div`
     justify-content: space-between;
     button {
       width: 225px;
+      font-weight: 500;
     }
   }
 `;
