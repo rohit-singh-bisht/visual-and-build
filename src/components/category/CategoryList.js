@@ -20,6 +20,20 @@ const CategoryListStyle = styled.div`
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
   }
+  @media (max-width: 768px) {
+    .title_wrapper {
+      margin-bottom: 27px;
+      .title {
+        font-size: 18px;
+        line-height: normal;
+      }
+    }
+    .list_wrapper {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+  }
 `;
 
 const CategoryList = ({ title, allText, allLink, list }) => {

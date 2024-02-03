@@ -24,10 +24,22 @@ const HompageStyle = styled.div`
     padding: 60px 0;
     border-top: 1px solid rgba(48, 48, 48, 0.25);
   }
+  @media (max-width: 768px) {
+    .category_list {
+      padding: 35px 20px 40px;
+    }
+    .icon_with_text {
+      padding: 30px 0 40px;
+    }
+  }
 `;
 
 const Homepage = () => {
   const list = [
+    {
+      src: categoryDummy,
+      title: "Bathroom, Kitchen & Storage",
+    },
     {
       src: categoryDummy,
       title: "Bathroom, Kitchen & Storage",

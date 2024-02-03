@@ -36,6 +36,11 @@ const CategoryCardStyle = styled.div`
       white-space: nowrap;
     }
   }
+  @media (max-width: 768px) {
+    .title {
+      font-size: 12px;
+    }
+  }
 `;
 
 const CategoryCard = ({ title, link, src, type }) => {

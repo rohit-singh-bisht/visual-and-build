@@ -24,6 +24,13 @@ const IconWithTextStyle = styled.div`
       font-weight: 400;
     }
   }
+  @media (max-width: 768px) {
+    .content {
+      .subtitle {
+        white-space: nowrap;
+      }
+    }
+  }
 `;
 
 const IconWithText = ({ icon, title, subtitle }) => {

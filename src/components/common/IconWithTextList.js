@@ -6,6 +6,13 @@ import { data as staticData } from "../../constants/IconsWithTextData";
 const IconWithTextStyle = styled.div`
   display: flex;
   justify-content: space-between;
+  @media (max-width: 768px) {
+    overflow: auto;
+    gap: 20px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 const IconWithTextList = ({ data }) => {

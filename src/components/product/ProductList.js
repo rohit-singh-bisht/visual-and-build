@@ -3,6 +3,7 @@ import ProductCard from "./ProductCard";
 import styled from "styled-components";
 import Pagination from "@mui/material/Pagination";
 import { ReactComponent as ArrowIcon } from "../../assets/arrow.svg";
+import { useAppContext } from "../../context/useAppContext";
 
 const ProductListStyle = styled.div`
   .product__list__title__wrapper {
@@ -35,6 +36,14 @@ const ProductListStyle = styled.div`
     display: flex;
     justify-content: center;
   }
+  @media (max-width: 768px) {
+    .product__list__wrapper {
+      overflow: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
 `;
 
 const ProductList = ({
@@ -45,6 +54,7 @@ const ProductList = ({
   pagination = true,
   productList,
 }) => {
+  const { isDesktop } = useAppContext();
   return (
     <ProductListStyle>
       {listTitle && (
@@ -63,7 +73,7 @@ const ProductList = ({
         <ProductCard isLoading={true} />
         <ProductCard isLoading={true} />
       </div>
-      {pagination && (
+      {pagination && isDesktop && (
         <div className="product__list__pagination">
           <Pagination className="pagination" count={10} shape="rounded" />
         </div>
