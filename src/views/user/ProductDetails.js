@@ -8,6 +8,7 @@ import ProductActions from "../../components/product/ProductActions";
 import ImageGallery from "react-image-gallery";
 import ProductList from "../../components/product/ProductList";
 import AddToCartModal from "../../components/modals/AddToCartModal";
+import ProductInformationTabs from "../../components/product/ProductInformationTabs";
 
 const ProductDetailsStyle = styled.div`
   padding: 70px 0;
@@ -115,7 +116,7 @@ const ProductDetailsStyle = styled.div`
     }
   }
   .related__product {
-    margin-top: 150px;
+    margin-top: 100px;
     padding: 48px 0;
     border-top: 0.75px solid rgba(48, 48, 48, 0.25);
   }
@@ -198,6 +199,9 @@ const ProductDetails = () => {
                 />
               </div>
             </div>
+          </div>
+          <div className="product__information__tab__wrapper">
+            <ProductInformationTabs />
           </div>
           <div className="related__product">
             <ProductList
