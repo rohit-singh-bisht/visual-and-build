@@ -5,12 +5,13 @@ import ProductDescription from "./tabPanels/ProductDescription";
 import ProductReturn from "./tabPanels/ProductReturn";
 
 const ProductInformationTabsStyle = styled.div`
+  margin: 100px 0;
   .tabs__wrapper {
     display: flex;
-    gap: 40px;
-    margin-bottom: 24px;
+    gap: 48px;
+    margin-bottom: 40px;
     .tab {
-      color: #000;
+      color: #bfbfbf;
       font-size: 16.5px;
       font-weight: 600;
       line-height: 22.5px;
@@ -19,6 +20,9 @@ const ProductInformationTabsStyle = styled.div`
       padding: 0 4px 14px;
       text-align: center;
       cursor: pointer;
+      &.active {
+        color: #000;
+      }
       &.active::before {
         content: "";
         position: absolute;

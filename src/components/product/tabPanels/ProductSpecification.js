@@ -6,10 +6,11 @@ const ProductSpecificationStyle = styled.div`
   display: flex;
   flex-wrap: wrap;
   row-gap: 18px;
-  max-width: 650px;
+  max-width: 700px;
   .product__specification {
-    width: 300px;
+    width: 350px;
     display: flex;
+    align-items: center;
     gap: 10px;
     .icon {
       width: 25px;
@@ -23,7 +24,7 @@ const ProductSpecificationStyle = styled.div`
     .content {
       p {
         color: #959595;
-        font-size: 9.5px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 500;
         line-height: normal;

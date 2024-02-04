@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const ProductReturnStyle = styled.div`
   color: #898989;
-  font-size: 12px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
