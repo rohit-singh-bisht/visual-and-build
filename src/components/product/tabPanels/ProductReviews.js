@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as ReviewStarsIcons } from "../../../assets/reviewStars.svg";
 import ProductReviewCard from "../ProductReviewCard";
+import ProductReviewForm from "../../forms/productReview/ProductReviewForm";
 
 const ProductReviewsStyle = styled.div`
   .avg__ratings__bars__wrapper {
@@ -107,6 +108,7 @@ const ProductReviews = () => {
           />
         ))}
       </div>
+      <ProductReviewForm />
     </ProductReviewsStyle>
   );
 };
