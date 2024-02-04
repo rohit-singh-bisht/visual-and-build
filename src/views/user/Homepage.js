@@ -8,6 +8,7 @@ import FaqList from "../../components/common/FaqList";
 import HomeBlogs from "../../components/blogs/HomeBlogs";
 import IconWithTextList from "../../components/common/IconWithTextList";
 import categoryDummy from "../../assets/category-dummy.jpg";
+import { useAppContext } from "../../context/useAppContext";
 
 const HompageStyle = styled.div`
   .category_list {
@@ -28,6 +29,9 @@ const HompageStyle = styled.div`
     .category_list {
       padding: 35px 20px 40px;
     }
+    .product_list {
+      padding: 30px 0;
+    }
     .icon_with_text {
       padding: 30px 0 40px;
     }
@@ -35,6 +39,8 @@ const HompageStyle = styled.div`
 `;
 
 const Homepage = () => {
+  const { isDesktop } = useAppContext();
+
   const list = [
     {
       src: categoryDummy,
@@ -59,7 +65,7 @@ const Homepage = () => {
         title={"Create your dream home"}
         subtitle={"An advanced and easy-to-use 2D/3D <br /> home design tool. "}
         imageSrc={"images/log-banner.jpg"}
-        leftDistance={188}
+        leftDistance={isDesktop ? 188 : 30}
         textDark={true}
         buttonTitle={"Get Started"}
       />
@@ -72,12 +78,16 @@ const Homepage = () => {
         title={"Elevate Your Space"}
         subtitle={"Discover the Art of Interior"}
         imageSrc={"images/log-banner.jpg"}
-        leftDistance={108}
+        leftDistance={isDesktop ? 108 : 30}
         buttonTitle={"Get Started"}
       />
 
       <div className="container product_list">
-        <ProductList />
+        <ProductList
+          listTitle={"Interior"}
+          buttonArrow={false}
+          buttonText={"See all"}
+        />
       </div>
       <div className="container group_buy">
         <GroupBuy isLoading={true} />

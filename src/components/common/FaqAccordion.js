@@ -61,6 +61,31 @@ const FaqAccordionStyle = styled.div`
     padding-left: 49px;
     transition: all 0.3s;
   }
+  @media (max-width: 678px) {
+    padding: 12px;
+    &.show {
+      .accordion__header {
+        margin-bottom: 8px;
+      }
+    }
+    .accordion__header {
+      gap: 12px;
+      .icon {
+        width: 20px;
+        path {
+          transform: translate(-5px, -6px) scale(1.5);
+        }
+      }
+      .accordion__title {
+        font-size: 14px;
+      }
+    }
+    .accordion__body {
+      font-size: 13px;
+      line-height: 20px;
+      padding-left: 33px;
+    }
+  }
 `;
 
 const FaqAccordion = () => {

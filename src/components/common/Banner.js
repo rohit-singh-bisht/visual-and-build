@@ -34,6 +34,23 @@ const BannerStyle = styled.div`
       }
     }
   }
+  @media (max-width: 768px) {
+    min-height: 250px;
+    img {
+      height: 250px;
+    }
+    .content {
+      top: 60%;
+      .title {
+        font-size: 18px;
+        line-height: normal;
+      }
+      .subtitle {
+        font-size: 14px;
+        margin: 0 0 15px;
+      }
+    }
+  }
 `;
 
 const Banner = ({

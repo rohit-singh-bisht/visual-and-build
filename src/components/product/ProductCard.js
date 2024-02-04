@@ -49,6 +49,9 @@ export const ProductCardStyle = styled.div`
       }
     }
   }
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 const ProductCard = ({

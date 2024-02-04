@@ -13,6 +13,10 @@ const ButtonStyle = styled.button`
   &.dark {
     background: #000;
   }
+  @media (max-width: 768px) {
+    font-size: 12px;
+    line-height: normal;
+  }
 `;
 
 const SaveButtonStyle = styled.button`

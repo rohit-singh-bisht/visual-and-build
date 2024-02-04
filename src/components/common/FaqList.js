@@ -16,6 +16,16 @@ const FaqListStyle = styled.div`
     line-height: 34.5px;
     margin-bottom: calc(41.5px - 18px);
   }
+  @media (max-width: 768px) {
+    padding: 40px 20px;
+    gap: 15px;
+    .title {
+      font-size: 20px;
+      text-align: left;
+      line-height: 28px;
+      margin-bottom: 10px;
+    }
+  }
 `;
 
 const FaqList = () => {

@@ -37,8 +37,20 @@ const ProductListStyle = styled.div`
     justify-content: center;
   }
   @media (max-width: 768px) {
+    .product__list__title__wrapper {
+      padding: 0 20px;
+      margin-bottom: 15px;
+      .product__list__title {
+        font-size: 20px;
+      }
+      .product__list__button {
+        font-size: 12px;
+      }
+    }
     .product__list__wrapper {
+      padding: 0 20px;
       overflow: auto;
+      gap: 10px;
       &::-webkit-scrollbar {
         display: none;
       }
@@ -60,10 +72,15 @@ const ProductList = ({
       {listTitle && (
         <div className="product__list__title__wrapper">
           <p className="product__list__title">{listTitle}</p>
-          <button className="product__list__button" onClick={handleButtonClick}>
-            {buttonText}
-            <ArrowIcon className="icon" />
-          </button>
+          {buttonText && (
+            <button
+              className="product__list__button"
+              onClick={handleButtonClick}
+            >
+              {buttonText}
+              {buttonArrow && <ArrowIcon className="icon" />}
+            </button>
+          )}
         </div>
       )}
       <div className="product__list__wrapper">

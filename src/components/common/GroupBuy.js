@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as ReviewStars } from "../../assets/reviewStars.svg";
 import GroupBuySkeleton from "../skeleton/GroupBuySkeleton";
+import ImageGallery from "react-image-gallery";
 
 export const GroupBuyStyle = styled.div`
   display: flex;
@@ -92,6 +93,21 @@ export const GroupBuyStyle = styled.div`
   }
 `;
 
+const images = [
+  {
+    original: "https://picsum.photos/id/1018/1000/600/",
+    thumbnail: "https://picsum.photos/id/1018/250/150/",
+  },
+  {
+    original: "https://picsum.photos/id/1015/1000/600/",
+    thumbnail: "https://picsum.photos/id/1015/250/150/",
+  },
+  {
+    original: "https://picsum.photos/id/1019/1000/600/",
+    thumbnail: "https://picsum.photos/id/1019/250/150/",
+  },
+];
+
 const GroupBuy = ({
   productTitle,
   productDescription,
@@ -106,7 +122,14 @@ const GroupBuy = ({
         <GroupBuySkeleton />
       ) : (
         <GroupBuyStyle>
-          <div className="product__image">{/* Image holder here */}</div>
+          <div className="product__image">
+            <ImageGallery
+              items={images}
+              showBullets={false}
+              showNav={false}
+              showPlayButton={false}
+            />
+          </div>
           <div className="product__details">
             <div className="product__ratings">
               <ReviewStars />

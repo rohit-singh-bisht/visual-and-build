@@ -55,6 +55,11 @@ const FooterStyle = styled.footer`
   .footer__logo {
     margin-top: 45px;
   }
+  @media (max-width: 768px) {
+    .links__holder {
+      flex-direction: column;
+    }
+  }
 `;
 
 const Footer = () => {
