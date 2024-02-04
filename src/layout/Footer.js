@@ -56,8 +56,29 @@ const FooterStyle = styled.footer`
     margin-top: 45px;
   }
   @media (max-width: 768px) {
+    padding: 30px 0px 0px;
+    .title {
+      margin-top: 28px;
+    }
+    .payment__icons {
+      margin-bottom: 0;
+    }
     .links__holder {
       flex-direction: column;
+      padding-bottom: 40px;
+    }
+    .columns:nth-of-type(1) {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    .footer__logo {
+      margin-top: 15px;
+    }
+    .bottom__footer {
+      flex-direction: column;
+      gap: 4px;
+      padding-bottom: 30px;
+      padding-top: 14px;
     }
   }
 `;

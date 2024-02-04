@@ -32,6 +32,26 @@ const SubscribeStyle = styled.div`
       }
     }
   }
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    > .title {
+      font-size: 18px !important;
+      line-height: 26px;
+      margin-bottom: 20px;
+    }
+    .form__subscription {
+      flex-direction: column;
+      .form__group {
+        .input {
+          padding: 0px 18px;
+        }
+        button {
+          width: 100%;
+          height: 52px;
+        }
+      }
+    }
+  }
 `;
 
 const Subscribe = () => {
