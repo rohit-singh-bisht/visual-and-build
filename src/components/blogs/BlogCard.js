@@ -55,6 +55,38 @@ const BlogCardStyle = styled.div`
       display: flex;
       gap: 9px;
       align-items: center;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 20px;
+    }
+  }
+  @media (max-width: 768px) {
+    padding: 0;
+    &:hover {
+      border-color: #fff;
+    }
+    .blog__card__image {
+      border-radius: 8px;
+      margin-bottom: 8px;
+      width: 250px;
+      .blog__card__tag {
+        font-size: 9px;
+        line-height: normal;
+        font-weight: 500;
+        border-radius: 4px;
+        top: 8px;
+        left: 8px;
+      }
+    }
+    .blog__card__title {
+      font-size: 14px;
+      line-height: normal;
+    }
+    .blog__card_meta {
+      .blog__card__author,
+      .blog__card__date {
+        gap: 4px;
+      }
     }
   }
 `;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as ArrowIcon } from "../../assets/arrow.svg";
 import categoryDummy from "../../assets/category-dummy.jpg";
 import { useAppContext } from "../../context/useAppContext";
+import BlogCard from "./BlogCard";
 
 const HomeBlogsStyle = styled.section`
   .blogs__title {
@@ -109,10 +110,17 @@ const HomeBlogsStyle = styled.section`
       margin-bottom: 10px;
     }
     .subtitle__holder {
-      margin-bottom: 20px;
+      margin-bottom: 28px;
       .subtitle {
         font-size: 14px;
         line-height: 22px;
+      }
+    }
+    .blogs__wrapper {
+      overflow: auto;
+      gap: 10px;
+      &::-webkit-scrollbar {
+        display: none;
       }
     }
   }
@@ -175,7 +183,21 @@ const HomeBlogs = () => {
             </div>
           </>
         ) : (
-          <></>
+          <>
+            {Array.from({ length: 10 }, (_, index) => index + 1)?.map(
+              (item) => (
+                <BlogCard
+                  blogSrc={categoryDummy}
+                  blogTitle={
+                    "Sorem ipsum dolor sit amet, consectetur adipiscing elit."
+                  }
+                  tag={"Tips"}
+                  author={"Janet Polly"}
+                  date={"12th, April 2023"}
+                />
+              )
+            )}
+          </>
         )}
       </div>
     </HomeBlogsStyle>
