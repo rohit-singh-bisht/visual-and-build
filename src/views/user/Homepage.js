@@ -35,6 +35,9 @@ const HompageStyle = styled.div`
     .icon_with_text {
       padding: 30px 0 40px;
     }
+    .blogs {
+      padding: 30px 0;
+    }
   }
 `;
 

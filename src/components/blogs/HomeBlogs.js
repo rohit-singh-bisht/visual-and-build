@@ -17,6 +17,13 @@ const HomeBlogsStyle = styled.section`
     justify-content: space-between;
     margin-bottom: 35.5px;
     gap: 40px;
+    .subtitle {
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 22.5px;
+      color: #303030;
+    }
   }
   .view_all {
     color: #ae0000;
@@ -94,6 +101,21 @@ const HomeBlogsStyle = styled.section`
       }
     }
   }
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    .blogs__title {
+      font-size: 20px;
+      line-height: 28px;
+      margin-bottom: 10px;
+    }
+    .subtitle__holder {
+      margin-bottom: 20px;
+      .subtitle {
+        font-size: 14px;
+        line-height: 22px;
+      }
+    }
+  }
 `;
 
 const HomeBlogs = () => {
@@ -108,48 +130,52 @@ const HomeBlogs = () => {
           vulputate libero et velit interdum, ac aliquet odio mattis.
         </p>
         {isDesktop && (
-        <button className="view_all">
-          View all <ArrowIcon className="icon" />
-        </button>
+          <button className="view_all">
+            View all <ArrowIcon className="icon" />
+          </button>
         )}
       </div>
       <div className="blogs__wrapper">
-        <div className="main__blog">
-          <div className="blog__image">
-            <img src={categoryDummy} alt={"blog"} />
-          </div>
-          <h2 className="main__blog__title">
-            Our Choices for Top 10 Lumber in 2023
-          </h2>
-          <p className="main__blog__excerpt">
-            Worem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-            vulputate libero et velit interdum, ac aliquet odio mattis.
-          </p>
-        </div>
-        {isDesktop && (
-          <div className="other__blogs">
-            <div className="other__blogs__card">
-              <span className="other__blogs__card__category">Review</span>
-              <h3 className="other__blogs__card__title">
-                Rorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </h3>
-              <div className="other__blogs__card__date">16 April 2023</div>
+        {isDesktop ? (
+          <>
+            <div className="main__blog">
+              <div className="blog__image">
+                <img src={categoryDummy} alt={"blog"} />
+              </div>
+              <h2 className="main__blog__title">
+                Our Choices for Top 10 Lumber in 2023
+              </h2>
+              <p className="main__blog__excerpt">
+                Worem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                vulputate libero et velit interdum, ac aliquet odio mattis.
+              </p>
             </div>
-            <div className="other__blogs__card">
-              <span className="other__blogs__card__category">Review</span>
-              <h3 className="other__blogs__card__title">
-                Rorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </h3>
-              <div className="other__blogs__card__date">16 April 2023</div>
+            <div className="other__blogs">
+              <div className="other__blogs__card">
+                <span className="other__blogs__card__category">Review</span>
+                <h3 className="other__blogs__card__title">
+                  Rorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </h3>
+                <div className="other__blogs__card__date">16 April 2023</div>
+              </div>
+              <div className="other__blogs__card">
+                <span className="other__blogs__card__category">Review</span>
+                <h3 className="other__blogs__card__title">
+                  Rorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </h3>
+                <div className="other__blogs__card__date">16 April 2023</div>
+              </div>
+              <div className="other__blogs__card">
+                <span className="other__blogs__card__category">Review</span>
+                <h3 className="other__blogs__card__title">
+                  Rorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </h3>
+                <div className="other__blogs__card__date">16 April 2023</div>
+              </div>
             </div>
-            <div className="other__blogs__card">
-              <span className="other__blogs__card__category">Review</span>
-              <h3 className="other__blogs__card__title">
-                Rorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </h3>
-              <div className="other__blogs__card__date">16 April 2023</div>
-            </div>
-          </div>
+          </>
+        ) : (
+          <></>
         )}
       </div>
     </HomeBlogsStyle>
