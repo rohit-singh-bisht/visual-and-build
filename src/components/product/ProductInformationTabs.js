@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ProductSpecification from "./tabPanels/ProductSpecification";
 import ProductDescription from "./tabPanels/ProductDescription";
 import ProductReturn from "./tabPanels/ProductReturn";
+import ProductReviews from "./tabPanels/ProductReviews";
 
 const ProductInformationTabsStyle = styled.div`
   margin: 100px 0;
@@ -62,7 +63,7 @@ const ProductInformationTabs = () => {
     {
       id: 3,
       title: "Reviews",
-      component: <ProductSpecification />,
+      component: <ProductReviews />,
     },
   ];
 
