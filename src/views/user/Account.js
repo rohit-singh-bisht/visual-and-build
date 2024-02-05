@@ -17,6 +17,14 @@ const AccountStyle = styled.div`
     column-gap: 24px;
     row-gap: 32px;
   }
+  @media (max-width: 786px) {
+    .page__title {
+      font-size: 24px;
+    }
+    .account__info__grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
 `;
 
 const Account = () => {

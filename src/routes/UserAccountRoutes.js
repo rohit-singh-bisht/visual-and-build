@@ -21,6 +21,9 @@ const UserAccountRoutesStyle = styled.div`
     line-height: 33.75px;
     margin-bottom: 35px;
   }
+  @media (max-width: 786px) {
+    padding: 45px 0;
+  }
 `;
 
 const routesInformation = [

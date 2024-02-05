@@ -9,7 +9,7 @@ const AppContextProvider = ({ children }) => {
   const [isTablet, setIsTablet] = useState(false);
 
   const handleWindowResize = () => {
-    const windowWidth = window.outerWidth;
+    const windowWidth = window.innerWidth;
 
     setIsMobile(windowWidth < 768);
     setIsTablet(windowWidth >= 768 && windowWidth <= 1024);
