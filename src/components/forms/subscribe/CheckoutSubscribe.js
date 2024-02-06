@@ -40,6 +40,30 @@ const CheckoutSubscribeStyled = styled.div`
       font-family: Poppins;
     }
   }
+  @media (max-width: 768px) {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column-reverse;
+    .content {
+      position: relative;
+      left: auto;
+      transform: translateY(0%);
+      width: 100%;
+      top: 15px;
+    }
+    .subscription__form .subscription__input {
+      width: 100%;
+    }
+    .subscribtion__title {
+      font-size: 20px;
+      line-height: 28px;
+      margin-bottom: 8px;
+    }
+    .subscribtion__subtitle {
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+  }
 `;
 
 const CheckoutSubscribe = () => {
