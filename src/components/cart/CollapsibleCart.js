@@ -32,6 +32,13 @@ const CollapsibleCartStyle = styled.div`
     transition: all 0.3s ease-in-out;
     overflow: hidden;
   }
+  @media (max-width: 768px) {
+    margin-top: 40px;
+    .cart__main__title {
+      font-size: 16px;
+      padding: 20px;
+    }
+  }
 `;
 
 const CollapsibleCart = () => {
@@ -53,7 +60,7 @@ const CollapsibleCart = () => {
         style={{ height: isActive ? heightRef?.current?.scrollHeight : 0 }}
       >
         <CartTable isSchedule={true} />
-        <div>
+        <div className="cart__order__summary__hodler">
           <CartOrderSummary />
         </div>
       </div>

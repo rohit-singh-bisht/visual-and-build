@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import CartCard from "./CartCard";
+import { useAppContext } from "../../context/useAppContext";
 
 const CartTableStyle = styled.div`
   .cart__items {
@@ -36,19 +37,32 @@ const CartTableStyle = styled.div`
       }
     }
   }
+  @media (max-width: 768px) {
+    .cart__items {
+      .cart__items__title {
+        padding: 12px;
+        font-size: 16px;
+        border-bottom: 0.75px solid rgb(204, 194, 194);
+      }
+    }
+  }
 `;
 
 const CartTable = ({ isSchedule }) => {
+  const { isDesktop } = useAppContext();
+
   return (
     <CartTableStyle>
       <div className="cart__items">
         <div className="cart__items__title">Cart Items</div>
-        <div className="cart__items__table__head">
-          <div className="table__heading">Product Details</div>
-          <div className="table__heading">Price</div>
-          <div className="table__heading">Quantity</div>
-          <div className="table__heading">Total</div>
-        </div>
+        {isDesktop && (
+          <div className="cart__items__table__head">
+            <div className="table__heading">Product Details</div>
+            <div className="table__heading">Price</div>
+            <div className="table__heading">Quantity</div>
+            <div className="table__heading">Total</div>
+          </div>
+        )}
         <div>
           <CartCard isSchedule={isSchedule} />
           <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />

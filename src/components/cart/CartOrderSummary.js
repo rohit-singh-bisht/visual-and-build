@@ -97,6 +97,36 @@ const CartOrderSummaryStyle = styled.div`
       background: #ae0000;
     }
   }
+  @media (max-width: 768px) {
+    width: 100%;
+    .cart__summary__header,
+    .cart__summary__coupon,
+    .cart__summary__total__wrapper {
+      padding: 15px;
+      .cart__summary__title {
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+    }
+    .cart__summary__coupon__title {
+      font-size: 14px;
+    }
+    .cart__summary__subtotal,
+    .cart__summary__total {
+      .subtotal__title,
+      .subtotal__value {
+        font-size: 14px;
+      }
+    }
+    .cart__summary__total__wrapper {
+      .cart__summary__total {
+        margin-bottom: 20px;
+      }
+    }
+    .cart__summary__buttons {
+      padding: 20px;
+    }
+  }
 `;
 
 const CartOrderSummary = () => {

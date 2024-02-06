@@ -23,6 +23,19 @@ const CartStyle = styled.div`
     margin-top: 60px;
     border-top: 1px solid rgba(48, 48, 48, 0.25);
   }
+  @media (max-width: 768px) {
+    padding-top: 30px;
+    .page__title {
+      font-size: 24px;
+      line-height: 32px;
+    }
+    .cart__wrapper {
+      flex-wrap: wrap;
+      .cart__order__summary__hodler {
+        width: 100%;
+      }
+    }
+  }
 `;
 
 const Cart = () => {
@@ -32,7 +45,7 @@ const Cart = () => {
         <div className="page__title">Your Cart</div>
         <div className="cart__wrapper">
           <CartTable />
-          <div>
+          <div className="cart__order__summary__hodler">
             <CartOrderSummary />
           </div>
         </div>

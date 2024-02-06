@@ -77,6 +77,44 @@ const CartProductCardStyle = styled.div`
     bottom: 18px;
     background-color: #fff;
   }
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    padding: 15px 15px 30px;
+    gap: 4px;
+    justify-content: space-between;
+    .cart__product__wrapper {
+      flex: auto;
+      padding-right: 70px;
+      gap: 12px;
+      .cart__product__details .cart__product__title {
+        font-size: 14px;
+        -webkit-line-clamp: 3;
+      }
+      .cart__product__image {
+        width: 70px;
+        height: 70px;
+      }
+    }
+    .cart__product__total {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+    }
+    .cart__product__price {
+      margin-left: 84px;
+    }
+    .cart__product__wishlist {
+      bottom: 12px;
+      right: auto;
+      left: 98px;
+    }
+    .cart__product__price,
+    .cart__product__total,
+    .cart__product__qty {
+      flex: 0;
+      font-size: 12px;
+    }
+  }
 `;
 
 const CartProductCard = ({ src, title, isSchedule }) => {
