@@ -36,6 +36,23 @@ const ProductInformationTabsStyle = styled.div`
       }
     }
   }
+  @media (max-width: 768px) {
+    margin-top: 32px;
+    margin-bottom: 0;
+    .product__information__mobile {
+      padding: 0 15px;
+      .product__information__section {
+        padding: 20px 0 34px;
+        border-top: 1px solid #d9d9d9;
+      }
+      .product__information__section__title {
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 500;
+        margin-bottom: 15px;
+      }
+    }
+  }
 `;
 
 const ProductInformationTabs = () => {

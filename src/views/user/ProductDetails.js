@@ -122,7 +122,7 @@ const ProductDetailsStyle = styled.div`
     border-top: 0.75px solid rgba(48, 48, 48, 0.25);
   }
   @media (max-width: 768px) {
-    padding: 0px 0;
+    padding: 0px 0 40px;
     .container {
       padding: 0 !important;
     }
@@ -175,6 +175,10 @@ const ProductDetailsStyle = styled.div`
           flex: 1;
         }
       }
+    }
+    .related__product {
+      margin-top: 0;
+      padding: 30px 0;
     }
   }
 `;

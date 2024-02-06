@@ -30,6 +30,9 @@ const ProductReviewCardStyle = styled.div`
       font-weight: 600;
       text-transform: capitalize;
     }
+    .customer__name {
+      color: #363636;
+    }
     .customer__rating {
       display: flex;
       gap: 4px;
@@ -43,6 +46,26 @@ const ProductReviewCardStyle = styled.div`
       color: #898989;
       font-size: 14px;
       font-weight: 400;
+    }
+  }
+  @media (max-width: 768px) {
+    padding: 20px 5px;
+    .review__content {
+      .customer__name__rating__wrapper {
+        align-items: center;
+      }
+      .customer__rating {
+        svg {
+          width: 16px;
+        }
+      }
+      .customer__name {
+        font-size: 14px;
+      }
+      .customer__review__date {
+        font-size: 14px;
+        margin: 4px 0 12px;
+      }
     }
   }
 `;

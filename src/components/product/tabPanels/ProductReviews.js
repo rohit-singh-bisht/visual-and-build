@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as ReviewStarsIcons } from "../../../assets/reviewStars.svg";
 import ProductReviewCard from "../ProductReviewCard";
 import ProductReviewForm from "../../forms/productReview/ProductReviewForm";
+import { useAppContext } from "../../../context/useAppContext";
 
 const ProductReviewsStyle = styled.div`
   .avg__ratings__bars__wrapper {
@@ -71,14 +72,58 @@ const ProductReviewsStyle = styled.div`
       border-top: 1px solid #d9d9d9;
     }
   }
+  @media (max-width: 768px) {
+    .avg__ratings__bars__wrapper {
+      gap: 20px;
+    }
+    .product__ratings__bars__wrapper {
+      flex: 1;
+      justify-content: center;
+      .product__ratings__bar {
+        gap: 4px;
+        margin-bottom: 4px;
+        width: 100%;
+        .product__ratings__number {
+          font-size: 12px;
+        }
+        .product__ratings__line {
+          width: 140px;
+          height: 4px;
+        }
+      }
+    }
+    .product__average__ratings {
+      width: 100px;
+      .average__ratings__subtitle {
+        font-size: 12px;
+        text-align: center;
+        margin-bottom: 8px;
+        margin-top: 4px;
+      }
+      .average__ratings__number {
+        font-size: 28px;
+        margin-bottom: 4px;
+      }
+    }
+    .product__reviews__wrapper {
+      margin-top: 20px;
+      .product__review__card {
+        width: 100%;
+      }
+    }
+  }
 `;
 
 const ProductReviews = () => {
+  const { isDesktop } = useAppContext();
+
   return (
     <ProductReviewsStyle>
       <div className="avg__ratings__bars__wrapper">
         <div className="product__average__ratings">
-          <p className="average__ratings__subtitle">What students say</p>
+          {isDesktop && (
+            <p className="average__ratings__subtitle">What students say</p>
+          )}
           <div className="average__ratings__number">4.7</div>
           <ReviewStarsIcons />
           <div className="average__ratings__subtitle total__number__ratings">
