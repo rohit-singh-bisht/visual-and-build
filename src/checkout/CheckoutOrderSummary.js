@@ -71,6 +71,32 @@ const CheckoutOrderSummaryStyle = styled.div`
       margin-top: 20px;
     }
   }
+  @media (max-width: 768px) {
+    padding: 15px;
+    .checkout__order__summary__title {
+      font-size: 16px;
+    }
+    .checkout__order__summary__item__list {
+      padding-top: 8px;
+    }
+    .checkout__order__summary__item {
+      margin-top: 12px;
+      gap: 24px;
+    }
+    .checkout__order__summary__item__title {
+      font-size: 14px;
+    }
+    .checkout__order__summary__item__quantity,
+    .checkout__order__summary__item__totals {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .checkout__order__summary__handler .checkout__now__button {
+      width: 100%;
+      font-size: 14px;
+      height: 42px;
+    }
+  }
 `;
 
 const CheckoutOrderSummary = () => {

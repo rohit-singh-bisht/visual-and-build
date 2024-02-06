@@ -64,6 +64,25 @@ const CheckoutStyle = styled.div`
       }
     }
   }
+  @media (max-width: 768px) {
+    padding: 40px 0;
+    .page__title {
+      font-size: 20px;
+      line-height: 28px;
+      margin-bottom: 15px;
+    }
+    .checkout__wrapper {
+      flex-wrap: wrap;
+      margin-top: 40px;
+      .checkout__billing__wrapper {
+        .checkout__billing__title {
+          font-size: 16px;
+          line-height: 24px;
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
 `;
 
 const Checkout = () => {

@@ -75,6 +75,16 @@ const BillingDetailsStyle = styled.div`
     display: flex;
     gap: 5px;
   }
+  @media (max-width: 768px) {
+    .billing__details__wrapper {
+      padding: 15px;
+      .billing__radio__icon {
+        .icon {
+          width: 15px;
+        }
+      }
+    }
+  }
 `;
 
 const BillingDetails = ({

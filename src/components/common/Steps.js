@@ -44,6 +44,20 @@ const StepsStyled = styled.div`
       }
     }
   }
+  @media (max-width: 768px) {
+    .step__holder {
+      .count {
+        width: 28px;
+        height: 28px;
+        font-size: 10px;
+        letter: 0.4px;
+      }
+    }
+    .step {
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
 `;
 
 const stepsData = [
