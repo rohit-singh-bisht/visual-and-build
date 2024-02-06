@@ -7,6 +7,7 @@ const ProductVariantsStyle = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
+    flex: 1;
   }
 `;
 

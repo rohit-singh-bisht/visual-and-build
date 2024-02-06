@@ -4,6 +4,7 @@ import ProductSpecification from "./tabPanels/ProductSpecification";
 import ProductDescription from "./tabPanels/ProductDescription";
 import ProductReturn from "./tabPanels/ProductReturn";
 import ProductReviews from "./tabPanels/ProductReviews";
+import { useAppContext } from "../../context/useAppContext";
 
 const ProductInformationTabsStyle = styled.div`
   margin: 100px 0;
@@ -39,6 +40,7 @@ const ProductInformationTabsStyle = styled.div`
 
 const ProductInformationTabs = () => {
   const [selectedTabId, setSelectedTabId] = useState(0);
+  const { isDesktop } = useAppContext();
 
   const handleChange = (newValue) => {
     setSelectedTabId(newValue);
@@ -69,19 +71,36 @@ const ProductInformationTabs = () => {
 
   return (
     <ProductInformationTabsStyle>
-      <div className="tabs__wrapper">
-        {tabsList?.map((tab) => (
-          <div
-            className={`tab ${selectedTabId === tab?.id ? "active" : ""}`}
-            onClick={() => handleChange(tab?.id)}
-          >
-            {tab?.title}
+      {isDesktop ? (
+        <>
+          <div className="tabs__wrapper">
+            {tabsList?.map((tab) => (
+              <div
+                className={`tab ${selectedTabId === tab?.id ? "active" : ""}`}
+                onClick={() => handleChange(tab?.id)}
+              >
+                {tab?.title}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="tab__panel__wrapper">
-        {tabsList[selectedTabId]?.component}
-      </div>
+          <div className="tab__panel__wrapper">
+            {tabsList[selectedTabId]?.component}
+          </div>
+        </>
+      ) : (
+        <div className="product__information__mobile">
+          {tabsList?.map((tab) => (
+            <div className="product__information__section">
+              <div className="product__information__section__title">
+                {tab?.title}
+              </div>
+              <div className="product__information__section__body">
+                {tab?.component}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </ProductInformationTabsStyle>
   );
 };

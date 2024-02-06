@@ -9,6 +9,7 @@ import ImageGallery from "react-image-gallery";
 import ProductList from "../../components/product/ProductList";
 import AddToCartModal from "../../components/modals/AddToCartModal";
 import ProductInformationTabs from "../../components/product/ProductInformationTabs";
+import { useAppContext } from "../../context/useAppContext";
 
 const ProductDetailsStyle = styled.div`
   padding: 70px 0;
@@ -120,10 +121,67 @@ const ProductDetailsStyle = styled.div`
     padding: 48px 0;
     border-top: 0.75px solid rgba(48, 48, 48, 0.25);
   }
+  @media (max-width: 768px) {
+    padding: 0px 0;
+    .container {
+      padding: 0 !important;
+    }
+    .product__details__wrapper {
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .image__gallery .image-gallery-image {
+      border-radius: 0px;
+    }
+    .image__gallery .image-gallery-thumbnails-container {
+      margin-top: 4px;
+      margin-bottom: 0px;
+      .image-gallery-thumbnail {
+        border-radius: 0px;
+        margin-left: 4px !important;
+      }
+    }
+    .product__details {
+      padding: 0 15px;
+      .vendor__details__reviews {
+        margin-bottom: 4px;
+        .vendor__details,
+        .product__reviews {
+          font-size: 12px;
+          line-height: 20px;
+        }
+        .product__reviews {
+          svg {
+            width: 80px;
+          }
+        }
+      }
+      .product__title {
+        font-size: 20px;
+        line-height: 28px;
+        margin-bottom: 10px;
+      }
+      .product__price .discounted__price {
+        font-size: 24px;
+        line-height: 32px;
+      }
+      .product__options {
+        .product__options__title,
+        .product__options__value {
+          font-size: 14px;
+          line-height: 22px;
+        }
+        .product__options__value {
+          flex: 1;
+        }
+      }
+    }
+  }
 `;
 
 const ProductDetails = () => {
   const [isAddToCartActive, setIsAddToCartActive] = useState(false);
+  const { isDesktop } = useAppContext();
 
   const images = [
     {
@@ -151,7 +209,7 @@ const ProductDetails = () => {
                 showNav={false}
                 showPlayButton={false}
               />
-              <IconWithTextList data={productIcons} />
+              {isDesktop && <IconWithTextList data={productIcons} />}
             </div>
             <div className="product__details">
               <div className="vendor__details__reviews">
