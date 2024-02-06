@@ -7,6 +7,7 @@ import BlogCategoryList from "../../components/blogs/BlogCategoryList";
 import BlogTags from "../../components/blogs/BlogTags";
 import RecentBlogs from "../../components/blogs/RecentBlogs";
 import Pagination from "@mui/material/Pagination";
+import { useAppContext } from "../../context/useAppContext";
 
 const BlogsStyle = styled.section`
   .blogs__banner {
@@ -53,9 +54,54 @@ const BlogsStyle = styled.section`
       height: 30px;
     }
   }
+  @media (max-width: 768px) {
+    .container {
+      padding: 0;
+    }
+    .blogs__banner {
+      margin-top: 0;
+      margin-bottom: 30px;
+      .page__title {
+        font-size: 20px;
+        line-height: 28px;
+        left: 20px;
+      }
+    }
+    .blogs__body {
+      padding: 0 15px;
+      .blogs__wrapper {
+        .blogs__grid {
+          column-gap: 8px;
+          row-gap: 20px;
+          .blog__card__image {
+            width: 100%;
+          }
+          .blog__card__title {
+            font-size: 12px;
+          }
+          .blog__card_meta {
+            margin-top: 6px;
+            flex-direction: column;
+            gap: 0;
+            align-items: flex-start;
+            .blog__card__author,
+            .blog__card__date {
+              font-size: 10px;
+              line-height: 16px;
+              svg {
+                width: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 `;
 
 const Blogs = () => {
+  const { isDesktop } = useAppContext();
+
   return (
     <BlogsStyle>
       <div className="container">
@@ -64,44 +110,46 @@ const Blogs = () => {
           <div className="page__title">Blogs</div>
         </div>
         <div className="blogs__body">
-          <aside>
-            <BlogSearch />
-            <div className="gap-30" />
-            <BlogCategoryList
-              title={"Categories"}
-              blogCategories={[
-                "Categories",
-                "Categories",
-                "Categories",
-                "Categories",
-              ]}
-            />
-            <div className="gap-30" />
-            <BlogTags
-              blogTagsList={[
-                "Categories",
-                "Categories",
-                "Categories",
-                "Cat",
-                "Dpgs",
-              ]}
-            />
-            <div className="gap-30" />
-            <RecentBlogs
-              recentBlogsList={[
-                {
-                  src: categoryDummy,
-                  blogTitle: "Rorem ipsum dolor sit",
-                  blogDate: "April 14, 2023",
-                },
-                {
-                  src: categoryDummy,
-                  blogTitle: "Rorem ipsum dolor sit",
-                  blogDate: "April 14, 2023",
-                },
-              ]}
-            />
-          </aside>
+          {isDesktop && (
+            <aside>
+              <BlogSearch />
+              <div className="gap-30" />
+              <BlogCategoryList
+                title={"Categories"}
+                blogCategories={[
+                  "Categories",
+                  "Categories",
+                  "Categories",
+                  "Categories",
+                ]}
+              />
+              <div className="gap-30" />
+              <BlogTags
+                blogTagsList={[
+                  "Categories",
+                  "Categories",
+                  "Categories",
+                  "Cat",
+                  "Dpgs",
+                ]}
+              />
+              <div className="gap-30" />
+              <RecentBlogs
+                recentBlogsList={[
+                  {
+                    src: categoryDummy,
+                    blogTitle: "Rorem ipsum dolor sit",
+                    blogDate: "April 14, 2023",
+                  },
+                  {
+                    src: categoryDummy,
+                    blogTitle: "Rorem ipsum dolor sit",
+                    blogDate: "April 14, 2023",
+                  },
+                ]}
+              />
+            </aside>
+          )}
           <div className="blogs__wrapper">
             <div className="blogs__grid">
               {Array.from({ length: 10 }, (_, index) => index + 1)?.map(
