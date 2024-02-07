@@ -40,6 +40,9 @@ const CategoryCardStyle = styled.div`
     .title {
       font-size: 12px;
     }
+    .image {
+      margin-bottom: 10px;
+    }
   }
 `;
 

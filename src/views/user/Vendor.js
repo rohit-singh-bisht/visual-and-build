@@ -4,6 +4,7 @@ import styled from "styled-components";
 import ProductList from "../../components/product/ProductList";
 import CategoryCard from "../../components/category/CategoryCard";
 import categoryDummy from "../../assets/category-dummy.jpg";
+import { useAppContext } from "../../context/useAppContext";
 
 const VendorStyle = styled.div`
   .vendor__cover {
@@ -26,6 +27,29 @@ const VendorStyle = styled.div`
   .products__list {
     padding: 60px 0;
   }
+  @media (max-width: 768px) {
+    .vendor__cover {
+      margin-top: 0;
+      height: 150px;
+      img {
+        object-fit: cover;
+      }
+    }
+    .vendor__logo {
+      width: 80px;
+      height: 80px;
+    }
+    .categories {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    .products__list {
+      padding: 30px 0;
+      .product__list__wrapper {
+        padding-left: 0;
+      }
+    }
+  }
 `;
 
 const Vendor = (props) => {
@@ -35,6 +59,8 @@ const Vendor = (props) => {
     vendorLogo,
     vendorName,
   } = props;
+  const { isDesktop } = useAppContext();
+
   return (
     <VendorStyle>
       <div className="vendor__cover">
@@ -49,7 +75,7 @@ const Vendor = (props) => {
             <CategoryCard
               src={categoryDummy}
               title={"Bathroom & Kitchen"}
-              type={"text-in-image"}
+              type={isDesktop && "text-in-image"}
             />
           ))}
         </div>
