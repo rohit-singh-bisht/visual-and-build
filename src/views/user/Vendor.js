@@ -54,6 +54,7 @@ const VendorStyle = styled.div`
 
 const Vendor = (props) => {
   //   const { vendorId } = useParams();
+
   const {
     vendorCoverSrc = "/images/store-cover.jpg",
     vendorLogo,
