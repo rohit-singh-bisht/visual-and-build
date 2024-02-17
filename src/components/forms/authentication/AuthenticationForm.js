@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Login from "./Login";
 import Register from "./Register";
@@ -11,7 +11,7 @@ const AuthenticationFormStyle = styled.div`
   box-shadow: 0px 10px 24px 0px rgba(33, 52, 48, 0.08);
   display: flex;
   flex-direction: column;
-  max-width: 699px;
+  max-width: 500px;
   width: 100%;
   height: 90vh;
   overflow: auto;
@@ -55,10 +55,10 @@ const AuthenticationFormStyle = styled.div`
   }
   .auth__form__body {
     .auth__form__group {
-      margin-bottom: 46px;
+      margin-bottom: 24px;
       label {
         color: #464646;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 500;
         display: block;
         margin-bottom: 11px;
@@ -68,15 +68,18 @@ const AuthenticationFormStyle = styled.div`
         border: 0.9px solid #d9d9d9;
         background: #fff;
         width: 100%;
-        height: 58px;
+        height: 48px;
         padding: 18px;
+        &.error {
+          border: 1px solid #ff0000;
+        }
       }
     }
     .auth__form__button {
       button {
         background: none;
         color: #fff;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 600;
         border-radius: 4.6px;
         border: 0.9px solid #d9d9d9;

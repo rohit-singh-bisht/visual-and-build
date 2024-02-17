@@ -3,7 +3,7 @@ import { useRequest } from "../../../hooks/useRequest";
 
 const Login = () => {
   const [loginType, setLoginType] = useState("email");
-  const [login, { state, error }] = useRequest();
+  const [login] = useRequest();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
