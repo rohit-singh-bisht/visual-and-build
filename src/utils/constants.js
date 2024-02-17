@@ -1,7 +1,7 @@
 import { Slide } from "react-toastify";
 
 export const toastifySettings = {
-  position: "bottom-right",
+  position: "top-right",
   autoClose: 4000,
   theme: "colored",
   transition: Slide,
@@ -15,6 +15,11 @@ export const toastifySettings = {
 export const registerUserObj = {
   name: "",
   email: "",
+  password: "",
+};
+
+export const loginUserObj = {
+  username: "",
   password: "",
 };
 

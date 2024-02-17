@@ -42,9 +42,9 @@ const AuthenticationFormStyle = styled.div`
     margin-bottom: 42px;
     .auth__form__panel {
       color: #000;
-      font-size: 16.5px;
+      font-size: 14px;
       font-weight: 500;
-      padding: 18.5px;
+      padding: 12px;
       flex: 1;
       text-align: center;
       cursor: pointer;
@@ -112,7 +112,7 @@ const WrapStyle = styled.div`
   height: 100%;
 `;
 
-const AuthenticationForm = ({ formType, setIsAuthForm }) => {
+const AuthenticationForm = ({ formType = "login", setIsAuthForm }) => {
   useEffect(() => {
     document.body.classList.add("bodyfixed");
     return () => document.body.classList.remove("bodyfixed");

@@ -1,22 +1,62 @@
 import React, { useState } from "react";
 import { useRequest } from "../../../hooks/useRequest";
+import styled from "styled-components";
+import { loginUserObj } from "../../../utils/constants";
+import { toast } from "react-toastify";
+
+const PasswordStyle = styled.div`
+  color: #ff0000;
+  font-size: 12px;
+  margin-top: 6px;
+`;
 
 const Login = () => {
   const [loginType, setLoginType] = useState("email");
   const [login] = useRequest();
+  const [error, setError] = useState({
+    username: false,
+    password: false,
+  });
+  const [userInfo, setUserInfo] = useState(loginUserObj);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    if (!userInfo.username || !userInfo.password) {
+      if (!userInfo.username) {
+        setError((prev) => ({ ...prev, username: true }));
+      }
+      if (!userInfo.password) {
+        setError((prev) => ({ ...prev, password: true }));
+      }
+      return;
+    }
     const path = `/auth/login`;
     const response = await login({
       path,
       method: "POST",
-      body: JSON.stringify(),
+      body: JSON.stringify(userInfo),
     });
     if (!response.success) {
-      throw new Error("Error");
+      return toast.error(response.message);
     }
+
+    toast.success(response.message);
   };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setUserInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    setError((prev) => ({
+      ...prev,
+      [name]: false,
+    }));
+  };
+
+  console.log("error", error);
 
   return (
     <>
@@ -45,13 +85,30 @@ const Login = () => {
           </label>
           <input
             type={loginType === "email" ? "email" : "number"}
-            pattern="/d*"
-            className="auth__form__input"
+            name="username"
+            value={userInfo?.username}
+            pattern={
+              loginType !== "email"
+                ? "/d*"
+                : "[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$"
+            }
+            className={`auth__form__input ${error?.username && "error"}`}
+            onChange={handleChange}
           />
+          {error?.username && <PasswordStyle>Email is required.</PasswordStyle>}
         </div>
         <div className="auth__form__group">
           <label>Password</label>
-          <input type="password" className="auth__form__input" />
+          <input
+            type="password"
+            name="password"
+            value={userInfo?.password}
+            className={`auth__form__input ${error?.password && "error"}`}
+            onChange={handleChange}
+          />
+          {error?.password && (
+            <PasswordStyle>Password is required.</PasswordStyle>
+          )}
         </div>
         <div className="auth__form__button">
           <button type="submit">Sign In</button>
