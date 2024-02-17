@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Login from "./Login";
+import Register from "./Register";
+import { Link } from "react-router-dom";
 
 const AuthenticationFormStyle = styled.div`
   padding: 28px 42px 52px;
@@ -91,6 +94,8 @@ const AuthenticationFormStyle = styled.div`
     text-align: center;
     font-size: 14px;
     font-weight: 500;
+    max-width: 315px;
+    margin: 110px auto 0;
     a {
       color: #111;
       text-decoration-line: underline;
@@ -104,9 +109,7 @@ const WrapStyle = styled.div`
   height: 100%;
 `;
 
-const AuthenticationForm = ({ formType = "login", setIsAuthForm }) => {
-  const [loginType, setLoginType] = useState("email");
-
+const AuthenticationForm = ({ formType, setIsAuthForm }) => {
   useEffect(() => {
     document.body.classList.add("bodyfixed");
     return () => document.body.classList.remove("bodyfixed");
@@ -117,54 +120,12 @@ const AuthenticationForm = ({ formType = "login", setIsAuthForm }) => {
       <WrapStyle onClick={() => setIsAuthForm(false)} />
       <AuthenticationFormStyle>
         <div className="flex__wrapper">
-          <div className="auth__form__title">
-            {formType === "login" ? "Login" : "Signup"}
-          </div>
-          <div className="auth__form__subtitle">
-            Enter your details to get started
-          </div>
-          <div className="auth__form__panels__wrapper">
-            <div
-              className={`auth__form__panel ${
-                loginType === "email" && "active"
-              }`}
-              onClick={() => setLoginType("email")}
-            >
-              Email Address
-            </div>
-            <div
-              className={`auth__form__panel ${
-                loginType === "phone" && "active"
-              }`}
-              onClick={() => setLoginType("phone")}
-            >
-              Phone Number
-            </div>
-          </div>
-          <form className="auth__form__body">
-            <div className="auth__form__group">
-              <label>
-                {loginType === "email" ? "Email Address" : "Phone Number"}
-              </label>
-              <input
-                type={loginType === "email" ? "email" : "number"}
-                pattern="/d*"
-                className="auth__form__input"
-              />
-            </div>
-            <div className="auth__form__group">
-              <label>Password</label>
-              <input type="password" className="auth__form__input" />
-            </div>
-            <div className="auth__form__button">
-              <button type="submit">Sign In</button>
-            </div>
-          </form>
+          {formType === "login" ? <Login /> : <Register />}
         </div>
         <p className="auth__form__consent">
           By continuing, you are agreeing to the{" "}
-          <a href="#">Terms and Conditions</a> and{" "}
-          <a href="#">Privacy Policy.</a>
+          <Link to="#">Terms and Conditions</Link> and{" "}
+          <Link to="#">Privacy Policy.</Link>
         </p>
       </AuthenticationFormStyle>
     </>
