@@ -10,10 +10,18 @@ function App() {
     <>
       <ToastContainer {...toastifySettings} />
       <AppContextProvider>
-        <Router>
-          <UserRoutes />
-        </Router>
+        <AppRoutes />
       </AppContextProvider>
+    </>
+  );
+}
+
+function AppRoutes() {
+  return (
+    <>
+      <Router>
+        <UserRoutes />
+      </Router>
     </>
   );
 }

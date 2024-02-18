@@ -3,6 +3,7 @@ import { useRequest } from "../../../hooks/useRequest";
 import styled from "styled-components";
 import { loginUserObj } from "../../../utils/constants";
 import { toast } from "react-toastify";
+import Progress from "../../common/Progress";
 
 const PasswordStyle = styled.div`
   color: #ff0000;
@@ -12,7 +13,7 @@ const PasswordStyle = styled.div`
 
 const Login = () => {
   const [loginType, setLoginType] = useState("email");
-  const [login] = useRequest();
+  const [login, { isLoading }] = useRequest();
   const [error, setError] = useState({
     username: false,
     password: false,
@@ -39,7 +40,6 @@ const Login = () => {
     if (!response.success) {
       return toast.error(response.message);
     }
-
     toast.success(response.message);
   };
 
@@ -55,8 +55,6 @@ const Login = () => {
       [name]: false,
     }));
   };
-
-  console.log("error", error);
 
   return (
     <>
@@ -114,6 +112,7 @@ const Login = () => {
           <button type="submit">Sign In</button>
         </div>
       </form>
+      {isLoading && <Progress />}
     </>
   );
 };

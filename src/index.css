@@ -99,6 +99,10 @@ input[type="number"] {
   font-size: 14px;
 }
 
+.css-18lrjg1-MuiCircularProgress-root {
+  color: #ae0000 !important;
+}
+
 @media only screen and (max-width: 768px) {
   .container {
     padding: 0 15px;

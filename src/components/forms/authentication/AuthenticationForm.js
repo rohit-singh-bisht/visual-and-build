@@ -112,7 +112,7 @@ const WrapStyle = styled.div`
   height: 100%;
 `;
 
-const AuthenticationForm = ({ formType = "login", setIsAuthForm }) => {
+const AuthenticationForm = ({ formType, setIsAuthForm }) => {
   useEffect(() => {
     document.body.classList.add("bodyfixed");
     return () => document.body.classList.remove("bodyfixed");

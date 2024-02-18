@@ -6,6 +6,7 @@ import {
   verifyPasswordStrength,
 } from "../../../utils/constants";
 import styled from "styled-components";
+import Progress from "../../common/Progress";
 
 const PasswordStyle = styled.div`
   color: #ff0000;
@@ -27,7 +28,7 @@ const Register = () => {
     e.preventDefault();
     if (
       isLoading ||
-      weakPassword?.success ||
+      !weakPassword?.success ||
       !userInfo?.name ||
       !userInfo?.email ||
       !userInfo?.password
@@ -52,7 +53,6 @@ const Register = () => {
     if (!response.success) {
       return toast.error(response.message, { toastId: "register" });
     }
-    setUserInfo(registerUserObj);
     return toast.success(response.message);
   };
 
@@ -69,7 +69,6 @@ const Register = () => {
 
     if (name === "password") {
       const result = verifyPasswordStrength(value);
-      console.log("result", result);
       setWeakPassword(result);
     }
   };
@@ -126,6 +125,7 @@ const Register = () => {
           <button type="submit">Get started</button>
         </div>
       </form>
+      {isLoading && <Progress />}
     </>
   );
 };
