@@ -13,6 +13,7 @@ import Checkout from "../views/user/Checkout";
 import UserAccountRoutes from "./UserAccountRoutes";
 import AuthenticationForm from "../components/forms/authentication/AuthenticationForm";
 import styled from "styled-components";
+import { useAuth } from "../hooks/useAuth";
 
 const AuthPopupStyle = styled.div`
   position: fixed;
@@ -28,10 +29,11 @@ const AuthPopupStyle = styled.div`
 
 const UserRoutes = () => {
   const [isAuthForm, setIsAuthForm] = useState(false);
+  const isLoggedIn = useAuth();
 
   return (
     <>
-      {isAuthForm && (
+      {isAuthForm && !isLoggedIn && (
         <AuthPopupStyle>
           <AuthenticationForm setIsAuthForm={setIsAuthForm} />
         </AuthPopupStyle>
@@ -44,10 +46,10 @@ const UserRoutes = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/store/:vendorId" element={<Vendor />} />
         <Route path="/product/:productId" element={<ProductDetails />} />
-        <Route path="/account/*" element={<UserAccountRoutes />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="*" element={<Navigate to={"/"} />} />
+        <Route path="/account/*" element={<UserAccountRoutes />} />
       </Routes>
       <Footer />
     </>

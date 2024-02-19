@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { loginUserObj } from "../../../utils/constants";
 import { toast } from "react-toastify";
 import Progress from "../../common/Progress";
+import { useAppContext } from "../../../context/useAppContext";
+import { useNavigate } from "react-router-dom";
 
 const PasswordStyle = styled.div`
   color: #ff0000;
@@ -11,7 +13,7 @@ const PasswordStyle = styled.div`
   margin-top: 6px;
 `;
 
-const Login = () => {
+const Login = ({ setIsAuthForm }) => {
   const [loginType, setLoginType] = useState("email");
   const [login, { isLoading }] = useRequest();
   const [error, setError] = useState({
@@ -19,6 +21,8 @@ const Login = () => {
     password: false,
   });
   const [userInfo, setUserInfo] = useState(loginUserObj);
+  const { setUser } = useAppContext();
+  const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -41,6 +45,9 @@ const Login = () => {
       return toast.error(response.message);
     }
     toast.success(response.message);
+    setUser(response.data);
+    navigate("/account");
+    setIsAuthForm(false);
   };
 
   const handleChange = (e) => {

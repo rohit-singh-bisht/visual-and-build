@@ -112,7 +112,7 @@ const WrapStyle = styled.div`
   height: 100%;
 `;
 
-const AuthenticationForm = ({ formType, setIsAuthForm }) => {
+const AuthenticationForm = ({ formType = "login", setIsAuthForm }) => {
   useEffect(() => {
     document.body.classList.add("bodyfixed");
     return () => document.body.classList.remove("bodyfixed");
@@ -123,7 +123,11 @@ const AuthenticationForm = ({ formType, setIsAuthForm }) => {
       <WrapStyle onClick={() => setIsAuthForm(false)} />
       <AuthenticationFormStyle>
         <div className="flex__wrapper">
-          {formType === "login" ? <Login /> : <Register />}
+          {formType === "login" ? (
+            <Login setIsAuthForm={setIsAuthForm} />
+          ) : (
+            <Register />
+          )}
         </div>
         <p className="auth__form__consent">
           By continuing, you are agreeing to the{" "}

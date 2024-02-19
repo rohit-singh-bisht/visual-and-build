@@ -3,10 +3,11 @@ import styled from "styled-components";
 import { ReactComponent as Logo } from "../assets/logo.svg";
 import Search from "../components/forms/search/Search";
 import { navLinks } from "../constants/HeaderLinks";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as Cart } from "../assets/cart.svg";
 import { useAppContext } from "../context/useAppContext";
 import { ReactComponent as HamburgerIcon } from "../assets/hamburger.svg";
+import { useAuth } from "../hooks/useAuth";
 
 const HeaderStyle = styled.header`
   background-color: #ae0000;
@@ -68,6 +69,8 @@ const HeaderStyle = styled.header`
 
 const Header = ({ setIsAuthForm }) => {
   const { isDesktop } = useAppContext();
+  const isLoggedIn = useAuth();
+  const navigate = useNavigate();
 
   return (
     <HeaderStyle>
@@ -87,9 +90,8 @@ const Header = ({ setIsAuthForm }) => {
           <div className="other__links">
             <div
               onClick={() => {
-                setIsAuthForm(true);
+                !isLoggedIn ? setIsAuthForm(true) : navigate("/account/");
               }}
-              to={"/account"}
               className="two__liners"
             >
               Hello, sign in

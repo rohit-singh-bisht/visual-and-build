@@ -7,6 +7,7 @@ import AccountSidebar from "../components/account/AccoutSidebar";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import Lists from "../views/user/profile/Lists";
+import PrivateRoute from "./PrivateRoute";
 
 const UserAccountRoutesStyle = styled.div`
   padding: 60px 0;
@@ -88,10 +89,12 @@ const UserAccountRoutes = () => {
       <div className="account__routes__wrapper">
         {activeRouteId !== 0 && <AccountSidebar />}
         <Routes>
-          {routesInformation?.map((route) => (
-            <Route path={route?.path} element={route?.component} />
-          ))}
-          <Route path="*" element={<Navigate to="/account/" />} />
+          <Route path="/" element={<PrivateRoute />}>
+            {routesInformation?.map((route) => (
+              <Route path={route?.path} element={route?.component} />
+            ))}
+            <Route path="*" element={<Navigate to="/account/" />} />
+          </Route>
         </Routes>
       </div>
     </UserAccountRoutesStyle>

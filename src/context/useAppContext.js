@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
+import useLocalStorage from "./useLocalStorage";
 
 const AppContext = createContext();
 
@@ -7,6 +8,7 @@ const AppContextProvider = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [user, setUser] = useLocalStorage("user", "");
 
   const handleWindowResize = () => {
     const windowWidth = window.innerWidth;
@@ -30,6 +32,8 @@ const AppContextProvider = ({ children }) => {
     isMobile,
     isDesktop,
     isTablet,
+    user,
+    setUser,
   };
 
   return (
