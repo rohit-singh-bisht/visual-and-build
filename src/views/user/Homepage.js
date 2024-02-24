@@ -73,6 +73,10 @@ const Homepage = () => {
   const [fetchCategories, { state: category }] = useRequest(
     `/category?limit=5&page=1`
   );
+  const [
+    fetchGroupBuy,
+    { isLoading: isFetchingGroupBuy, state: groupByState },
+  ] = useRequest(`/product/groupby?limit=3&page=1`);
   const [topBanner, setTopBanner] = useState();
   const [midBanner, setMidBanner] = useState();
   const [bottomBanner, setBottomBanner] = useState();
@@ -95,6 +99,7 @@ const Homepage = () => {
     };
     fetchAllBanners();
     fetchCategories();
+    fetchGroupBuy();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -147,9 +152,18 @@ const Homepage = () => {
           <button className="group__buy__button">See all options</button>
         </div>
         <div className="group__buy__products">
-          <GroupBuy isLoading={true} />
-          <GroupBuy reverse={"true"} isLoading={true} />
-          <GroupBuy isLoading={true} />
+          {groupByState?.data?.docs?.map((item, index) => {
+            const { name, price } = item;
+            return (
+              <GroupBuy
+                key={item?.id}
+                reverse={index % 2 !== 0 ? "true" : "false"}
+                isLoading={isFetchingGroupBuy}
+                productTitle={name}
+                productPrice={price}
+              />
+            );
+          })}
         </div>
       </div>
       <FaqList />

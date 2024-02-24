@@ -22,6 +22,7 @@ export const GroupBuyStyle = styled.div`
       font-size: 27px;
       font-weight: 600;
       line-height: 34.5px;
+      text-transform: capitalize;
     }
     .product__ratings {
       color: #303030;
@@ -95,6 +96,8 @@ export const GroupBuyStyle = styled.div`
   }
 `;
 
+const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
+
 const images = [
   {
     original: "https://picsum.photos/id/1018/1000/600/",
@@ -113,12 +116,11 @@ const images = [
 const GroupBuy = ({
   productTitle,
   productDescription,
-  productDiscountedPrice,
+  productOriginalPrice,
   productPrice,
   isLoading,
   reverse,
 }) => {
-  const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
   return (
     <>
       {isLoading ? (
@@ -141,11 +143,13 @@ const GroupBuy = ({
             <p className="product__description">{productDescription}</p>
             <div className="product__price">
               <div className="product__selling__price">
-                {priceSymbol + productDiscountedPrice}
-              </div>
-              <div className="product__cost__price">
                 {priceSymbol + productPrice}
               </div>
+              {productOriginalPrice && productOriginalPrice > 0 && (
+                <div className="product__cost__price">
+                  {priceSymbol + productOriginalPrice}
+                </div>
+              )}
             </div>
             <div className="product__variants">
               <div className="product__variants__button">Variant</div>
