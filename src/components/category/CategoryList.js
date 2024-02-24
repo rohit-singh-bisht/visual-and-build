@@ -62,7 +62,7 @@ const CategoryList = ({ title, allText, allLink, list }) => {
       <div className="list_wrapper">
         {list &&
           list?.length &&
-          list?.map((item) => <CategoryCard {...item} />)}
+          list?.map((item) => <CategoryCard key={item?.id} {...item} />)}
         <div className="view__all">
           <div className="view__all__button">
             View All <br /> categories

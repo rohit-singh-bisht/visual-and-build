@@ -25,6 +25,32 @@ const HompageStyle = styled.div`
     padding: 60px 0;
     border-top: 1px solid rgba(48, 48, 48, 0.25);
   }
+  .group_buy {
+    margin: 100px auto;
+    .group__buy__title__wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 76px;
+      .group__buy__title {
+        color: #303030;
+        font-size: 27px;
+        font-weight: 600;
+        line-height: 34.5px;
+      }
+      .group__buy__button {
+        color: #ae0000;
+        font-size: 16.5px;
+        font-weight: 600;
+        background: none;
+      }
+    }
+    .group__buy__products {
+      display: flex;
+      flex-direction: column;
+      gap: 100px;
+    }
+  }
   @media (max-width: 768px) {
     .category_list {
       padding: 35px 20px 40px;
@@ -76,7 +102,7 @@ const Homepage = () => {
     <HompageStyle>
       <SlidingBanner
         bannerData={topBanner}
-        leftDistance={isDesktop ? 188 : 30}
+        leftdistance={isDesktop ? 188 : 30}
         loading={isFetchingBanner}
       />
 
@@ -89,7 +115,7 @@ const Homepage = () => {
 
       <SlidingBanner
         bannerData={midBanner}
-        leftDistance={isDesktop ? 108 : 30}
+        leftdistance={isDesktop ? 108 : 30}
         loading={isFetchingBanner}
       />
 
@@ -103,12 +129,28 @@ const Homepage = () => {
 
       <SlidingBanner
         bannerData={bottomBanner}
-        leftDistance={isDesktop ? 108 : 30}
+        leftdistance={isDesktop ? 108 : 30}
         loading={isFetchingBanner}
       />
 
+      <div className="container product_list">
+        <ProductList
+          listTitle={"Interior"}
+          buttonArrow={false}
+          buttonText={"See all"}
+        />
+      </div>
+
       <div className="container group_buy">
-        <GroupBuy isLoading={true} />
+        <div className="group__buy__title__wrapper">
+          <p className="group__buy__title">Group By</p>
+          <button className="group__buy__button">See all options</button>
+        </div>
+        <div className="group__buy__products">
+          <GroupBuy isLoading={true} />
+          <GroupBuy reverse={"true"} isLoading={true} />
+          <GroupBuy isLoading={true} />
+        </div>
       </div>
       <FaqList />
       <div className="container blogs">

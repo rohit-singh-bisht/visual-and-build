@@ -7,6 +7,8 @@ import ImageGallery from "react-image-gallery";
 export const GroupBuyStyle = styled.div`
   display: flex;
   gap: 33.75px;
+  flex-direction: ${({ reverse }) =>
+    reverse === "true" ? "row-reverse" : "row"};
   .product__image,
   .product__details {
     width: 100%;
@@ -114,14 +116,15 @@ const GroupBuy = ({
   productDiscountedPrice,
   productPrice,
   isLoading,
+  reverse,
 }) => {
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
   return (
     <>
       {isLoading ? (
-        <GroupBuySkeleton />
+        <GroupBuySkeleton className="group__buy__item" reverse={reverse} />
       ) : (
-        <GroupBuyStyle>
+        <GroupBuyStyle className="group__buy__item" reverse={reverse}>
           <div className="product__image">
             <ImageGallery
               items={images}

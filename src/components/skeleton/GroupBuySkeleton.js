@@ -3,9 +3,9 @@ import { GroupBuyStyle } from "../common/GroupBuy";
 import { ReactComponent as ReviewStars } from "../../assets/reviewStars.svg";
 import { Skeleton } from "@mui/material";
 
-const GroupBuySkeleton = () => {
+const GroupBuySkeleton = ({ reverse, className }) => {
   return (
-    <GroupBuyStyle>
+    <GroupBuyStyle className={className} reverse={reverse}>
       <div className="product__image">
         <Skeleton variant="rounded" height={"100%"} />
       </div>

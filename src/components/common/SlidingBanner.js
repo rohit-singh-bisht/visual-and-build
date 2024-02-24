@@ -14,7 +14,7 @@ const SlidingBanner = ({
   speed = 500,
   slidesToShow = 1,
   slidesToScroll = 1,
-  leftDistance,
+  leftdistance,
   loading,
 }) => {
   var settings = bannerSettings || {
@@ -45,7 +45,7 @@ const SlidingBanner = ({
               title={item?.heading}
               subtitle={item?.tagline}
               imageSrc={item?.url}
-              leftDistance={leftDistance}
+              leftdistance={leftdistance}
               textDark={true}
               buttonTitle={"Get Started"}
               buttonLink={item?.ctaUrl}
@@ -60,7 +60,7 @@ const SlidingBanner = ({
         title={bannerData?.[0]?.heading}
         subtitle={bannerData?.[0]?.tagline}
         imageSrc={bannerData?.[0]?.url}
-        leftDistance={leftDistance}
+        leftdistance={leftdistance}
         textDark={true}
         buttonTitle={"Get Started"}
         buttonLink={bannerData?.[0]?.ctaUrl}

@@ -17,7 +17,7 @@ export const BannerStyle = styled.div`
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: ${({ leftDistance }) => leftDistance}px;
+    left: ${({ leftdistance }) => leftdistance}px;
     .title {
       color: #fff;
       font-size: 36px;
@@ -67,7 +67,7 @@ const Banner = ({
   subtitle,
   buttonType,
   titleSize,
-  leftDistance,
+  leftdistance,
   buttonTitle,
 }) => {
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ const Banner = ({
   };
 
   return (
-    <BannerStyle leftDistance={leftDistance}>
+    <BannerStyle leftdistance={leftdistance}>
       <img src={imageSrc} alt="Banner" />
 
       <div className={`content ${textDark ? "dark" : ""}`}>

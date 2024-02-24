@@ -187,6 +187,7 @@ const HomeBlogs = () => {
             {Array.from({ length: 10 }, (_, index) => index + 1)?.map(
               (item) => (
                 <BlogCard
+                  key={item}
                   blogSrc={categoryDummy}
                   blogTitle={
                     "Sorem ipsum dolor sit amet, consectetur adipiscing elit."
