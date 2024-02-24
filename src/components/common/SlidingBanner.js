@@ -4,6 +4,7 @@ import Banner from "./Banner";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Skeleton } from "@mui/material";
+import { useAppContext } from "../../context/useAppContext";
 
 const SlidingBanner = ({
   bannerData,
@@ -23,9 +24,16 @@ const SlidingBanner = ({
     slidesToShow,
     slidesToScroll,
   };
+  const { isDesktop } = useAppContext();
 
   if (loading) {
-    return <Skeleton variant="rectangular" width={"100%"} height={270} />;
+    return (
+      <Skeleton
+        variant="rectangular"
+        width={"100%"}
+        height={isDesktop ? 375 : 250}
+      />
+    );
   }
 
   if (bannerData?.length > 1) {
