@@ -1,13 +1,17 @@
 import React from "react";
 import Button from "./Button";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-const BannerStyle = styled.div`
+export const BannerStyle = styled.div`
   position: relative;
-  min-height: 375px;
+  max-height: 375px;
+  height: 100%;
   img {
     width: 100%;
     display: block;
+    height: 375px;
+    object-fit: cover;
   }
   .content {
     position: absolute;
@@ -55,7 +59,7 @@ const BannerStyle = styled.div`
 
 const Banner = ({
   imageSrc,
-  onClick,
+  buttonLink,
   title,
   textDark = false,
   subtitle,
@@ -64,6 +68,11 @@ const Banner = ({
   leftDistance,
   buttonTitle,
 }) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    buttonLink && navigate(buttonLink);
+  };
+
   return (
     <BannerStyle leftDistance={leftDistance}>
       <img src={imageSrc} alt="Banner" />
@@ -74,7 +83,7 @@ const Banner = ({
           className="subtitle"
           dangerouslySetInnerHTML={{ __html: subtitle }}
         ></p>
-        <Button title={buttonTitle} type={buttonType} onClick={onClick} />
+        <Button title={buttonTitle} type={buttonType} onClick={handleClick} />
       </div>
     </BannerStyle>
   );

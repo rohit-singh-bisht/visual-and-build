@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Banner from "../../components/common/Banner";
 import CategoryList from "../../components/category/CategoryList";
 import styled from "styled-components";
@@ -9,6 +9,8 @@ import HomeBlogs from "../../components/blogs/HomeBlogs";
 import IconWithTextList from "../../components/common/IconWithTextList";
 import categoryDummy from "../../assets/category-dummy.jpg";
 import { useAppContext } from "../../context/useAppContext";
+import { useRequest } from "../../hooks/useRequest";
+import SlidingBanner from "../../components/common/SlidingBanner";
 
 const HompageStyle = styled.div`
   .category_list {
@@ -43,6 +45,8 @@ const HompageStyle = styled.div`
 
 const Homepage = () => {
   const { isDesktop } = useAppContext();
+  const [fetchBanner, { isLoading: isFetchingBanner, state: bannerState }] =
+    useRequest(`/banner?limit=10&page=1&sequence=top&location=home`);
 
   const list = [
     {
@@ -62,15 +66,17 @@ const Homepage = () => {
       title: "Bathroom, Kitchen & Storage",
     },
   ];
+
+  useEffect(() => {
+    fetchBanner();
+  }, []);
+
   return (
     <HompageStyle>
-      <Banner
-        title={"Create your dream home"}
-        subtitle={"An advanced and easy-to-use 2D/3D <br /> home design tool. "}
-        imageSrc={"images/log-banner.jpg"}
+      <SlidingBanner
+        bannerData={bannerState?.data?.docs}
         leftDistance={isDesktop ? 188 : 30}
-        textDark={true}
-        buttonTitle={"Get Started"}
+        loading={isFetchingBanner}
       />
 
       <div className="container category_list">
