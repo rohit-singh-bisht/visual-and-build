@@ -19,6 +19,22 @@ const CategoryListStyle = styled.div`
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
+    .view__all {
+      .view__all__button {
+        border-radius: 7.5px;
+        background-color: #e8e8e8;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 16px;
+        text-align: center;
+        height: 130px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    }
   }
   @media (max-width: 768px) {
     .title_wrapper {
@@ -47,6 +63,11 @@ const CategoryList = ({ title, allText, allLink, list }) => {
         {list &&
           list?.length &&
           list?.map((item) => <CategoryCard {...item} />)}
+        <div className="view__all">
+          <div className="view__all__button">
+            View All <br /> categories
+          </div>
+        </div>
       </div>
     </CategoryListStyle>
   );

@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import Banner from "../../components/common/Banner";
+import React, { useEffect, useState } from "react";
 import CategoryList from "../../components/category/CategoryList";
 import styled from "styled-components";
 import ProductList from "../../components/product/ProductList";
@@ -7,7 +6,6 @@ import GroupBuy from "../../components/common/GroupBuy";
 import FaqList from "../../components/common/FaqList";
 import HomeBlogs from "../../components/blogs/HomeBlogs";
 import IconWithTextList from "../../components/common/IconWithTextList";
-import categoryDummy from "../../assets/category-dummy.jpg";
 import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
 import SlidingBanner from "../../components/common/SlidingBanner";
@@ -45,50 +43,54 @@ const HompageStyle = styled.div`
 
 const Homepage = () => {
   const { isDesktop } = useAppContext();
-  const [fetchBanner, { isLoading: isFetchingBanner, state: bannerState }] =
-    useRequest(`/banner?limit=10&page=1&sequence=top&location=home`);
+  const [fetchBanner, { isLoading: isFetchingBanner }] = useRequest();
+  const [fetchCategories, { state: category }] = useRequest(
+    `/category?limit=5&page=1`
+  );
+  const [topBanner, setTopBanner] = useState();
+  const [midBanner, setMidBanner] = useState();
+  const [bottomBanner, setBottomBanner] = useState();
 
-  const list = [
-    {
-      src: categoryDummy,
-      title: "Bathroom, Kitchen & Storage",
-    },
-    {
-      src: categoryDummy,
-      title: "Bathroom, Kitchen & Storage",
-    },
-    {
-      src: categoryDummy,
-      title: "Bathroom, Kitchen & Storage",
-    },
-    {
-      src: categoryDummy,
-      title: "Bathroom, Kitchen & Storage",
-    },
-  ];
+  const getBanner = async (position) => {
+    const path = `/banner?limit=10&page=1&sequence=${position}&location=home`;
+    const response = await fetchBanner({ path });
+    return response;
+  };
 
   useEffect(() => {
-    fetchBanner();
+    const fetchAllBanners = async () => {
+      const positions = ["top", "mid", "bottom"];
+      const results = await Promise.all(
+        positions?.map((item) => getBanner(item))
+      );
+      setTopBanner(results?.[0]?.data?.docs);
+      setMidBanner(results?.[1]?.data?.docs);
+      setBottomBanner(results?.[2]?.data?.docs);
+    };
+    fetchAllBanners();
+    fetchCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <HompageStyle>
       <SlidingBanner
-        bannerData={bannerState?.data?.docs}
+        bannerData={topBanner}
         leftDistance={isDesktop ? 188 : 30}
         loading={isFetchingBanner}
       />
 
       <div className="container category_list">
-        <CategoryList title={"Shop by Categories"} list={list} />
+        <CategoryList
+          title={"Shop by Categories"}
+          list={category?.data?.docs}
+        />
       </div>
 
-      <Banner
-        title={"Elevate Your Space"}
-        subtitle={"Discover the Art of Interior"}
-        imageSrc={"images/log-banner.jpg"}
+      <SlidingBanner
+        bannerData={midBanner}
         leftDistance={isDesktop ? 108 : 30}
-        buttonTitle={"Get Started"}
+        loading={isFetchingBanner}
       />
 
       <div className="container product_list">
@@ -98,6 +100,13 @@ const Homepage = () => {
           buttonText={"See all"}
         />
       </div>
+
+      <SlidingBanner
+        bannerData={bottomBanner}
+        leftDistance={isDesktop ? 108 : 30}
+        loading={isFetchingBanner}
+      />
+
       <div className="container group_buy">
         <GroupBuy isLoading={true} />
       </div>

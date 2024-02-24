@@ -5,9 +5,13 @@ const CategoryCardStyle = styled.div`
   cursor: pointer;
   .image {
     margin-bottom: 18px;
+    height: 130px;
     img {
       width: 100%;
       height: 100%;
+      object-fit: cover;
+      border-radius: 7.5px;
+      overflow: clip;
     }
   }
   .title {
@@ -15,6 +19,7 @@ const CategoryCardStyle = styled.div`
     font-style: normal;
     font-weight: 400;
     text-align: center;
+    text-transform: capitalize;
   }
   &.text__in__image {
     border-radius: 6px;
@@ -46,15 +51,15 @@ const CategoryCardStyle = styled.div`
   }
 `;
 
-const CategoryCard = ({ title, link, src, type }) => {
+const CategoryCard = ({ name, link, bannerUrl, type }) => {
   return (
     <CategoryCardStyle
       className={type === "text-in-image" ? "text__in__image" : ""}
     >
       <div className="image">
-        <img src={src} alt={title} />
+        <img src={bannerUrl} alt={name} />
       </div>
-      <div className="title">{title}</div>
+      <div className="title">{name}</div>
     </CategoryCardStyle>
   );
 };

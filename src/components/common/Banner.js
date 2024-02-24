@@ -23,6 +23,7 @@ export const BannerStyle = styled.div`
       font-size: 36px;
       font-weight: 600;
       line-height: 46px;
+      text-transform: capitalize;
     }
     .subtitle {
       color: #fff;
@@ -30,6 +31,7 @@ export const BannerStyle = styled.div`
       font-weight: 500;
       line-height: normal;
       margin: 15px 0;
+      text-transform: capitalize;
     }
     &.dark {
       .title,
