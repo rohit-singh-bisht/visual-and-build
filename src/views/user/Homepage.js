@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import CategoryList from "../../components/category/CategoryList";
 import styled from "styled-components";
 import ProductList from "../../components/product/ProductList";
-import GroupBuy from "../../components/common/GroupBuy";
 import FaqList from "../../components/common/FaqList";
 import HomeBlogs from "../../components/blogs/HomeBlogs";
 import IconWithTextList from "../../components/common/IconWithTextList";

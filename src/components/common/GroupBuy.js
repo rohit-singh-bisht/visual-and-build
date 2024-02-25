@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as ReviewStars } from "../../assets/reviewStars.svg";
-import GroupBuySkeleton from "../skeleton/GroupBuySkeleton";
 import ImageGallery from "react-image-gallery";
 
 export const GroupBuyStyle = styled.div`
