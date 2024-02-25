@@ -96,8 +96,6 @@ export const GroupBuyStyle = styled.div`
   }
 `;
 
-const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
-
 const images = [
   {
     original: "https://picsum.photos/id/1018/1000/600/",
@@ -118,49 +116,43 @@ const GroupBuy = ({
   productDescription,
   productOriginalPrice,
   productPrice,
-  isLoading,
   reverse,
 }) => {
+  const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
   return (
-    <>
-      {isLoading ? (
-        <GroupBuySkeleton className="group__buy__item" reverse={reverse} />
-      ) : (
-        <GroupBuyStyle className="group__buy__item" reverse={reverse}>
-          <div className="product__image">
-            <ImageGallery
-              items={images}
-              showBullets={false}
-              showNav={false}
-              showPlayButton={false}
-            />
+    <GroupBuyStyle className="group__buy__item" reverse={reverse}>
+      <div className="product__image">
+        <ImageGallery
+          items={images}
+          showBullets={false}
+          showNav={false}
+          showPlayButton={false}
+        />
+      </div>
+      <div className="product__details">
+        <div className="product__ratings">
+          <ReviewStars />
+        </div>
+        <p className="product__title">{productTitle}</p>
+        <p className="product__description">{productDescription}</p>
+        <div className="product__price">
+          <div className="product__selling__price">
+            {priceSymbol + " " + productPrice.toFixed(2)}
           </div>
-          <div className="product__details">
-            <div className="product__ratings">
-              <ReviewStars />
+          {productOriginalPrice && productOriginalPrice > 0 && (
+            <div className="product__cost__price">
+              {priceSymbol + " " + productOriginalPrice.toFixed(2)}
             </div>
-            <p className="product__title">{productTitle}</p>
-            <p className="product__description">{productDescription}</p>
-            <div className="product__price">
-              <div className="product__selling__price">
-                {priceSymbol + productPrice}
-              </div>
-              {productOriginalPrice && productOriginalPrice > 0 && (
-                <div className="product__cost__price">
-                  {priceSymbol + productOriginalPrice}
-                </div>
-              )}
-            </div>
-            <div className="product__variants">
-              <div className="product__variants__button">Variant</div>
-              <div className="product__variants__button active">Variant</div>
-              <div className="product__variants__button">Variant</div>
-            </div>
-            <div className="product__addToCart">Add to cart</div>
-          </div>
-        </GroupBuyStyle>
-      )}
-    </>
+          )}
+        </div>
+        <div className="product__variants">
+          <div className="product__variants__button">Variant</div>
+          <div className="product__variants__button active">Variant</div>
+          <div className="product__variants__button">Variant</div>
+        </div>
+        <div className="product__addToCart">Add to cart</div>
+      </div>
+    </GroupBuyStyle>
   );
 };
 

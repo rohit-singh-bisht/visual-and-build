@@ -17,6 +17,7 @@ const InfoCardStyle = styled.div`
     font-weight: 700;
     line-height: 22.5px;
     margin-bottom: 17.5px;
+    text-transform: capitalize;
   }
   .info__main__subtitle {
     color: #000;

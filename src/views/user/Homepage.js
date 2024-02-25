@@ -9,6 +9,7 @@ import IconWithTextList from "../../components/common/IconWithTextList";
 import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
 import SlidingBanner from "../../components/common/SlidingBanner";
+import GroupBuyList from "../../components/common/GroupBuyList";
 
 const HompageStyle = styled.div`
   .category_list {
@@ -25,32 +26,7 @@ const HompageStyle = styled.div`
     padding: 60px 0;
     border-top: 1px solid rgba(48, 48, 48, 0.25);
   }
-  .group_buy {
-    margin: 100px auto;
-    .group__buy__title__wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 76px;
-      .group__buy__title {
-        color: #303030;
-        font-size: 27px;
-        font-weight: 600;
-        line-height: 34.5px;
-      }
-      .group__buy__button {
-        color: #ae0000;
-        font-size: 16.5px;
-        font-weight: 600;
-        background: none;
-      }
-    }
-    .group__buy__products {
-      display: flex;
-      flex-direction: column;
-      gap: 100px;
-    }
-  }
+
   @media (max-width: 768px) {
     .category_list {
       padding: 35px 20px 40px;
@@ -75,7 +51,7 @@ const Homepage = () => {
   );
   const [
     fetchGroupBuy,
-    { isLoading: isFetchingGroupBuy, state: groupByState },
+    { isLoading: isFetchingGroupBuy, state: groupBuyState },
   ] = useRequest(`/product/groupby?limit=3&page=1`);
   const [topBanner, setTopBanner] = useState();
   const [midBanner, setMidBanner] = useState();
@@ -146,26 +122,10 @@ const Homepage = () => {
         />
       </div>
 
-      <div className="container group_buy">
-        <div className="group__buy__title__wrapper">
-          <p className="group__buy__title">Group By</p>
-          <button className="group__buy__button">See all options</button>
-        </div>
-        <div className="group__buy__products">
-          {groupByState?.data?.docs?.map((item, index) => {
-            const { name, price } = item;
-            return (
-              <GroupBuy
-                key={item?.id}
-                reverse={index % 2 !== 0 ? "true" : "false"}
-                isLoading={isFetchingGroupBuy}
-                productTitle={name}
-                productPrice={price}
-              />
-            );
-          })}
-        </div>
-      </div>
+      <GroupBuyList
+        groupBuyList={groupBuyState?.data?.docs}
+        isLoading={isFetchingGroupBuy}
+      />
       <FaqList />
       <div className="container blogs">
         <HomeBlogs />

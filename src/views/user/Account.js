@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import InfoCard from "../../components/account/InfoCard";
 import { useNavigate } from "react-router-dom";
+import { useRequest } from "../../hooks/useRequest";
+import { Skeleton } from "@mui/material";
 
 const AccountStyle = styled.div`
+  width: 100%;
   .page__title {
     color: #000;
     font-size: 27px;
@@ -29,14 +32,18 @@ const AccountStyle = styled.div`
 
 const Account = () => {
   const navigate = useNavigate();
+  const [
+    fetchAccount,
+    { isLoading: isFetchingAccountData, state: accountState },
+  ] = useRequest();
 
   const accountData = [
     {
-      title: `Hi Harmandeep`,
+      title: `Hi ${accountState?.data?.name}`,
       subtitle: `V&B ID: 6043495244`,
-      sub1: `Wander Homes & Consulting ltd..`,
-      sub2: `wanderhomes21@gmail.com`,
-      sub3: `6043495244`,
+      sub1: accountState?.data?.businessName,
+      sub2: accountState?.data?.email,
+      sub3: accountState?.data?.phone,
       buttonText: `Edit Profile Information`,
       onClick: () => {
         navigate("/account/profile-information");
@@ -75,14 +82,39 @@ const Account = () => {
     },
   ];
 
+  console.log("accountState", accountState);
+
+  useEffect(() => {
+    async function fetchAccountDetails() {
+      const path = `/account`;
+      await fetchAccount({ path });
+    }
+    fetchAccountDetails();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <AccountStyle>
       <div className="container">
         <div className="page__title">My Account</div>
         <div className="account__info__grid">
-          {accountData?.map((data) => (
-            <InfoCard {...data} />
-          ))}
+          {!isFetchingAccountData ? (
+            <>
+              {accountData?.map((data) => (
+                <InfoCard {...data} />
+              ))}
+            </>
+          ) : (
+            Array.from({ length: 6 }, (_, index) => (
+              <Skeleton
+                variant="rectangle"
+                key={index + 1}
+                height={200}
+                width={"100%"}
+              />
+            ))
+          )}
         </div>
       </div>
     </AccountStyle>
