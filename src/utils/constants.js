@@ -60,3 +60,10 @@ export function verifyPasswordStrength(password) {
     message: "Password meets the strength requirements.",
   };
 }
+
+export const contactFormStateObj = {
+  name: "",
+  email: "",
+  phone: "",
+  message: "",
+};

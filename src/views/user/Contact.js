@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../components/common/Button";
 import { aboutLinks } from "../../constants/FooterLinks";
+import { contactFormStateObj } from "../../utils/constants";
+import { useRequest } from "../../hooks/useRequest";
+import Progress from "../../components/common/Progress";
+import { toast } from "react-toastify";
 
 const ContactStyle = styled.div`
   padding: 60px 0;
@@ -77,9 +81,8 @@ const ContactStyle = styled.div`
       }
       input {
         border-radius: 7.5px;
-        border: 0.75px solid var(--Black, #303030);
-        opacity: 0.25;
-        background: var(--White, #fff);
+        border: 0.75px solid #30303040;
+        background: #fff;
         height: 60px;
         width: 100%;
         padding-left: 24px;
@@ -99,57 +102,107 @@ const ContactStyle = styled.div`
 `;
 
 const Contact = () => {
-  return (
-    <ContactStyle>
-      <div className="container wrapper">
-        <div className="contact__form">
-          <h2 className="page__title">Contact Us</h2>
-          <p className="page__subtitle">
-            Have any questions for us? Don’t hesitate to contact us.
-          </p>
-          <form>
-            <div className="form__group">
-              <label className="required">Name</label>
-              <input type="text" placeholder="Enter your name" />
-            </div>
-            <div className="form__wrapper">
-              <div className="form__group phone">
-                <label>Phone Number</label>
-                <input type="tel" placeholder="Enter phone number" />
-              </div>
-              <div className="form__group">
-                <label className="required">Email Address</label>
-                <input type="text" placeholder="Enter your name" />
-              </div>
-            </div>
-            <div className="form__wrapper">
-              <div className="form__group">
-                <label className="required">Message</label>
-                <input type="text" placeholder="Enter your message..." />
-              </div>
-            </div>
-            <div className="submit__button__wrapper">
-              <Button title={"Submit"} />
-            </div>
-          </form>
-        </div>
-        <div>
-          <div className="contact__details">
-            <h3 className="contact__details__title">Let’s Keep in Touch!</h3>
-            <p className="contact__details__subtitle">
-              We would love to hear from you. Contact us for any inquiries you
-              might have for us.
-            </p>
+  const [contactInfo, setContactInfo] = useState(contactFormStateObj);
+  const [sendMessage, { isLoading }] = useRequest();
 
-            {aboutLinks?.map((item) => (
-              <div className="contact__details__links">
-                {item?.icon} {item?.title}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await sendMessage({
+      path: `/contact`,
+      method: "POST",
+      body: JSON.stringify(contactInfo),
+    });
+    if (response.success) {
+      toast.success(response.message, { toastId: "success" });
+      setContactInfo(contactFormStateObj);
+    } else {
+      toast.error(response.message, { toastId: "error" });
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setContactInfo((prev) => ({ ...prev, [name]: value }));
+  };
+
+  return (
+    <>
+      <ContactStyle>
+        <div className="container wrapper">
+          <div className="contact__form">
+            <h2 className="page__title">Contact Us</h2>
+            <p className="page__subtitle">
+              Have any questions for us? Don’t hesitate to contact us.
+            </p>
+            <form onSubmit={handleSubmit}>
+              <div className="form__group">
+                <label className="required">Name</label>
+                <input
+                  value={contactInfo?.name}
+                  type="text"
+                  name="name"
+                  placeholder="Enter your name"
+                  onChange={handleChange}
+                />
               </div>
-            ))}
+              <div className="form__wrapper">
+                <div className="form__group phone">
+                  <label>Phone Number</label>
+                  <input
+                    value={contactInfo?.phone}
+                    type="tel"
+                    name="phone"
+                    placeholder="Enter phone number"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="form__group">
+                  <label className="required">Email Address</label>
+                  <input
+                    value={contactInfo?.email}
+                    type="email"
+                    name="email"
+                    placeholder="Enter your name"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="form__wrapper">
+                <div className="form__group">
+                  <label className="required">Message</label>
+                  <input
+                    value={contactInfo?.message}
+                    type="text"
+                    name="message"
+                    placeholder="Enter your message..."
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="submit__button__wrapper">
+                <Button title={"Submit"} />
+              </div>
+            </form>
+          </div>
+          <div>
+            <div className="contact__details">
+              <h3 className="contact__details__title">Let’s Keep in Touch!</h3>
+              <p className="contact__details__subtitle">
+                We would love to hear from you. Contact us for any inquiries you
+                might have for us.
+              </p>
+
+              {aboutLinks?.map((item) => (
+                <div className="contact__details__links">
+                  {item?.icon} {item?.title}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </ContactStyle>
+      </ContactStyle>
+      {isLoading && <Progress />}
+    </>
   );
 };
 
