@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../common/Button";
+import { useRequest } from "../../../hooks/useRequest";
+import { toast } from "react-toastify";
+import Progress from "../../common/Progress";
 
 const CheckoutSubscribeStyled = styled.div`
   position: relative;
@@ -67,25 +70,42 @@ const CheckoutSubscribeStyled = styled.div`
 `;
 
 const CheckoutSubscribe = () => {
+  const [email, setEmail] = useState();
+  const [subscribeEmail, { isLoading }] = useRequest();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const path = `/newsletter`;
+    const response = await subscribeEmail({ path });
+    if (response.success) {
+      toast.success(response?.message);
+    }
+  };
+
   return (
-    <CheckoutSubscribeStyled className="container">
-      <div className="content">
-        <h2 className="subscribtion__title">Get Our Updates</h2>
-        <p className="subscribtion__subtitle">
-          Borem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-          vulputate libero et velit interdum.
-        </p>
-        <form className="subscription__form">
-          <input
-            type="email"
-            className="subscription__input"
-            placeholder="Enter your email address ..."
-          />
-          <Button title={"Subscribe"} />
-        </form>
-      </div>
-      <img src="/images/subscribe.jpg" alt="subscription" />
-    </CheckoutSubscribeStyled>
+    <>
+      <CheckoutSubscribeStyled className="container">
+        <div className="content">
+          <h2 className="subscribtion__title">Get Our Updates</h2>
+          <p className="subscribtion__subtitle">
+            Borem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+            vulputate libero et velit interdum.
+          </p>
+          <form className="subscription__form" onSubmit={handleSubmit}>
+            <input
+              type="email"
+              className="subscription__input"
+              placeholder="Enter your email address ..."
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Button title={"Subscribe"} />
+          </form>
+        </div>
+        <img src="/images/subscribe.jpg" alt="subscription" />
+      </CheckoutSubscribeStyled>
+      {isLoading && <Progress />}
+    </>
   );
 };
 

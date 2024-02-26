@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../common/Button";
+import { toast } from "react-toastify";
+import { useRequest } from "../../../hooks/useRequest";
+import Progress from "../../common/Progress";
 
 const SubscribeStyle = styled.div`
   padding: 60px 0;
@@ -55,24 +58,51 @@ const SubscribeStyle = styled.div`
 `;
 
 const Subscribe = () => {
+  const [email, setEmail] = useState("");
+  const [subscribeEmail, { isLoading }] = useRequest();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      return toast.error("Email is required.", { toastId: "error" });
+    }
+    const path = `/newsletter`;
+    const response = await subscribeEmail({
+      path,
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+    if (response.success) {
+      toast.success(response?.message, { toastId: "success" });
+      setEmail("");
+    } else {
+      toast.error(response.message, { toastId: "error" });
+    }
+  };
+
   return (
-    <SubscribeStyle>
-      <h2 className="title">Subscribe to get our updates</h2>
-      <div className="form__wrapper">
-        <form className="form__subscription">
-          <div className="form__group">
-            <input
-              type="email"
-              className="input"
-              placeholder="Enter your email address ..."
-            />
-          </div>
-          <div className="form__group">
-            <Button title={"Subscribe"} />
-          </div>
-        </form>
-      </div>
-    </SubscribeStyle>
+    <>
+      <SubscribeStyle>
+        <h2 className="title">Subscribe to get our updates</h2>
+        <div className="form__wrapper">
+          <form className="form__subscription" onSubmit={handleSubmit}>
+            <div className="form__group">
+              <input
+                type="email"
+                className="input"
+                placeholder="Enter your email address ..."
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="form__group">
+              <Button title={"Subscribe"} />
+            </div>
+          </form>
+        </div>
+      </SubscribeStyle>
+      {isLoading && <Progress />}
+    </>
   );
 };
 
