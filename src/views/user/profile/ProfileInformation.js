@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../../components/common/Button";
+import { useRequest } from "../../../hooks/useRequest";
 
 const ProfileInformationStyle = styled.div`
   .text {
@@ -48,6 +49,19 @@ const ProfileInformationStyle = styled.div`
 `;
 
 const ProfileInformation = () => {
+  const [updateProfileInformation, { isLoading }] = useRequest();
+  const [profileInformation, setProfileInformation] = useState({
+    name: "",
+    email: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProfileInformation((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = () => {};
+
   return (
     <ProfileInformationStyle>
       <div className="form__info__wrapper">
@@ -57,16 +71,26 @@ const ProfileInformation = () => {
         </p>
         <div className="input__wrapper">
           <div className="input_group">
-            <label className="required">First name</label>
-            <input type="text" />
+            <label className="required">Full name</label>
+            <input
+              type="text"
+              name="name"
+              value={profileInformation?.name}
+              onChange={handleChange}
+            />
           </div>
-          <div className="input_group">
+          {/* <div className="input_group">
             <label className="required">Last name</label>
-            <input type="text" />
-          </div>
+            <input
+              type="text"
+              name="lastName"
+              value={profileInformation?.lastName}
+              onChange={handleChange}
+            />
+          </div> */}
         </div>
-        <Button type={"save"} title={"Save Changes"} />
-        <div className="page__subtitle">Business Details</div>
+        <Button type={"save"} onClick={handleSave} title={"Save Changes"} />
+        {/* <div className="page__subtitle">Business Details</div>
         <p className="text">
           Your Home Depot rewards will be sent to your registered business
           address.
@@ -118,8 +142,8 @@ const ProfileInformation = () => {
               <option>British Columbia </option>
             </select>
           </div>
-        </div>
-        <Button type={"save"} title={"Save Changes"} />
+        </div> 
+        <Button type={"save"} title={"Save Changes"} />*/}
         <div className="page__subtitle">Update Email</div>
         <p className="text">
           After saving your new email, you will be signed out and prompted to
@@ -128,20 +152,24 @@ const ProfileInformation = () => {
         <div className="input__wrapper">
           <div className="input_group">
             <label className="required">Email</label>
-            <input type="email" />
+            <input
+              type="email"
+              value={profileInformation?.email}
+              onChange={handleChange}
+            />
           </div>
         </div>
         <Button type={"save"} title={"Save Changes"} />
 
         <div className="page__subtitle">Update Password</div>
         <div className="input__wrapper">
-          <div className="input_group">
+          {/* <div className="input_group">
             <label className="required">Current Password</label>
             <input type="password" />
-          </div>
+          </div> */}
           <div className="input_group">
             <label className="required">New Password</label>
-            <input type="password" />
+            <input type="password" value={profileInformation?.password} />
           </div>
         </div>
         <Button type={"save"} title={"Save Changes"} />

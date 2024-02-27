@@ -82,8 +82,6 @@ const Account = () => {
     },
   ];
 
-  console.log("accountState", accountState);
-
   useEffect(() => {
     async function fetchAccountDetails() {
       const path = `/account`;
