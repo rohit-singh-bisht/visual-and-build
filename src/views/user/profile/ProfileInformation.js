@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../../components/common/Button";
 import { useRequest } from "../../../hooks/useRequest";
+import { toast } from "react-toastify";
+import Progress from "../../../components/common/Progress";
 
 const ProfileInformationStyle = styled.div`
   .text {
@@ -40,11 +42,11 @@ const ProfileInformationStyle = styled.div`
   }
   .page__subtitle {
     color: #333;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
     margin-bottom: 18px;
-    margin-top: 24px;
+    margin-top: 42px;
   }
 `;
 
@@ -53,6 +55,7 @@ const ProfileInformation = () => {
   const [profileInformation, setProfileInformation] = useState({
     name: "",
     email: "",
+    password: "",
   });
 
   const handleChange = (e) => {
@@ -60,26 +63,44 @@ const ProfileInformation = () => {
     setProfileInformation((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {};
+  const handleSave = async () => {
+    const body = Object.keys(profileInformation).reduce((acc, key) => {
+      if (profileInformation[key] !== "") {
+        acc[key] = profileInformation[key];
+      }
+      return acc;
+    }, {});
+    const response = await updateProfileInformation({
+      path: `/account`,
+      method: "PUT",
+      body,
+    });
+    if (response.success) {
+      toast.success(response.message);
+    } else {
+      toast.error(response.message);
+    }
+  };
 
   return (
-    <ProfileInformationStyle>
-      <div className="form__info__wrapper">
-        <p className="text">
-          Make changes to your business details, as well as update your email
-          and password.
-        </p>
-        <div className="input__wrapper">
-          <div className="input_group">
-            <label className="required">Full name</label>
-            <input
-              type="text"
-              name="name"
-              value={profileInformation?.name}
-              onChange={handleChange}
-            />
-          </div>
-          {/* <div className="input_group">
+    <>
+      <ProfileInformationStyle>
+        <div className="form__info__wrapper">
+          <p className="text">
+            Update your name, email and password to keep your account details up
+            to date.
+          </p>
+          <div className="input__wrapper">
+            <div className="input_group">
+              <label className="required">Full name</label>
+              <input
+                type="text"
+                name="name"
+                value={profileInformation?.name}
+                onChange={handleChange}
+              />
+            </div>
+            {/* <div className="input_group">
             <label className="required">Last name</label>
             <input
               type="text"
@@ -88,9 +109,9 @@ const ProfileInformation = () => {
               onChange={handleChange}
             />
           </div> */}
-        </div>
-        <Button type={"save"} onClick={handleSave} title={"Save Changes"} />
-        {/* <div className="page__subtitle">Business Details</div>
+          </div>
+          <Button type={"save"} onClick={handleSave} title={"Save Changes"} />
+          {/* <div className="page__subtitle">Business Details</div>
         <p className="text">
           Your Home Depot rewards will be sent to your registered business
           address.
@@ -144,37 +165,43 @@ const ProfileInformation = () => {
           </div>
         </div> 
         <Button type={"save"} title={"Save Changes"} />*/}
-        <div className="page__subtitle">Update Email</div>
-        <p className="text">
-          After saving your new email, you will be signed out and prompted to
-          sign in with your new email ID.
-        </p>
-        <div className="input__wrapper">
-          <div className="input_group">
-            <label className="required">Email</label>
-            <input
-              type="email"
-              value={profileInformation?.email}
-              onChange={handleChange}
-            />
+          <div className="page__subtitle">Update Email</div>
+          <p className="text">
+            After saving your new email, you will be signed out and prompted to
+            sign in with your new email ID.
+          </p>
+          <div className="input__wrapper">
+            <div className="input_group">
+              <label className="required">Email</label>
+              <input
+                type="email"
+                value={profileInformation?.email}
+                onChange={handleChange}
+              />
+            </div>
           </div>
-        </div>
-        <Button type={"save"} title={"Save Changes"} />
+          <Button type={"save"} onClick={handleSave} title={"Save Changes"} />
 
-        <div className="page__subtitle">Update Password</div>
-        <div className="input__wrapper">
-          {/* <div className="input_group">
+          <div className="page__subtitle">Update Password</div>
+          <div className="input__wrapper">
+            {/* <div className="input_group">
             <label className="required">Current Password</label>
             <input type="password" />
           </div> */}
-          <div className="input_group">
-            <label className="required">New Password</label>
-            <input type="password" value={profileInformation?.password} />
+            <div className="input_group">
+              <label className="required">New Password</label>
+              <input
+                type="password"
+                value={profileInformation?.password}
+                onChange={handleChange}
+              />
+            </div>
           </div>
+          <Button type={"save"} onClick={handleSave} title={"Save Changes"} />
         </div>
-        <Button type={"save"} title={"Save Changes"} />
-      </div>
-    </ProfileInformationStyle>
+      </ProfileInformationStyle>
+      {isLoading && <Progress />}
+    </>
   );
 };
 
