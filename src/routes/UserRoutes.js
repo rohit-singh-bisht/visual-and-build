@@ -41,7 +41,7 @@ const UserRoutes = () => {
       <Header setIsAuthForm={setIsAuthForm} />
       <Routes>
         <Route exact path="/" element={<Homepage />} />
-        <Route path="/categories" element={<Category />} />
+        <Route path="/category/:name" element={<Category />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/store/:vendorId" element={<Vendor />} />

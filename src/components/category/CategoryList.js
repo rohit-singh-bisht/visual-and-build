@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useCallback } from "react";
 import CategoryCard from "./CategoryCard";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const CategoryListStyle = styled.div`
   .title_wrapper {
@@ -53,6 +54,14 @@ const CategoryListStyle = styled.div`
 `;
 
 const CategoryList = ({ title, allText, allLink, list }) => {
+  const navigate = useNavigate();
+
+  const handleClick = useCallback((slug) => {
+    navigate(`/category/${slug}`);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <CategoryListStyle>
       <div className="title_wrapper">
@@ -62,7 +71,15 @@ const CategoryList = ({ title, allText, allLink, list }) => {
       <div className="list_wrapper">
         {list &&
           list?.length &&
-          list?.map((item) => <CategoryCard key={item?.id} {...item} />)}
+          list?.map((item) => {
+            return (
+              <CategoryCard
+                key={item?.id}
+                {...item}
+                onClick={() => handleClick(item?.slug)}
+              />
+            );
+          })}
         <div className="view__all">
           <div className="view__all__button">
             View All <br /> categories

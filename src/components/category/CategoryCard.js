@@ -51,10 +51,11 @@ const CategoryCardStyle = styled.div`
   }
 `;
 
-const CategoryCard = ({ name, link, bannerUrl, type }) => {
+const CategoryCard = ({ name, link, bannerUrl, type, onClick }) => {
   return (
     <CategoryCardStyle
       className={type === "text-in-image" ? "text__in__image" : ""}
+      onClick={onClick}
     >
       <div className="image">
         <img src={bannerUrl} alt={name} />
