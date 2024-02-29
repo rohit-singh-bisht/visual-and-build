@@ -46,6 +46,9 @@ const Login = ({ setIsAuthForm }) => {
     }
     toast.success(response.message);
     setUser(response.data);
+    const now = new Date();
+    const expirationDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    localStorage.setItem("expirationDate", expirationDate.toISOString());
     navigate("/account");
     setIsAuthForm(false);
   };
