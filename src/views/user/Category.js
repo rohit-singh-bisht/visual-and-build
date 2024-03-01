@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CategoryCard from "../../components/category/CategoryCard";
-import categoryDummy from "../../assets/category-dummy.jpg";
 import ProductCard from "../../components/product/ProductCard";
 import ProductList from "../../components/product/ProductList";
 import Pagination from "@mui/material/Pagination";
+import { useRequest } from "../../hooks/useRequest";
+import { Skeleton } from "@mui/material";
+import { useParams } from "react-router-dom";
 
 const CategoryStyle = styled.div`
   .categories {
@@ -60,16 +62,59 @@ const CategoryStyle = styled.div`
 `;
 
 const Category = () => {
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [pageCount, setPageCount] = useState(1);
+  const [
+    fetchCategories,
+    { isLoading: isFetchingCategories, state: category },
+  ] = useRequest(`/category?limit=100&page=1`);
+  const [fetchProducts, { state: products }] = useRequest();
+  let { name } = useParams();
+  const categoryList = name.split("/");
+  const categoriesData = category?.data?.docs;
+
+  useEffect(() => {
+    fetchCategories();
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    const activeCategory = categoriesData?.find((item) => item?.name === name);
+  }, [categoryList, categoriesData]);
+
+  useEffect(() => {
+    if (selectedCategory?.length) {
+      const path = `/product?limit=16&page=${pageCount}&sortOrder=&categories[]=65c2a512b22e8c4ad75ae965&brands[]=65c2a73c0022cd80cbeaafea`;
+      fetchProducts({ path });
+    }
+  }, [pageCount, selectedCategory]);
+
   return (
     <CategoryStyle className="container">
       <div className="categories">
-        {Array.from({ length: 8 }, (_, index) => index + 1)?.map((item) => (
-          <CategoryCard
-            src={categoryDummy}
-            title={"Bathroom & Kitchen"}
-            type={"text-in-image"}
-          />
-        ))}
+        {isFetchingCategories ? (
+          <>
+            {Array.from({ length: 4 }, (_, index) => index + 1)?.map((item) => (
+              <Skeleton
+                key={item}
+                variant="rectangular"
+                height={130}
+                style={{ borderRadius: "7.5px" }}
+              />
+            ))}
+          </>
+        ) : (
+          <>
+            {categoriesData?.map((item) => (
+              <CategoryCard
+                key={item?.id}
+                bannerUrl={item?.bannerUrl}
+                name={item?.name}
+                type={"text-in-image"}
+              />
+            ))}
+          </>
+        )}
       </div>
       <section className="products__wrapper">
         <aside>
