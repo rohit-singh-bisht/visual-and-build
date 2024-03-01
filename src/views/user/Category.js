@@ -6,7 +6,7 @@ import ProductList from "../../components/product/ProductList";
 import Pagination from "@mui/material/Pagination";
 import { useRequest } from "../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const CategoryStyle = styled.div`
   .categories {
@@ -62,32 +62,52 @@ const CategoryStyle = styled.div`
 `;
 
 const Category = () => {
-  const [selectedCategory, setSelectedCategory] = useState([]);
-  const [pageCount, setPageCount] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const [
     fetchCategories,
     { isLoading: isFetchingCategories, state: category },
   ] = useRequest(`/category?limit=100&page=1`);
   const [fetchProducts, { state: products }] = useRequest();
-  let { name } = useParams();
-  const categoryList = name.split("/");
+  const { search } = useLocation();
   const categoriesData = category?.data?.docs;
+  const [categoriesIdList, setCategoriesIdList] = useState();
+  const [categoryNames, setCategoriesNames] = useState();
 
   useEffect(() => {
+    const params = new URLSearchParams(search);
+    const categoryNames = params.getAll("name[]");
+    setCategoriesNames(categoryNames);
     fetchCategories();
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    const activeCategory = categoriesData?.find((item) => item?.name === name);
-  }, [categoryList, categoriesData]);
+  const generateURL = (categories) => {
+    let url = `/product?limit=16`;
+    categories.forEach((category) => {
+      url += `&category[]=${category}`;
+    });
+    return url;
+  };
 
   useEffect(() => {
-    if (selectedCategory?.length) {
-      const path = `/product?limit=16&page=${pageCount}&sortOrder=&categories[]=65c2a512b22e8c4ad75ae965&brands[]=65c2a73c0022cd80cbeaafea`;
+    const categoriesId = categoriesData?.reduce((acc, curr) => {
+      categoryNames?.forEach((name) => {
+        if (name === curr?.name) {
+          return acc.push(curr?.id);
+        }
+      });
+      return acc;
+    }, []);
+    setCategoriesIdList(categoriesId);
+  }, [categoriesData, categoryNames]);
+
+  useEffect(() => {
+    if (categoriesIdList?.length) {
+      const path = generateURL(categoriesIdList);
       fetchProducts({ path });
     }
-  }, [pageCount, selectedCategory]);
+    // eslint-disable-next-line
+  }, [pageNumber, categoriesIdList]);
 
   return (
     <CategoryStyle className="container">
@@ -126,7 +146,7 @@ const Category = () => {
           <div className="products__grid">
             {Array.from({ length: 16 }, (_, index) => index + 1)?.map(
               (item) => (
-                <ProductCard isLoading={true} />
+                <ProductCard key={item} isLoading={true} />
               )
             )}
           </div>

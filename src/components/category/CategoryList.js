@@ -57,7 +57,7 @@ const CategoryList = ({ title, allText, allLink, list }) => {
   const navigate = useNavigate();
 
   const handleClick = useCallback((slug) => {
-    navigate(`/category/${slug}`);
+    navigate(`/category?name[]=${slug}`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
