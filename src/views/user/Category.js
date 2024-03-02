@@ -6,7 +6,7 @@ import ProductList from "../../components/product/ProductList";
 import Pagination from "@mui/material/Pagination";
 import { useRequest } from "../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CategoryStyle = styled.div`
   .categories {
@@ -67,47 +67,50 @@ const Category = () => {
     fetchCategories,
     { isLoading: isFetchingCategories, state: category },
   ] = useRequest(`/category?limit=100&page=1`);
-  const [fetchProducts, { state: products }] = useRequest();
+  const [fetchProducts, { isLoading: isFetchingProducts, state: products }] =
+    useRequest();
   const { search } = useLocation();
   const categoriesData = category?.data?.docs;
+  const navigate = useNavigate();
   const [categoriesIdList, setCategoriesIdList] = useState();
-  const [categoryNames, setCategoriesNames] = useState();
 
   useEffect(() => {
     const params = new URLSearchParams(search);
     const categoryNames = params.getAll("name[]");
-    setCategoriesNames(categoryNames);
+    const categoriesIdList = getCategoriesId(categoriesData, categoryNames);
+    setCategoriesIdList(categoriesIdList);
+  }, [search, categoriesData]);
+
+  useEffect(() => {
     fetchCategories();
     // eslint-disable-next-line
   }, []);
 
-  const generateURL = (categories) => {
-    let url = `/product?limit=16`;
+  const generateURL = (pageNumber, categories) => {
+    let url = `/product?limit=16&page=${pageNumber}`;
     categories.forEach((category) => {
       url += `&category[]=${category}`;
     });
     return url;
   };
 
-  useEffect(() => {
-    const categoriesId = categoriesData?.reduce((acc, curr) => {
-      categoryNames?.forEach((name) => {
-        if (name === curr?.name) {
-          return acc.push(curr?.id);
-        }
-      });
-      return acc;
-    }, []);
-    setCategoriesIdList(categoriesId);
-  }, [categoriesData, categoryNames]);
+  function getCategoriesId(categoriesData, categoryNames) {
+    return categoriesData
+      ?.filter((category) => categoryNames.includes(category?.name))
+      .map((category) => category?.id);
+  }
 
   useEffect(() => {
-    if (categoriesIdList?.length) {
-      const path = generateURL(categoriesIdList);
+    if (categoriesIdList) {
+      const path = generateURL(pageNumber, categoriesIdList);
       fetchProducts({ path });
     }
     // eslint-disable-next-line
   }, [pageNumber, categoriesIdList]);
+
+  const handleCategoryClick = (item) => {
+    navigate(`/category?name[]=${item?.name}`);
+  };
 
   return (
     <CategoryStyle className="container">
@@ -131,30 +134,52 @@ const Category = () => {
                 bannerUrl={item?.bannerUrl}
                 name={item?.name}
                 type={"text-in-image"}
+                onClick={() => handleCategoryClick(item)}
               />
             ))}
           </>
         )}
       </div>
-      <section className="products__wrapper">
-        <aside>
-          <div className="products__filters"></div>
-        </aside>
-        <div className="products">
-          <h2 className="title">Products</h2>
-          <p className="subtitle">Showing 1 - 16 of 160 results.</p>
-          <div className="products__grid">
-            {Array.from({ length: 16 }, (_, index) => index + 1)?.map(
-              (item) => (
-                <ProductCard key={item} isLoading={true} />
-              )
+      {categoriesIdList?.length ? (
+        <section className="products__wrapper">
+          <aside>
+            <div className="products__filters"></div>
+          </aside>
+          <div className="products">
+            <h2 className="title">Products</h2>
+            <p className="subtitle">
+              Showing 1 - {products?.data?.docs?.length || 0} of{" "}
+              {products?.data?.totalDocs || 0} results.
+            </p>
+            <div className="products__grid">
+              {products?.data?.docs?.map((product) => (
+                <ProductCard
+                  key={product?.id}
+                  isLoading={isFetchingProducts}
+                  productTitle={product?.name}
+                  productDiscountedPrice={product?.price}
+                  productImage={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${product.image}`}
+                />
+              ))}
+              {isFetchingProducts &&
+                Array.from({ length: 12 }, (_, index) => index + 1)?.map(
+                  (item) => <ProductCard key={item} isLoading={true} />
+                )}
+            </div>
+            {!isFetchingProducts && (
+              <div className="product__list__pagination">
+                <Pagination
+                  className="pagination"
+                  count={products?.data?.totalPages}
+                  shape="rounded"
+                />
+              </div>
             )}
           </div>
-          <div className="product__list__pagination">
-            <Pagination className="pagination" count={10} shape="rounded" />
-          </div>
-        </div>
-      </section>
+        </section>
+      ) : (
+        ""
+      )}
       <div className="products__related">
         <ProductList listTitle="Group Buy Products" pagination={false} />
       </div>

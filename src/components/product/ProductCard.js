@@ -7,6 +7,7 @@ export const ProductCardStyle = styled.div`
   border: 0.75px solid #d9d9d9;
   padding: 18.75px 18.75px 37.75px;
   width: 100%;
+  cursor: pointer;
   .image {
     img {
       width: 100%;
@@ -26,9 +27,14 @@ export const ProductCardStyle = styled.div`
     }
     .product__title {
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      text-transform: capitalize;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 16px;
+      text-align: left;
     }
     .product__price__wrapper {
       display: flex;
@@ -61,23 +67,30 @@ const ProductCard = ({
   productDiscountedPrice,
   productPrice,
   isLoading,
+  onClick,
 }) => {
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
   return (
     <>
       {!isLoading ? (
-        <ProductCardStyle>
+        <ProductCardStyle onClick={onClick}>
           <div className="image">
             <img src={productImage} alt="" />
           </div>
           <div className="content">
             <p className="product__tag">{productTag}</p>
-            <p className="product__title">{productTitle}</p>
+            <p className="product__title" title={productTitle}>
+              {productTitle}
+            </p>
             <div className="product__price__wrapper">
               <div className="product__discounted__price">
                 {priceSymbol + productDiscountedPrice}
               </div>
-              <div className="product__price">{priceSymbol + productPrice}</div>
+              {productPrice && (
+                <div className="product__price">
+                  {priceSymbol + productPrice}
+                </div>
+              )}
             </div>
           </div>
         </ProductCardStyle>

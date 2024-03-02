@@ -28,6 +28,8 @@ const CategoryCardStyle = styled.div`
     position: relative;
     .image {
       margin-bottom: 0;
+      position: relative;
+      transition: all 0.3s;
     }
     .title {
       color: #fff;
@@ -39,6 +41,12 @@ const CategoryCardStyle = styled.div`
       left: 50%;
       transform: translate(-50%, -50%);
       white-space: nowrap;
+      z-index: 2;
+    }
+    &:hover {
+      .image {
+        transform: scale(1.1);
+      }
     }
   }
   @media (max-width: 768px) {
@@ -59,6 +67,16 @@ const CategoryCard = ({ name, link, bannerUrl, type, onClick }) => {
     >
       <div className="image">
         <img src={bannerUrl} alt={name} />
+        {type === "text-in-image" && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              backgroundColor: "rgba(0,0,0,0.35)",
+            }}
+          />
+        )}
       </div>
       <div className="title">{name}</div>
     </CategoryCardStyle>
