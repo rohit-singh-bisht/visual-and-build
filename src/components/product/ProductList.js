@@ -28,7 +28,8 @@ const ProductListStyle = styled.div`
     }
   }
   .product__list__wrapper {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 18px;
   }
   .product__list__pagination {
@@ -51,6 +52,7 @@ const ProductListStyle = styled.div`
       padding: 0 20px;
       overflow: auto;
       gap: 10px;
+      display: flex;
       &::-webkit-scrollbar {
         display: none;
       }
@@ -65,6 +67,7 @@ const ProductList = ({
   handleButtonClick,
   pagination = true,
   productList,
+  isLoading,
 }) => {
   const { isDesktop } = useAppContext();
   return (
@@ -84,11 +87,24 @@ const ProductList = ({
         </div>
       )}
       <div className="product__list__wrapper">
-        <ProductCard isLoading={true} />
-        <ProductCard isLoading={true} />
-        <ProductCard isLoading={true} />
-        <ProductCard isLoading={true} />
-        <ProductCard isLoading={true} />
+        {isLoading ? (
+          <>
+            {Array.from({ length: 5 }, (_, index) => index + 1)?.map((item) => (
+              <ProductCard key={item} isLoading={isLoading} />
+            ))}
+          </>
+        ) : (
+          <>
+            {productList?.map((product) => (
+              <ProductCard
+                key={product?.id}
+                productImage={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${product.image}`}
+                productTitle={product?.name}
+                productDiscountedPrice={product?.price}
+              />
+            ))}
+          </>
+        )}
       </div>
       {pagination && isDesktop && (
         <div className="product__list__pagination">

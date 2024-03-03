@@ -7,6 +7,7 @@ import Pagination from "@mui/material/Pagination";
 import { useRequest } from "../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import GroupBuyGrid from "../../components/common/GroupBuyGrid";
 
 const CategoryStyle = styled.div`
   .categories {
@@ -190,7 +191,7 @@ const Category = () => {
         ""
       )}
       <div className="products__related">
-        <ProductList listTitle="Group Buy Products" pagination={false} />
+        <GroupBuyGrid />
       </div>
     </CategoryStyle>
   );

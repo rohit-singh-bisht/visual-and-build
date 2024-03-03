@@ -14,6 +14,7 @@ import { useRequest } from "../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import ProductDetailsSkeleton from "../../components/skeleton/ProductDetailsSkeleton";
+import GroupBuyGrid from "../../components/common/GroupBuyGrid";
 
 const ProductDetailsStyle = styled.div`
   padding: 70px 0;
@@ -195,6 +196,10 @@ const ProductDetails = () => {
     fetchProductDetails,
     { isLoading: isFetchingProductsDetails, state: productDetailsState },
   ] = useRequest();
+  const [
+    fetchRelatedProducts,
+    { isLoading: isFetchingRelatedProducts, state: relatedProducts },
+  ] = useRequest();
   const { search } = useLocation();
   const { data: productDetails } = productDetailsState || {};
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
@@ -203,8 +208,9 @@ const ProductDetails = () => {
     const params = new URLSearchParams(search);
     const productId = params.get("id");
     if (productId) {
-      const path = `/product/${productId}/show`;
-      fetchProductDetails({ path });
+      const path = `/product/${productId}/`;
+      fetchProductDetails({ path: path + "show" });
+      fetchRelatedProducts({ path: path + "related" });
     }
   }, [search]);
 
@@ -329,14 +335,11 @@ const ProductDetails = () => {
               buttonText={"View All"}
               pagination={false}
               buttonArrow={true}
+              isLoading={isFetchingRelatedProducts}
+              productList={relatedProducts?.data?.docs}
             />
           </div>
-          <ProductList
-            listTitle={"Group Buy Products"}
-            buttonText={"View All"}
-            pagination={false}
-            buttonArrow={true}
-          />
+          <GroupBuyGrid />
         </div>
       </ProductDetailsStyle>
       {isAddToCartActive && (
