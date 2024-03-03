@@ -112,6 +112,14 @@ const Category = () => {
     navigate(`/category?name[]=${item?.name}`);
   };
 
+  const handleProductClick = (item) => {
+    let slug = item?.slug;
+    if (slug.endsWith(".")) {
+      slug = slug.slice(0, -1);
+    }
+    navigate(`/product/${slug}?id=${item?._id}`);
+  };
+
   return (
     <CategoryStyle className="container">
       <div className="categories">
@@ -159,6 +167,7 @@ const Category = () => {
                   productTitle={product?.name}
                   productDiscountedPrice={product?.price}
                   productImage={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${product.image}`}
+                  onClick={() => handleProductClick(product)}
                 />
               ))}
               {isFetchingProducts &&

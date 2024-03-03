@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as ReviewStars } from "../../assets/reviewStars.svg";
 import IconWithTextList from "../../components/common/IconWithTextList";
@@ -10,6 +10,10 @@ import ProductList from "../../components/product/ProductList";
 import AddToCartModal from "../../components/modals/AddToCartModal";
 import ProductInformationTabs from "../../components/product/ProductInformationTabs";
 import { useAppContext } from "../../context/useAppContext";
+import { useRequest } from "../../hooks/useRequest";
+import { Skeleton } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import ProductDetailsSkeleton from "../../components/skeleton/ProductDetailsSkeleton";
 
 const ProductDetailsStyle = styled.div`
   padding: 70px 0;
@@ -75,6 +79,7 @@ const ProductDetailsStyle = styled.div`
       font-weight: 600;
       line-height: 34.5px;
       margin-bottom: 20.5px;
+      text-transform: capitalize;
     }
     .product__price {
       display: flex;
@@ -186,84 +191,137 @@ const ProductDetailsStyle = styled.div`
 const ProductDetails = () => {
   const [isAddToCartActive, setIsAddToCartActive] = useState(false);
   const { isDesktop } = useAppContext();
+  const [
+    fetchProductDetails,
+    { isLoading: isFetchingProductsDetails, state: productDetailsState },
+  ] = useRequest();
+  const { search } = useLocation();
+  const { data: productDetails } = productDetailsState || {};
+  const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
 
-  const images = [
-    {
-      original: "https://picsum.photos/id/1018/1000/600/",
-      thumbnail: "https://picsum.photos/id/1018/250/150/",
-    },
-    {
-      original: "https://picsum.photos/id/1015/1000/600/",
-      thumbnail: "https://picsum.photos/id/1015/250/150/",
-    },
-    {
-      original: "https://picsum.photos/id/1019/1000/600/",
-      thumbnail: "https://picsum.photos/id/1019/250/150/",
-    },
-  ];
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const productId = params.get("id");
+    if (productId) {
+      const path = `/product/${productId}/show`;
+      fetchProductDetails({ path });
+    }
+  }, [search]);
+
+  const getProductImages = (product) => {
+    if (!(product && Object.keys(product).length)) return [];
+    let itemImages = [];
+    const baseUrl = process.env.REACT_APP_MEDIA_ASSETS_URL + "/";
+    if (product?.image) {
+      itemImages.push({
+        original: baseUrl + product.image,
+        thumbnail: baseUrl + product.image,
+      });
+    }
+    if (
+      product &&
+      product?.additionalImages &&
+      product?.additionalImages.length > 0
+    ) {
+      product?.additionalImages?.forEach((image) => {
+        itemImages.push({
+          original: baseUrl + image.name,
+          thumbnail: baseUrl + image.name,
+        });
+      });
+    }
+    return itemImages;
+  };
+
+  const productImages = useMemo(
+    () => getProductImages(productDetails),
+    [productDetails]
+  );
+
   return (
     <>
       <ProductDetailsStyle>
         <div className="container">
           <div className="product__details__wrapper">
             <div className="image__gallery">
-              <ImageGallery
-                items={images}
-                showBullets={false}
-                showNav={false}
-                showPlayButton={false}
-              />
+              {isFetchingProductsDetails ? (
+                <Skeleton
+                  variant="rectangular"
+                  width={"100%"}
+                  height={350}
+                  style={{ marginBottom: "142px" }}
+                />
+              ) : (
+                <ImageGallery
+                  items={productImages}
+                  showBullets={false}
+                  showNav={false}
+                  showPlayButton={false}
+                />
+              )}
               {isDesktop && <IconWithTextList data={productIcons} />}
             </div>
-            <div className="product__details">
-              <div className="vendor__details__reviews">
-                <div className="vendor__details">MS Trader</div>
-                <div className="product__reviews">
-                  <ReviewStars />
-                  (142)
+            {isFetchingProductsDetails &&
+            !(productDetails && Object.keys(productDetails)?.length) ? (
+              <ProductDetailsSkeleton />
+            ) : (
+              <div className="product__details">
+                <div className="vendor__details__reviews">
+                  <div className="vendor__details">MS Trader</div>
+                  <div className="product__reviews">
+                    <ReviewStars />({productDetails?.numReviews})
+                  </div>
                 </div>
-              </div>
-              <h2 className="product__title">
-                Kayra Decor 3D PVC Wall Panels Wave Design D026 (Pack of 6)
-                Drywall Panel (Pack of 6)
-              </h2>
-              <hr
-                style={{ borderTop: "0.75px solid rgba(48, 48, 48, 0.25)" }}
-              />
-              <div className="product__price">
-                <div className="discounted__price">$1999.00</div>
-                <div className="original__price">$1999.00</div>
-              </div>
-              <div className="product__details__options">
-                <div className="product__options">
-                  <h2 className="product__options__title">Brand</h2>
-                  <p className="product__options__value">The Drywall Company</p>
-                </div>
-                <div className="product__options">
-                  <h2 className="product__options__title">Model Number</h2>
-                  <p className="product__options__value">
-                    3D PVC Wall Panels Wave Design D026 (Pack of 6)
-                  </p>
-                </div>
-                <div className="product__options">
-                  <h2 className="product__options__title">Material</h2>
-                  <p className="product__options__value">PVC</p>
-                </div>
-                <div className="product__options">
-                  <h2 className="product__options__title">Finish</h2>
-                  <p className="product__options__value">Matte</p>
-                </div>
-                <div className="product__options__variants">
-                  <ProductVariants name={"Variant"} />
-                </div>
-                <ProductActions
-                  onAddToCart={() => setIsAddToCartActive(true)}
+                <h2 className="product__title">{productDetails?.name}</h2>
+                <hr
+                  style={{ borderTop: "0.75px solid rgba(48, 48, 48, 0.25)" }}
                 />
+                <div className="product__price">
+                  <div className="discounted__price">
+                    {priceSymbol +
+                      (productDetails?.discount
+                        ? productDetails.discount
+                        : productDetails?.price.toFixed(2))}
+                  </div>
+                  {productDetails?.discount && (
+                    <div className="original__price">
+                      {priceSymbol + productDetails?.price.toFixed(2)}
+                    </div>
+                  )}
+                </div>
+                <div className="product__details__options">
+                  <div className="product__options">
+                    <h2 className="product__options__title">Brand</h2>
+                    <p className="product__options__value">
+                      The Drywall Company
+                    </p>
+                  </div>
+                  <div className="product__options">
+                    <h2 className="product__options__title">Model Number</h2>
+                    <p className="product__options__value">
+                      3D PVC Wall Panels Wave Design D026 (Pack of 6)
+                    </p>
+                  </div>
+                  <div className="product__options">
+                    <h2 className="product__options__title">Material</h2>
+                    <p className="product__options__value">PVC</p>
+                  </div>
+                  <div className="product__options">
+                    <h2 className="product__options__title">Finish</h2>
+                    <p className="product__options__value">Matte</p>
+                  </div>
+                  <div className="product__options__variants">
+                    <ProductVariants name={"Variant"} />
+                  </div>
+                  <ProductActions
+                    onAddToCart={() => setIsAddToCartActive(true)}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="product__information__tab__wrapper">
-            <ProductInformationTabs />
+            <ProductInformationTabs description={productDetails?.description} />
           </div>
           <div className="related__product">
             <ProductList
