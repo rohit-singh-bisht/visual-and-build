@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ProductCardSkeleton from "../skeleton/ProductCardSkeleton";
+import StarRating from "../common/StarRating";
 
 export const ProductCardStyle = styled.div`
   border-radius: 4px;
@@ -68,6 +69,8 @@ const ProductCard = ({
   productPrice,
   isLoading,
   onClick,
+  avgRating,
+  ratingCount,
 }) => {
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
   return (
@@ -91,6 +94,9 @@ const ProductCard = ({
                   {priceSymbol + productPrice}
                 </div>
               )}
+            </div>
+            <div className="product__reviews">
+              <StarRating avgRating={avgRating} ratingCount={ratingCount} />
             </div>
           </div>
         </ProductCardStyle>

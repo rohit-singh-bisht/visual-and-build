@@ -169,6 +169,8 @@ const Category = () => {
                   productDiscountedPrice={product?.price}
                   productImage={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${product.image}`}
                   onClick={() => handleProductClick(product)}
+                  ratingCount={product?.numReviews}
+                  avgRating={product?.avgRating}
                 />
               ))}
               {isFetchingProducts &&

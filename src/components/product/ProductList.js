@@ -101,6 +101,8 @@ const ProductList = ({
                 productImage={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${product.image}`}
                 productTitle={product?.name}
                 productDiscountedPrice={product?.price}
+                ratingCount={product?.numReviews}
+                avgRating={product?.avgRating}
               />
             ))}
           </>
