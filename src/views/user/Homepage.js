@@ -80,7 +80,7 @@ const Homepage = () => {
 
   return (
     <HompageStyle>
-      {topBanner?.length && (
+      {topBanner?.length > 0 && (
         <SlidingBanner
           bannerData={topBanner}
           leftdistance={isDesktop ? 188 : 30}
@@ -95,7 +95,7 @@ const Homepage = () => {
         />
       </div>
 
-      {midBanner?.length && (
+      {midBanner?.length > 0 && (
         <SlidingBanner
           bannerData={midBanner}
           leftdistance={isDesktop ? 108 : 30}
