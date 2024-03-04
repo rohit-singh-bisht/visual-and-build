@@ -32,15 +32,17 @@ const QuantityInputStyle = styled.div`
   }
 `;
 
-const QuantityInput = ({ className }) => {
+const QuantityInput = ({ className, handleProductQuantity }) => {
   const [count, setCount] = useState(1);
 
   const handleClick = (e) => {
     if (e === "remove" && count !== 1) {
       setCount((prev) => prev - 1);
+      handleProductQuantity && handleProductQuantity((prev) => prev - 1);
     }
     if (e === "add") {
       setCount((prev) => prev + 1);
+      handleProductQuantity && handleProductQuantity((prev) => prev + 1);
     }
   };
 

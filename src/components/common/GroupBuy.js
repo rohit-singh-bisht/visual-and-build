@@ -31,6 +31,14 @@ export const GroupBuyStyle = styled.div`
       display: flex;
       align-items: center;
       gap: 6.75px;
+      .product__reviews__count {
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 23px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: #303030;
+      }
     }
     .product__price {
       display: flex;
@@ -95,27 +103,14 @@ export const GroupBuyStyle = styled.div`
   }
 `;
 
-const images = [
-  {
-    original: "https://picsum.photos/id/1018/1000/600/",
-    thumbnail: "https://picsum.photos/id/1018/250/150/",
-  },
-  {
-    original: "https://picsum.photos/id/1015/1000/600/",
-    thumbnail: "https://picsum.photos/id/1015/250/150/",
-  },
-  {
-    original: "https://picsum.photos/id/1019/1000/600/",
-    thumbnail: "https://picsum.photos/id/1019/250/150/",
-  },
-];
-
 const GroupBuy = ({
   productTitle,
   productDescription,
   productOriginalPrice,
   productPrice,
   reverse,
+  reviewsCount = 0,
+  images,
 }) => {
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
   return (
@@ -131,6 +126,9 @@ const GroupBuy = ({
       <div className="product__details">
         <div className="product__ratings">
           <ReviewStars />
+          <span className="product__reviews__count">
+            {reviewsCount} Reviews
+          </span>
         </div>
         <p className="product__title">{productTitle}</p>
         <p className="product__description">{productDescription}</p>

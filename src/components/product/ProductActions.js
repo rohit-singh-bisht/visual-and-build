@@ -100,11 +100,14 @@ const ProductActionsStyle = styled.div`
   }
 `;
 
-const ProductActions = ({ onAddToCart }) => {
+const ProductActions = ({ onAddToCart, handleProductQuantity }) => {
   const { isDesktop } = useAppContext();
   return (
     <ProductActionsStyle>
-      <QuantityInput className={"product__details__quantity"} />
+      <QuantityInput
+        handleProductQuantity={handleProductQuantity}
+        className={"product__details__quantity"}
+      />
       {isDesktop && <Button title={"Buy Now"} className="buy__now" />}
       <div className="add__to__cart" onClick={onAddToCart}>
         <AddToCart />

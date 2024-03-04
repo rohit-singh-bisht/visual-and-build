@@ -119,7 +119,7 @@ const Homepage = () => {
 
       <div className="container product_list">
         <ProductList
-          listTitle={"Interior"}
+          listTitle={"Exterior"}
           buttonArrow={false}
           buttonText={"See all"}
         />

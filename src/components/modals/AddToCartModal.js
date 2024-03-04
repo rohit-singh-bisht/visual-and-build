@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as CheckIcon } from "../../assets/check.svg";
 import GenericModal from "./GenericModal";
+import { useRequest } from "../../hooks/useRequest";
 
 const AddToCartModalStyle = styled.div`
   .modal__body {
@@ -18,35 +19,67 @@ const AddToCartModalStyle = styled.div`
   }
 `;
 
-const AddToCartModal = ({ onMaskClick }) => {
+const AddToCartModal = ({
+  onMaskClick,
+  handleSecondaryButtonClick,
+  product,
+  quantity,
+}) => {
+  const [isNormalCartChecked, setIsNormalCartChecked] = useState(false);
+  const [addCart, { isLoading }] = useRequest();
+  console.log("productDetails", product, quantity);
+  const requestPayload = {
+    id: product?.id,
+    quantity: quantity,
+  };
+
+  const handlePrimaryClick = async () => {
+    if (isNormalCartChecked) {
+      const response = await addCart({ path: `/cart`, method: "POST" });
+    }
+  };
+
   return (
     <AddToCartModalStyle>
-      <GenericModal onMaskClick={onMaskClick}>
+      <GenericModal
+        modalTitle={"Add to Cart"}
+        primaryButtonTitle={"Save"}
+        secondaryButtonTitle={"Add Instacart"}
+        onSecondaryButtonClick={handleSecondaryButtonClick}
+        onMaskClick={onMaskClick}
+        onPrimaryButtonClick={handlePrimaryClick}
+      >
         <div className="modal__body__normal__cart">
           <div className="modal__body__title">Normal Cart</div>
           <div className="checkbox__group">
-            <input type="checkbox" id="cart" />
-            <div className="checkbox">
-              <CheckIcon />
-            </div>
+            <label htmlFor="cart">
+              <input
+                type="checkbox"
+                id="cart"
+                onChange={(e) => setIsNormalCartChecked(e?.target?.checked)}
+              />
+              <div className="checkbox">
+                <CheckIcon />
+              </div>
+            </label>
             <label htmlFor="cart">Cart</label>
           </div>
         </div>
         <div className="modal__body__other__carts">
           <div className="modal__body__title">InstaBuild</div>
           <div className="checkbox__group">
-            <input type="checkbox" id="cart" />
+            <input type="checkbox" id="cart1" />
             <div className="checkbox">
               <CheckIcon />
             </div>
-            <label htmlFor="cart">Cart 1</label>
+            <label htmlFor="cart1">Cart 1</label>
           </div>
           <div className="checkbox__group">
-            <input type="checkbox" id="cart" />
+            <input type="checkbox" id="cart2" />
             <div className="checkbox">
               <CheckIcon />
             </div>
-            <label htmlFor="cart">Cart 2</label>
+            <label htmlFor="cart2">Cart 2</label>
           </div>
         </div>
       </GenericModal>

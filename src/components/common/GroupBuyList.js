@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import GroupBuy from "./GroupBuy";
 import GroupBuySkeleton from "../skeleton/GroupBuySkeleton";
+import { getProductImages } from "../../utils/helper";
 
 const GroupBuyListStyle = styled.div`
   .group_buy {
@@ -46,13 +47,16 @@ const GroupBuyList = ({ groupBuyList, isLoading }) => {
             </div>
             <div className="group__buy__products">
               {groupBuyList?.map((item, index) => {
-                const { name, price } = item;
+                const { name, price, numReviews } = item;
+                const productImages = getProductImages(item);
                 return (
                   <GroupBuy
                     key={item?.id}
                     reverse={index % 2 !== 0 ? "true" : "false"}
                     productTitle={name}
                     productPrice={price}
+                    reviewsCount={numReviews}
+                    images={productImages}
                   />
                 );
               })}

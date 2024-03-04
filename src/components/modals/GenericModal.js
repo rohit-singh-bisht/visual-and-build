@@ -29,7 +29,7 @@ const GenericModalStyle = styled.div`
   }
   .modal__body {
     padding: 36px 40px 60px;
-    max-height: 400px;
+    height: 400px;
     overflow: auto;
     &::-webkit-scrollbar {
       display: none;
@@ -73,21 +73,45 @@ const GenericModalStyle = styled.div`
       width: 225px;
       font-weight: 500;
     }
+    .primary__button {
+      margin-left: auto;
+    }
   }
 `;
 
-const GenericModal = ({ children, onMaskClick }) => {
+const GenericModal = ({
+  modalTitle,
+  onPrimaryButtonClick,
+  primaryButtonTitle,
+  onSecondaryButtonClick,
+  secondaryButtonTitle,
+  children,
+  onMaskClick,
+}) => {
   return (
     <GenericModalStyle>
       <StyledMask background={"rgba(0,0,0,0.5)"} onClick={onMaskClick} />
       <div className="modal">
         <div className="modal__header">
-          <div className="modal__header__title">Add to Cart</div>
+          <div className="modal__header__title">{modalTitle}</div>
         </div>
         <div className="modal__body">{children}</div>
         <div className="modal__footer">
-          <Button type={"dark"} title={"Add instacart"} />
-          <Button title={"Save"} />
+          {secondaryButtonTitle && (
+            <Button
+              type={"dark"}
+              onClick={onSecondaryButtonClick}
+              className={"secondary__button"}
+              title={secondaryButtonTitle}
+            />
+          )}
+          {primaryButtonTitle && (
+            <Button
+              onClick={onPrimaryButtonClick}
+              className={"primary__button"}
+              title={primaryButtonTitle}
+            />
+          )}
         </div>
       </div>
     </GenericModalStyle>

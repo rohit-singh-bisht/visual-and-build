@@ -15,6 +15,8 @@ import { Skeleton } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import ProductDetailsSkeleton from "../../components/skeleton/ProductDetailsSkeleton";
 import GroupBuyGrid from "../../components/common/GroupBuyGrid";
+import { getProductImages } from "../../utils/helper";
+import CreateInstaCartModal from "../../components/modals/CreateInstaCartModal";
 
 const ProductDetailsStyle = styled.div`
   padding: 70px 0;
@@ -191,6 +193,7 @@ const ProductDetailsStyle = styled.div`
 
 const ProductDetails = () => {
   const [isAddToCartActive, setIsAddToCartActive] = useState(false);
+  const [isInstaCartActive, setIsInstaCartActive] = useState(false);
   const { isDesktop } = useAppContext();
   const [
     fetchProductDetails,
@@ -203,6 +206,7 @@ const ProductDetails = () => {
   const { search } = useLocation();
   const { data: productDetails } = productDetailsState || {};
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
+  const [productQuantity, setProductQuantity] = useState(1);
 
   useEffect(() => {
     const params = new URLSearchParams(search);
@@ -213,31 +217,6 @@ const ProductDetails = () => {
       fetchRelatedProducts({ path: path + "related" });
     }
   }, [search]);
-
-  const getProductImages = (product) => {
-    if (!(product && Object.keys(product).length)) return [];
-    let itemImages = [];
-    const baseUrl = process.env.REACT_APP_MEDIA_ASSETS_URL + "/";
-    if (product?.image) {
-      itemImages.push({
-        original: baseUrl + product.image,
-        thumbnail: baseUrl + product.image,
-      });
-    }
-    if (
-      product &&
-      product?.additionalImages &&
-      product?.additionalImages.length > 0
-    ) {
-      product?.additionalImages?.forEach((image) => {
-        itemImages.push({
-          original: baseUrl + image.name,
-          thumbnail: baseUrl + image.name,
-        });
-      });
-    }
-    return itemImages;
-  };
 
   const productImages = useMemo(
     () => getProductImages(productDetails),
@@ -320,6 +299,7 @@ const ProductDetails = () => {
                     <ProductVariants name={"Variant"} />
                   </div>
                   <ProductActions
+                    handleProductQuantity={setProductQuantity}
                     onAddToCart={() => setIsAddToCartActive(true)}
                   />
                 </div>
@@ -343,7 +323,15 @@ const ProductDetails = () => {
         </div>
       </ProductDetailsStyle>
       {isAddToCartActive && (
-        <AddToCartModal onMaskClick={() => setIsAddToCartActive(false)} />
+        <AddToCartModal
+          onMaskClick={() => setIsAddToCartActive(false)}
+          handleSecondaryButtonClick={() => setIsInstaCartActive(true)}
+          product={productDetails}
+          quantity={productQuantity}
+        />
+      )}
+      {isInstaCartActive && (
+        <CreateInstaCartModal onMaskClick={() => setIsInstaCartActive(false)} />
       )}
     </>
   );
