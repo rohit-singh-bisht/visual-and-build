@@ -44,7 +44,7 @@ const SlidingBanner = ({
             <Banner
               title={item?.heading}
               subtitle={item?.tagline}
-              imageSrc={item?.url}
+              imageSrc={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${item.name}`}
               leftdistance={leftdistance}
               textDark={true}
               buttonTitle={"Get Started"}

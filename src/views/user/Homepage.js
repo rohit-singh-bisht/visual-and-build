@@ -80,11 +80,13 @@ const Homepage = () => {
 
   return (
     <HompageStyle>
-      <SlidingBanner
-        bannerData={topBanner}
-        leftdistance={isDesktop ? 188 : 30}
-        loading={isFetchingBanner}
-      />
+      {topBanner?.length && (
+        <SlidingBanner
+          bannerData={topBanner}
+          leftdistance={isDesktop ? 188 : 30}
+          loading={isFetchingBanner}
+        />
+      )}
 
       <div className="container category_list">
         <CategoryList
@@ -93,11 +95,13 @@ const Homepage = () => {
         />
       </div>
 
-      <SlidingBanner
-        bannerData={midBanner}
-        leftdistance={isDesktop ? 108 : 30}
-        loading={isFetchingBanner}
-      />
+      {midBanner?.length && (
+        <SlidingBanner
+          bannerData={midBanner}
+          leftdistance={isDesktop ? 108 : 30}
+          loading={isFetchingBanner}
+        />
+      )}
 
       <div className="container product_list">
         <ProductList
