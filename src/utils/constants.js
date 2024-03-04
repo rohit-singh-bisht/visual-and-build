@@ -67,3 +67,16 @@ export const contactFormStateObj = {
   phone: "",
   message: "",
 };
+
+export const addressFormObj = {
+  fullName: "",
+  phoneNumber: "",
+  pincode: "",
+  locality: "",
+  address: "",
+  city: "",
+  state: "",
+  landmark: "",
+  alternateNumber: "",
+  label: "",
+};

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../../common/Button";
+import { addressFormObj } from "../../../utils/constants";
 
 const AddressFormStyle = styled.div`
   border-radius: 7.5px;
@@ -87,7 +88,21 @@ const AddressFormStyle = styled.div`
   }
 `;
 
-const AddressForm = ({ title = "Add Address" }) => {
+const AddressForm = ({ title = "Add Address", state, setState, onClick }) => {
+  const [addressData, setAddressData] = useState(addressFormObj);
+
+  useEffect(() => {
+    setState && setState(addressData);
+  }, [addressData]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setAddressData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <AddressFormStyle>
       <div className="add__address__modal">
@@ -97,59 +112,129 @@ const AddressForm = ({ title = "Add Address" }) => {
           <div className="row">
             <div className="form__group">
               <label>Full name</label>
-              <input type="text" placeholder="Full Name" />
+              <input
+                type="text"
+                name="fullName"
+                value={addressData?.fullName}
+                placeholder="Full Name"
+                onChange={handleChange}
+              />
             </div>
             <div className="form__group">
               <label>Phone Number</label>
-              <input type="tel" placeholder="Phone Number" />
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={addressData?.phoneNumber}
+                placeholder="Phone Number"
+                onChange={handleChange}
+              />
             </div>
           </div>
           <div className="row">
             <div className="form__group">
               <label>Pincode</label>
-              <input type="number" placeholder="Pincode" />
+              <input
+                type="number"
+                pattern="/d*"
+                name="pincode"
+                value={addressData?.pincode}
+                placeholder="Pincode"
+                onChange={handleChange}
+              />
             </div>
             <div className="form__group">
               <label>Locality</label>
-              <input type="text" placeholder="Locality" />
+              <input
+                type="text"
+                name="locality"
+                value={addressData?.locality}
+                placeholder="Locality"
+                onChange={handleChange}
+              />
             </div>
           </div>
           <div className="form__group">
             <label>Address</label>
-            <textarea placeholder="Enter Address"></textarea>
+            <textarea
+              value={addressData?.address}
+              name="address"
+              onChange={handleChange}
+              placeholder="Enter Address"
+            >
+              {addressData?.address}
+            </textarea>
           </div>
           <div className="row">
             <div className="form__group">
               <label>City</label>
-              <input type="text" placeholder="Enter City" />
+              <input
+                type="text"
+                name="city"
+                value={addressData?.city}
+                onChange={handleChange}
+                placeholder="Enter City"
+              />
             </div>
             <div className="form__group">
               <label>State</label>
-              <input type="text" placeholder="Enter State" />
+              <input
+                type="text"
+                name="state"
+                value={addressData?.state}
+                onChange={handleChange}
+                placeholder="Enter State"
+              />
             </div>
           </div>
           <div className="row">
             <div className="form__group">
               <label>Landmark</label>
-              <input type="text" placeholder="Enter Landmark" />
+              <input
+                type="text"
+                name="landmark"
+                value={addressData?.landmark}
+                onChange={handleChange}
+                placeholder="Enter Landmark"
+              />
             </div>
             <div className="form__group">
               <label>Alternate Mobile Number</label>
-              <input type="tel" placeholder="Enter alternate mobile number" />
+              <input
+                type="tel"
+                name="alternateNumber"
+                value={addressData?.alternateNumber}
+                onChange={handleChange}
+                placeholder="Enter alternate mobile number"
+              />
             </div>
           </div>
           <div className="row">
             <div className="radio__group">
-              <input id="home" name="address_type" type="radio" />
+              <input
+                id="home"
+                onChange={handleChange}
+                name="label"
+                type="radio"
+                value={"home"}
+                checked={addressData?.label === "home"}
+              />
               <label htmlFor="home">Home</label>
             </div>
             <div className="radio__group">
-              <input id="work" name="address_type" type="radio" />
+              <input
+                id="work"
+                onChange={handleChange}
+                name="label"
+                type="radio"
+                value={"work"}
+                checked={addressData?.label === "work"}
+              />
               <label htmlFor="work">Work</label>
             </div>
           </div>
           <div className="submit__button">
-            <Button title={"Save Address"} />
+            <Button title={"Save Address"} onClick={onClick} />
           </div>
         </div>
       </div>
