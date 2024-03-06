@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as More } from "../../assets/vertical-options.svg";
 import Dropdown from "../common/Dropdown";
 import StyledMask from "../common/StyledMask";
 import AddressForm from "../forms/address/AddressForm";
+import { useRequest } from "../../hooks/useRequest";
+import { toast } from "react-toastify";
+import Progress from "../common/Progress";
 
 const AddressCardStyle = styled.div`
   padding: 18px;
@@ -76,12 +79,35 @@ const AddressFormStyle = styled.div`
 const AddressCard = () => {
   const [isOptionsActive, setIsOptionsActive] = useState(false);
   const [dropdownAction, setDropdownAction] = useState("");
+  const [addAddress, { isLoading }] = useRequest();
+  const [addressData, setAddressData] = useState();
+
+  const handleAddAddress = useCallback(async () => {
+    try {
+      const path = `/address`;
+      const response = await addAddress({
+        path,
+        method: "POST",
+        body: JSON.stringify(addressData),
+      });
+      if (!response.success) {
+        return toast.error(response.message);
+      }
+    } catch (err) {
+      console.log("err", err);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
       {dropdownAction === "edit" ? (
         <AddressFormStyle>
-          <AddressForm title="" />
+          <AddressForm
+            title=""
+            onClick={handleAddAddress}
+            setState={setAddressData}
+          />
         </AddressFormStyle>
       ) : (
         <AddressCardStyle>
@@ -118,6 +144,7 @@ const AddressCard = () => {
           )}
         </AddressCardStyle>
       )}
+      {isLoading && <Progress />}
     </>
   );
 };

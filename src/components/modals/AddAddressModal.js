@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import StyledMask from "../common/StyledMask";
 import AddressForm from "../forms/address/AddressForm";
+import { toast } from "react-toastify";
+import { useRequest } from "../../hooks/useRequest";
+import Progress from "../common/Progress";
 
 const AddAddressModalStyle = styled.div`
   position: fixed;
@@ -25,11 +28,29 @@ const AddAddressModalStyle = styled.div`
 `;
 
 const AddAddressModal = ({ setIsAddressModal }) => {
+  const [addressData, setAddressData] = useState();
+  const [addAddress, { isLoading }] = useRequest();
+
+  const handleAddAddress = useCallback(async () => {
+    if (isLoading) return;
+    const path = `/address`;
+    const response = await addAddress({
+      path,
+      method: "POST",
+      body: JSON.stringify(addressData),
+    });
+    if (!response.success) {
+      return toast.error(response.message);
+    }
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <>
       <AddAddressModalStyle>
         <StyledMask onClick={() => setIsAddressModal(false)} />
-        <AddressForm />
+        <AddressForm setState={setAddressData} onClick={handleAddAddress} />
+        {isLoading && <Progress />}
       </AddAddressModalStyle>
     </>
   );
