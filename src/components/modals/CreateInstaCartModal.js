@@ -44,6 +44,7 @@ const CreateInstaCartModal = ({ onMaskClick }) => {
       toast.success(response.message);
     }
     toast.error(response.message);
+    // eslint-disable-next-line
   }, [instaCartName]);
 
   return (
