@@ -15,6 +15,7 @@ const CartProductCardStyle = styled.div`
     padding-right: 40px;
     .cart__product__image {
       width: 82px;
+      height: 114px;
     }
     .cart__product__details {
       flex: 1;
