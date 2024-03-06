@@ -4,6 +4,7 @@ import CartCard from "./CartCard";
 import { useAppContext } from "../../context/useAppContext";
 
 const CartTableStyle = styled.div`
+  flex: 1;
   .cart__items {
     flex: 1;
     border-radius: 12px;
@@ -36,6 +37,13 @@ const CartTableStyle = styled.div`
         }
       }
     }
+    .no_items_found {
+      padding: 30px;
+      text-align: center;
+      color: #000;
+      font-size: 16px;
+      font-weight: 500;
+    }
   }
   @media (max-width: 768px) {
     .cart__items {
@@ -48,7 +56,7 @@ const CartTableStyle = styled.div`
   }
 `;
 
-const CartTable = ({ isSchedule }) => {
+const CartTable = ({ isSchedule, cartData }) => {
   const { isDesktop } = useAppContext();
 
   return (
@@ -64,17 +72,23 @@ const CartTable = ({ isSchedule }) => {
           </div>
         )}
         <div>
-          <CartCard isSchedule={isSchedule} />
-          <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />
-          <CartCard isSchedule={isSchedule} />
-          <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />
-          <CartCard isSchedule={isSchedule} />
-          <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />
-          <CartCard isSchedule={isSchedule} />
-          <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />
-          <CartCard isSchedule={isSchedule} />
-          <hr style={{ border: "0px", borderBottom: "0.75px solid #CCC2C2" }} />
-          <CartCard isSchedule={isSchedule} />
+          {cartData && cartData?.length ? (
+            cartData?.map((item, index) => {
+              return (
+                <div key={item}>
+                  <CartCard isSchedule={isSchedule} />
+                  <hr
+                    style={{
+                      border: "0px",
+                      borderBottom: "0.75px solid #CCC2C2",
+                    }}
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <div className="no_items_found">No items found in your cart</div>
+          )}
         </div>
       </div>
     </CartTableStyle>

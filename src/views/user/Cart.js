@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import IconWithTextList from "../../components/common/IconWithTextList";
 import CartTable from "../../components/cart/CartTable";
 import CartOrderSummary from "../../components/cart/CartOrderSummary";
 import CollapsibleCart from "../../components/cart/CollapsibleCart";
+import { useRequest } from "../../hooks/useRequest";
 
 const CartStyle = styled.div`
   padding-top: 70px;
@@ -39,12 +40,23 @@ const CartStyle = styled.div`
 `;
 
 const Cart = () => {
+  const [getCart, { isLoading, state: cartData }] = useRequest();
+
+  useEffect(() => {
+    (async function () {
+      const path = ``;
+      await getCart(``);
+    })();
+  }, []);
+
+  console.log("cartData", cartData);
+
   return (
     <CartStyle>
       <div className="container">
         <div className="page__title">Your Cart</div>
         <div className="cart__wrapper">
-          <CartTable />
+          <CartTable cartData={cartData?.data?.docs} />
           <div className="cart__order__summary__hodler">
             <CartOrderSummary />
           </div>

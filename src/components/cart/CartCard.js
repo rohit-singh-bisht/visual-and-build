@@ -23,6 +23,7 @@ const CartProductCardStyle = styled.div`
       flex-direction: column;
       justify-content: space-between;
       color: #303030;
+      padding: 5px 0;
       .cart__product__category {
         font-size: 11.25px;
         font-weight: 400;
