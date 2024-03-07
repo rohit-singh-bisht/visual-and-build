@@ -5,6 +5,9 @@ import CartTable from "../../components/cart/CartTable";
 import CartOrderSummary from "../../components/cart/CartOrderSummary";
 import CollapsibleCart from "../../components/cart/CollapsibleCart";
 import { useRequest } from "../../hooks/useRequest";
+import { useAuth } from "../../hooks/useAuth";
+import Button from "../../components/common/Button";
+import { useAppContext } from "../../context/useAppContext";
 
 const CartStyle = styled.div`
   padding-top: 70px;
@@ -39,17 +42,60 @@ const CartStyle = styled.div`
   }
 `;
 
+const MissingCartItems = styled.div`
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  max-width: 1260px;
+  margin: 48px auto;
+  padding: 40px;
+  text-align: center;
+  .title {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .subtitle {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  button {
+    padding: 4px 30px;
+    border-radius: 4px;
+    margin-top: 24px;
+  }
+  .empty_cart {
+    width: 300px;
+    display: block;
+    margin: -30px auto 0;
+  }
+`;
+
 const Cart = () => {
-  const [getCart, { isLoading, state: cartData }] = useRequest();
+  const [getCart, { state: cartData }] = useRequest();
+  const auth = useAuth();
+  const { setIsAuthForm } = useAppContext();
 
   useEffect(() => {
     (async function () {
-      const path = ``;
-      await getCart(``);
+      const path = `/cart?limit=10&page=1`;
+      await getCart({ path });
     })();
+
+    // eslint-disable-next-line
   }, []);
 
-  console.log("cartData", cartData);
+  if (!auth) {
+    return (
+      <MissingCartItems>
+        <img
+          src="/images/empty_cart.png"
+          className="empty_cart"
+          alt="Empty Cart"
+        />
+        <h2 className="title">Missing Cart items?</h2>
+        <p className="subtitle">Login to see the items you added previously</p>
+        <Button title={"Login"} onClick={() => setIsAuthForm(true)} />
+      </MissingCartItems>
+    );
+  }
 
   return (
     <CartStyle>

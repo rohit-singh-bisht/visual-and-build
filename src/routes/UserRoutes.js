@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Homepage from "../views/user/Homepage";
 import Header from "../layout/Header";
@@ -14,6 +14,7 @@ import UserAccountRoutes from "./UserAccountRoutes";
 import AuthenticationForm from "../components/forms/authentication/AuthenticationForm";
 import styled from "styled-components";
 import { useAuth } from "../hooks/useAuth";
+import { useAppContext } from "../context/useAppContext";
 
 const AuthPopupStyle = styled.div`
   position: fixed;
@@ -28,7 +29,7 @@ const AuthPopupStyle = styled.div`
 `;
 
 const UserRoutes = () => {
-  const [isAuthForm, setIsAuthForm] = useState(false);
+  const { isAuthForm, setIsAuthForm } = useAppContext();
   const isLoggedIn = useAuth();
 
   return (
