@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as HelpCircle } from "../assets/help-circle.svg";
-import { ReactComponent as RadioEmpty } from "../assets/radio-empty.svg";
-import { ReactComponent as RadioFilled } from "../assets/radio-filled.svg";
+import { ReactComponent as HelpCircle } from "../../assets/help-circle.svg";
+import { ReactComponent as RadioEmpty } from "../../assets/radio-empty.svg";
+import { ReactComponent as RadioFilled } from "../../assets/radio-filled.svg";
 
 const BillingDetailsStyle = styled.div`
   .billing__input {

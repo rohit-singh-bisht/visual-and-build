@@ -45,7 +45,7 @@ const UserRoutes = () => {
         <Route path="/category" element={<Category />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/store/:vendorId" element={<Vendor />} />
+        <Route path="/seller/:sellerId" element={<Vendor />} />
         <Route path="/product/:productId" element={<ProductDetails />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} />

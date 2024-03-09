@@ -15,6 +15,7 @@ const SlidingBanner = ({
   slidesToShow = 1,
   slidesToScroll = 1,
   leftdistance,
+  arrows = false,
   loading,
 }) => {
   var settings = bannerSettings || {
@@ -23,6 +24,7 @@ const SlidingBanner = ({
     speed,
     slidesToShow,
     slidesToScroll,
+    arrows,
   };
   const { isDesktop } = useAppContext();
 
@@ -44,7 +46,9 @@ const SlidingBanner = ({
             <Banner
               title={item?.heading}
               subtitle={item?.tagline}
-              imageSrc={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${item.name}`}
+              imageSrc={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${
+                item.name || item?.image
+              }`}
               leftdistance={leftdistance}
               textDark={true}
               buttonTitle={"Get Started"}

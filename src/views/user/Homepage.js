@@ -52,6 +52,10 @@ const Homepage = () => {
     fetchGroupBuy,
     { isLoading: isFetchingGroupBuy, state: groupBuyState },
   ] = useRequest(`/product/groupby?limit=3&page=1`);
+  const [
+    fetchSlidingBanner,
+    { isLoading: isFetchingSlidingBanner, state: slidingBanners },
+  ] = useRequest(`/slider?limit=10&page=1`);
   const [topBanner, setTopBanner] = useState();
   const [midBanner, setMidBanner] = useState();
   const [bottomBanner, setBottomBanner] = useState();
@@ -72,6 +76,7 @@ const Homepage = () => {
       setMidBanner(results?.[1]?.data?.docs);
       setBottomBanner(results?.[2]?.data?.docs);
     };
+    fetchSlidingBanner();
     fetchAllBanners();
     fetchCategories();
     fetchGroupBuy();
@@ -80,13 +85,11 @@ const Homepage = () => {
 
   return (
     <HompageStyle>
-      {topBanner?.length > 0 && (
-        <SlidingBanner
-          bannerData={topBanner}
-          leftdistance={isDesktop ? 188 : 30}
-          loading={isFetchingBanner}
-        />
-      )}
+      <SlidingBanner
+        bannerData={slidingBanners?.data?.docs}
+        leftdistance={isDesktop ? 188 : 30}
+        loading={isFetchingSlidingBanner || !slidingBanners?.data?.docs}
+      />
 
       <div className="container category_list">
         <CategoryList
@@ -95,9 +98,9 @@ const Homepage = () => {
         />
       </div>
 
-      {midBanner?.length > 0 && (
+      {topBanner?.length > 0 && (
         <SlidingBanner
-          bannerData={midBanner}
+          bannerData={topBanner}
           leftdistance={isDesktop ? 108 : 30}
           loading={isFetchingBanner}
         />
@@ -111,11 +114,13 @@ const Homepage = () => {
         />
       </div>
 
-      <SlidingBanner
-        bannerData={bottomBanner}
-        leftdistance={isDesktop ? 108 : 30}
-        loading={isFetchingBanner}
-      />
+      {midBanner?.length > 0 && (
+        <SlidingBanner
+          bannerData={midBanner}
+          leftdistance={isDesktop ? 108 : 30}
+          loading={isFetchingBanner}
+        />
+      )}
 
       <div className="container product_list">
         <ProductList
@@ -129,6 +134,15 @@ const Homepage = () => {
         groupBuyList={groupBuyState?.data?.docs}
         isLoading={isFetchingGroupBuy}
       />
+
+      {bottomBanner?.length > 0 && (
+        <SlidingBanner
+          bannerData={bottomBanner}
+          leftdistance={isDesktop ? 108 : 30}
+          loading={isFetchingBanner}
+        />
+      )}
+
       <FaqList />
       <div className="container blogs">
         <HomeBlogs />

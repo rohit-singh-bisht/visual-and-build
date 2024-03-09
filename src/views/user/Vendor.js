@@ -1,10 +1,11 @@
-import React from "react";
-// import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ProductList from "../../components/product/ProductList";
 import CategoryCard from "../../components/category/CategoryCard";
 import categoryDummy from "../../assets/category-dummy.jpg";
 import { useAppContext } from "../../context/useAppContext";
+import { useRequest } from "../../hooks/useRequest";
 
 const VendorStyle = styled.div`
   .vendor__cover {
@@ -17,6 +18,7 @@ const VendorStyle = styled.div`
     border-radius: 14px;
     border: 0.75px solid #969696;
     background: #fff;
+    overflow: clip;
   }
   .categories {
     display: grid;
@@ -53,14 +55,29 @@ const VendorStyle = styled.div`
 `;
 
 const Vendor = (props) => {
-  //   const { vendorId } = useParams();
-
+  const { sellerId } = useParams();
   const {
     vendorCoverSrc = "/images/store-cover.jpg",
     vendorLogo,
     vendorName,
   } = props;
   const { isDesktop } = useAppContext();
+  const [fetchSellerDetails] = useRequest();
+  const [sliders, setSliders] = useState();
+
+  useEffect(() => {
+    const fetchSellerInfo = async (sellerId) => {
+      const paths = [
+        `/seller/${sellerId}/show`,
+        `/seller/${sellerId}/products`,
+        `/seller/${sellerId}/sliders`,
+      ];
+      const results = await Promise.all(
+        paths?.map((path) => fetchSellerDetails({ path }))
+      );
+    };
+    fetchSellerInfo(sellerId);
+  }, [sellerId]);
 
   return (
     <VendorStyle>

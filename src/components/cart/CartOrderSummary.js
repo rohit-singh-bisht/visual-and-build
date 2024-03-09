@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useRequest } from "../../hooks/useRequest";
 
 const CartOrderSummaryStyle = styled.div`
   width: 380px;
@@ -130,6 +131,8 @@ const CartOrderSummaryStyle = styled.div`
 `;
 
 const CartOrderSummary = () => {
+  const [orderSummary, { state }] = useRequest("/checkout/summary");
+
   return (
     <CartOrderSummaryStyle>
       <div className="cart__summary__header">

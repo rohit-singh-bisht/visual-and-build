@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as InfoSvg } from "../assets/info.svg";
+import { ReactComponent as InfoSvg } from "../../assets/info.svg";
 
 const CheckoutOrderSummaryStyle = styled.div`
   padding: 30px;
@@ -99,7 +99,7 @@ const CheckoutOrderSummaryStyle = styled.div`
   }
 `;
 
-const CheckoutOrderSummary = () => {
+const CheckoutOrderSummary = ({ handleOrderNow }) => {
   return (
     <CheckoutOrderSummaryStyle>
       <h3 className="checkout__order__summary__title">Order Summary</h3>
@@ -132,7 +132,9 @@ const CheckoutOrderSummary = () => {
             $4,999.00
           </div>
         </div>
-        <button className="checkout__now__button">Order Now</button>
+        <button className="checkout__now__button" onClick={handleOrderNow}>
+          Order Now
+        </button>
       </div>
     </CheckoutOrderSummaryStyle>
   );

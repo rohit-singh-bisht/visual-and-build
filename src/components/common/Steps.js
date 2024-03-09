@@ -9,6 +9,7 @@ const StepsStyled = styled.div`
     display: flex;
     align-items: center;
     gap: 12px;
+    cursor: pointer;
     .count {
       width: 38px;
       height: 38px;
@@ -71,11 +72,11 @@ const stepsData = [
   },
 ];
 
-const Steps = ({ activeIndex }) => {
+const Steps = ({ activeIndex, handleStepClick }) => {
   return (
     <StepsStyled>
       {stepsData?.map((step, index) => (
-        <div className="step__holder">
+        <div className="step__holder" onClick={() => handleStepClick(step)}>
           {activeIndex === index + 1 && (
             <span className="count">{("0" + (index + 1)).slice(-2)}</span>
           )}
