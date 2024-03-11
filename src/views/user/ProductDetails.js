@@ -65,6 +65,7 @@ const ProductDetailsStyle = styled.div`
         line-height: 22.5px;
         text-decoration-line: underline;
         cursor: pointer;
+        text-transform: capitalize;
       }
       .product__reviews {
         color: #303030;
@@ -199,24 +200,19 @@ const ProductDetails = () => {
     fetchProductDetails,
     { isLoading: isFetchingProductsDetails, state: productDetailsState },
   ] = useRequest();
-  const [
-    fetchRelatedProducts,
-    { isLoading: isFetchingRelatedProducts, state: relatedProducts },
-  ] = useRequest();
   const { search } = useLocation();
   const { data: productDetails } = productDetailsState || {};
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
   const [productQuantity, setProductQuantity] = useState(1);
+  const params = new URLSearchParams(search);
+  const productId = params.get("id");
 
   useEffect(() => {
-    const params = new URLSearchParams(search);
-    const productId = params.get("id");
     if (productId) {
       const path = `/product/${productId}/`;
       fetchProductDetails({ path: path + "show" });
-      fetchRelatedProducts({ path: path + "related" });
     }
-  }, [search]);
+  }, [productId]);
 
   const productImages = useMemo(
     () => getProductImages(productDetails),
@@ -252,7 +248,9 @@ const ProductDetails = () => {
             ) : (
               <div className="product__details">
                 <div className="vendor__details__reviews">
-                  <div className="vendor__details">MS Trader</div>
+                  <div className="vendor__details">
+                    {productDetails?.seller?.name}
+                  </div>
                   <div className="product__reviews">
                     <ReviewStars />({productDetails?.numReviews})
                   </div>
@@ -307,7 +305,10 @@ const ProductDetails = () => {
             )}
           </div>
           <div className="product__information__tab__wrapper">
-            <ProductInformationTabs description={productDetails?.description} />
+            <ProductInformationTabs
+              specifications={productDetails?.specs}
+              description={productDetails?.description}
+            />
           </div>
           <div className="related__product">
             <ProductList
@@ -315,8 +316,7 @@ const ProductDetails = () => {
               buttonText={"View All"}
               pagination={false}
               buttonArrow={true}
-              isLoading={isFetchingRelatedProducts}
-              productList={relatedProducts?.data?.docs}
+              apiPath={`/product/${productId}/related`}
             />
           </div>
           <GroupBuyGrid />

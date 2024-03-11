@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import styled from "styled-components";
 import Pagination from "@mui/material/Pagination";
 import { ReactComponent as ArrowIcon } from "../../assets/arrow.svg";
 import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
+import { useNavigate } from "react-router-dom";
 
 const ProductListStyle = styled.div`
   .product__list__title__wrapper {
@@ -75,15 +76,22 @@ const ProductList = ({
   const [products, setProducts] = useState(productList);
   const [fetchProducts, { isLoading: fetchingProducts }] = useRequest();
   const [pageNumber, setPageNumber] = useState(1);
+  const navigate = useNavigate();
+  const [totalPages, setTotalPages] = useState();
+  console.log("products", products);
 
   const getProducts = async (limit, pageNumber) => {
     const path = apiPath + `?limit=${limit}&page=${pageNumber}`;
     const response = await fetchProducts({ path });
-    setProducts(response?.data);
+    console.log("response", response);
+    if (response.success) {
+      setTotalPages(response?.data?.totalPages);
+      setProducts(response?.data?.docs || response?.data);
+    }
   };
 
   useEffect(() => {
-    apiPath && !productList && getProducts(10, pageNumber);
+    apiPath && !productList && getProducts(5, pageNumber);
 
     // eslint-disable-next-line
   }, [apiPath, pageNumber]);
@@ -92,7 +100,15 @@ const ProductList = ({
     setPageNumber(value);
   };
 
-  if (!productList?.length && !products?.length) {
+  const handleProductClick = useCallback((product) => {
+    let slug = product?.slug;
+    if (slug.endsWith(".")) {
+      slug = slug.slice(0, -1);
+    }
+    navigate(`/product/${slug}?id=${product?._id}`);
+  }, []);
+
+  if (!products?.length) {
     return "";
   }
 
@@ -113,10 +129,13 @@ const ProductList = ({
         </div>
       )}
       <div className="product__list__wrapper">
-        {fetchingProducts || isLoading ? (
+        {fetchingProducts || isLoading || !products?.length ? (
           <>
             {Array.from({ length: 5 }, (_, index) => index + 1)?.map((item) => (
-              <ProductCard key={item} isLoading={isLoading} />
+              <ProductCard
+                key={item}
+                isLoading={isLoading || fetchingProducts}
+              />
             ))}
           </>
         ) : (
@@ -129,6 +148,7 @@ const ProductList = ({
                 productDiscountedPrice={product?.price}
                 ratingCount={product?.numReviews}
                 avgRating={product?.avgRating}
+                onClick={() => handleProductClick(product)}
               />
             ))}
           </>
@@ -138,7 +158,7 @@ const ProductList = ({
         <div className="product__list__pagination">
           <Pagination
             className="pagination"
-            count={10}
+            count={totalPages}
             shape="rounded"
             onChange={handlePaginationChange}
           />

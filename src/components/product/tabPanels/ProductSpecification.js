@@ -37,17 +37,17 @@ const ProductSpecificationStyle = styled.div`
   }
 `;
 
-const ProductSpecification = () => {
+const ProductSpecification = ({ specifications }) => {
   return (
     <ProductSpecificationStyle>
-      {Array.from({ length: 5 }, (_, index) => index + 1).map((item) => (
+      {specifications?.map((item) => (
         <div className="product__specification">
           <div className="icon">
             <GearIcon />
           </div>
           <div className="content">
-            <p>Parameter 1</p>
-            <p className="main">Wooden Door</p>
+            <p>{item?.label}</p>
+            <p className="main">{item?.value}</p>
           </div>
         </div>
       ))}

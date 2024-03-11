@@ -55,7 +55,7 @@ const ProductInformationTabsStyle = styled.div`
   }
 `;
 
-const ProductInformationTabs = ({ description }) => {
+const ProductInformationTabs = ({ specifications, description }) => {
   const [selectedTabId, setSelectedTabId] = useState(0);
   const { isDesktop } = useAppContext();
 
@@ -67,7 +67,7 @@ const ProductInformationTabs = ({ description }) => {
     {
       id: 0,
       title: "Specification",
-      component: <ProductSpecification />,
+      component: <ProductSpecification specifications={specifications} />,
     },
     {
       id: 1,
