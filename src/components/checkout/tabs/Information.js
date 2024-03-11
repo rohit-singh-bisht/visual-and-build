@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import BillingDetails from "../BillingDetails";
 import CheckoutOrderSummary from "../CheckoutOrderSummary";
+import CheckoutSubscribe from "../../forms/subscribe/CheckoutSubscribe";
 
 const InformationStyle = styled.div`
   .checkout__wrapper {
@@ -70,53 +71,56 @@ const InformationStyle = styled.div`
 
 const Information = ({ handleChangeBilling, handleOrderNow }) => {
   return (
-    <InformationStyle>
-      <div className="checkout__wrapper">
-        <div className="checkout__billing__wrapper">
-          <h2 className="checkout__billing__title">Billing Details</h2>
-          <div className="checkout__billing__details">
-            <BillingDetails
-              billingMethod={"Choose Pickup"}
-              billerName={"The mechanical Shop"}
-              billingAddress={
-                "House no 11 Sawaswati colony naya pul sehatpur, Naya pul Faridabad - 121003, Haryana"
-              }
-              billingPhone={"7503063585, 7503063585"}
-              billingType={"pickup"}
-              onClick={handleChangeBilling}
-              index={1}
-            />
-          </div>
-          <div className="checkout__billing__details">
-            <BillingDetails
-              billingMethod={"Choose Pickup"}
-              billerName={"The mechanical Shop"}
-              billingAddress={
-                "House no 11 Sawaswati colony naya pul sehatpur, Naya pul Faridabad - 121003, Haryana"
-              }
-              billingPhone={"7503063585, 7503063585"}
-              billingType={"delivery"}
-              onClick={handleChangeBilling}
-              index={2}
-            />
-          </div>
-          <div className="checkout__add__new__address__wrapper">
-            <div className="checkout__add__new__address">Add New Address</div>
-          </div>
+    <>
+      <InformationStyle>
+        <div className="checkout__wrapper">
+          <div className="checkout__billing__wrapper">
+            <h2 className="checkout__billing__title">Billing Details</h2>
+            <div className="checkout__billing__details">
+              <BillingDetails
+                billingMethod={"Choose Pickup"}
+                billerName={"The mechanical Shop"}
+                billingAddress={
+                  "House no 11 Sawaswati colony naya pul sehatpur, Naya pul Faridabad - 121003, Haryana"
+                }
+                billingPhone={"7503063585, 7503063585"}
+                billingType={"pickup"}
+                onClick={handleChangeBilling}
+                index={1}
+              />
+            </div>
+            <div className="checkout__billing__details">
+              <BillingDetails
+                billingMethod={"Choose Pickup"}
+                billerName={"The mechanical Shop"}
+                billingAddress={
+                  "House no 11 Sawaswati colony naya pul sehatpur, Naya pul Faridabad - 121003, Haryana"
+                }
+                billingPhone={"7503063585, 7503063585"}
+                billingType={"delivery"}
+                onClick={handleChangeBilling}
+                index={2}
+              />
+            </div>
+            <div className="checkout__add__new__address__wrapper">
+              <div className="checkout__add__new__address">Add New Address</div>
+            </div>
 
-          <div className="checkout__order__notes">
-            <h3 className="checkout__order__notes__title">Order Notes</h3>
-            <textarea
-              className="checkout__order__notes__textarea"
-              placeholder="Enter your order notes ..."
-            ></textarea>
+            <div className="checkout__order__notes">
+              <h3 className="checkout__order__notes__title">Order Notes</h3>
+              <textarea
+                className="checkout__order__notes__textarea"
+                placeholder="Enter your order notes ..."
+              ></textarea>
+            </div>
+          </div>
+          <div className="checkout__order__summary__wrapper">
+            <CheckoutOrderSummary handleOrderNow={handleOrderNow} />
           </div>
         </div>
-        <div className="checkout__order__summary__wrapper">
-          <CheckoutOrderSummary handleOrderNow={handleOrderNow} />
-        </div>
-      </div>
-    </InformationStyle>
+      </InformationStyle>
+      <CheckoutSubscribe />
+    </>
   );
 };
 

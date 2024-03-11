@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import Steps from "../../components/common/Steps";
-import CheckoutSubscribe from "../../components/forms/subscribe/CheckoutSubscribe";
 import Information from "../../components/checkout/tabs/Information";
 import Payment from "../../components/checkout/tabs/Payment";
 
@@ -14,6 +13,12 @@ const CheckoutStyle = styled.div`
     font-weight: 700;
     line-height: 51px;
     margin-bottom: 27px;
+  }
+  .icon_with_text {
+    margin-top: 140px;
+    padding: 60px 0 0;
+    border-top: 1px solid rgba(48, 48, 48, 0.25);
+    width: 100vw;
   }
   @media (max-width: 768px) {
     padding: 40px 0;
@@ -74,7 +79,6 @@ const Checkout = () => {
           ?.find((item) => item?.id === activeStep)
           ?.component(handleChangeBilling, handleOrderNow)}
       </div>
-      <CheckoutSubscribe />
     </CheckoutStyle>
   );
 };

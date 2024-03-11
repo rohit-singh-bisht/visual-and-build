@@ -17,6 +17,9 @@ const HompageStyle = styled.div`
   }
   .product_list {
     padding: 86px 0;
+    &:empty {
+      display: none;
+    }
   }
   .blogs {
     padding: 60px 0;
@@ -111,6 +114,7 @@ const Homepage = () => {
           listTitle={"Interior"}
           buttonArrow={false}
           buttonText={"See all"}
+          apiPath={`/featured-category-products/top`}
         />
       </div>
 
@@ -127,6 +131,7 @@ const Homepage = () => {
           listTitle={"Exterior"}
           buttonArrow={false}
           buttonText={"See all"}
+          apiPath={`/featured-category-products/middle`}
         />
       </div>
 

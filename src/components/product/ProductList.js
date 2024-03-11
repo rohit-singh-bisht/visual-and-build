@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import styled from "styled-components";
 import Pagination from "@mui/material/Pagination";
 import { ReactComponent as ArrowIcon } from "../../assets/arrow.svg";
 import { useAppContext } from "../../context/useAppContext";
+import { useRequest } from "../../hooks/useRequest";
 
 const ProductListStyle = styled.div`
   .product__list__title__wrapper {
@@ -68,8 +69,33 @@ const ProductList = ({
   pagination = true,
   productList,
   isLoading,
+  apiPath,
 }) => {
   const { isDesktop } = useAppContext();
+  const [products, setProducts] = useState(productList);
+  const [fetchProducts, { isLoading: fetchingProducts }] = useRequest();
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const getProducts = async (limit, pageNumber) => {
+    const path = apiPath + `?limit=${limit}&page=${pageNumber}`;
+    const response = await fetchProducts({ path });
+    setProducts(response?.data);
+  };
+
+  useEffect(() => {
+    apiPath && !productList && getProducts(10, pageNumber);
+
+    // eslint-disable-next-line
+  }, [apiPath, pageNumber]);
+
+  const handlePaginationChange = (e, value) => {
+    setPageNumber(value);
+  };
+
+  if (!productList?.length && !products?.length) {
+    return "";
+  }
+
   return (
     <ProductListStyle>
       {listTitle && (
@@ -87,7 +113,7 @@ const ProductList = ({
         </div>
       )}
       <div className="product__list__wrapper">
-        {isLoading ? (
+        {fetchingProducts || isLoading ? (
           <>
             {Array.from({ length: 5 }, (_, index) => index + 1)?.map((item) => (
               <ProductCard key={item} isLoading={isLoading} />
@@ -95,7 +121,7 @@ const ProductList = ({
           </>
         ) : (
           <>
-            {productList?.map((product) => (
+            {products?.map((product) => (
               <ProductCard
                 key={product?.id}
                 productImage={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${product.image}`}
@@ -110,7 +136,12 @@ const ProductList = ({
       </div>
       {pagination && isDesktop && (
         <div className="product__list__pagination">
-          <Pagination className="pagination" count={10} shape="rounded" />
+          <Pagination
+            className="pagination"
+            count={10}
+            shape="rounded"
+            onChange={handlePaginationChange}
+          />
         </div>
       )}
     </ProductListStyle>
