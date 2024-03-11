@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as CheckIcon } from "../../assets/check.svg";
 import GenericModal from "./GenericModal";
@@ -25,15 +25,46 @@ const AddToCartModal = ({
   handleSecondaryButtonClick,
   product,
   quantity,
+  isInstaCartActive,
 }) => {
   const [isNormalCartChecked, setIsNormalCartChecked] = useState(false);
   const [addCart, { isLoading }] = useRequest();
   const requestPayload = {
-    id: product?.id,
+    productId: product?.id,
     quantity: quantity,
+  };
+  const [
+    fetchInstaCarts,
+    { ioLoading: isFetchingInstacarts, state: instacarts },
+  ] = useRequest(`/instacart?limit=10&page=1`);
+  const [addInstabuildIds, setAddInstabuildIds] = useState([]);
+
+  useEffect(() => {
+    !isInstaCartActive && fetchInstaCarts();
+  }, [isInstaCartActive]);
+
+  console.log("requestPayload", requestPayload);
+
+  const addInstaBuilds = async (paths) => {
+    const results = await Promise.all(
+      paths?.map((item) =>
+        addCart({
+          path: item?.path,
+          method: "POST",
+          body: JSON.stringify({
+            ...requestPayload,
+            instacart_id: item?.id,
+          }),
+        })
+      )
+    );
+    console.log("results", results);
   };
 
   const handlePrimaryClick = async () => {
+    if (!addInstabuildIds?.length && !isNormalCartChecked) {
+      return toast.error("Please select the cart to add");
+    }
     if (isLoading) return;
     if (isNormalCartChecked) {
       const response = await addCart({
@@ -46,6 +77,34 @@ const AddToCartModal = ({
       }
       toast.success(response.message, { toastId: "success" });
       onMaskClick();
+    }
+    if (addInstabuildIds?.length) {
+      try {
+        const paths = addInstabuildIds?.map((item) => {
+          return {
+            path: `/cart/instabuild/${item}`,
+            id: item,
+          };
+        });
+        addInstaBuilds(paths);
+      } catch (err) {
+        return toast.error(
+          "Some items are not added to cart. Please try again"
+        );
+      }
+    }
+  };
+
+  const handleInstacartClick = (e, item) => {
+    if (e.target.checked) {
+      setAddInstabuildIds((prev) => [
+        ...prev?.filter((build) => build !== item?._id),
+        item?._id,
+      ]);
+    } else {
+      setAddInstabuildIds((prev) => [
+        ...prev?.filter((build) => build !== item?._id),
+      ]);
     }
   };
 
@@ -75,27 +134,31 @@ const AddToCartModal = ({
             <label htmlFor="cart">Cart</label>
           </div>
         </div>
-        <div className="modal__body__other__carts">
-          <div className="modal__body__title">InstaBuild</div>
-          <div className="checkbox__group">
-            <label htmlFor="cart1">
-              <input type="checkbox" id="cart1" />
-              <div className="checkbox">
-                <CheckIcon />
-              </div>
-            </label>
-            <label htmlFor="cart1">Cart 1</label>
+        {instacarts && instacarts?.data?.length && (
+          <div className="modal__body__other__carts">
+            <div className="modal__body__title">InstaBuild</div>
+            {instacarts?.data
+              ?.filter((item) => item?.isInstabuild)
+              ?.map((item) => {
+                return (
+                  <div className="checkbox__group">
+                    <label htmlFor={item?._id}>
+                      <input
+                        type="checkbox"
+                        id={item?._id}
+                        checked={addInstabuildIds.includes(item?._id)}
+                        onChange={(e) => handleInstacartClick(e, item)}
+                      />
+                      <div className="checkbox">
+                        <CheckIcon />
+                      </div>
+                    </label>
+                    <label htmlFor={item?._id}>{item?.name}</label>
+                  </div>
+                );
+              })}
           </div>
-          <div className="checkbox__group">
-            <label htmlFor="cart2">
-              <input type="checkbox" id="cart2" />
-              <div className="checkbox">
-                <CheckIcon />
-              </div>
-            </label>
-            <label htmlFor="cart2">Cart 2</label>
-          </div>
-        </div>
+        )}
       </GenericModal>
     </AddToCartModalStyle>
   );

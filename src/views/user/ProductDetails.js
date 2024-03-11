@@ -17,6 +17,7 @@ import ProductDetailsSkeleton from "../../components/skeleton/ProductDetailsSkel
 import GroupBuyGrid from "../../components/common/GroupBuyGrid";
 import { getProductImages } from "../../utils/helper";
 import CreateInstaCartModal from "../../components/modals/CreateInstaCartModal";
+import { useAuth } from "../../hooks/useAuth";
 
 const ProductDetailsStyle = styled.div`
   padding: 70px 0;
@@ -195,7 +196,7 @@ const ProductDetailsStyle = styled.div`
 const ProductDetails = () => {
   const [isAddToCartActive, setIsAddToCartActive] = useState(false);
   const [isInstaCartActive, setIsInstaCartActive] = useState(false);
-  const { isDesktop } = useAppContext();
+  const { isDesktop, setIsAuthForm } = useAppContext();
   const [
     fetchProductDetails,
     { isLoading: isFetchingProductsDetails, state: productDetailsState },
@@ -206,6 +207,7 @@ const ProductDetails = () => {
   const [productQuantity, setProductQuantity] = useState(1);
   const params = new URLSearchParams(search);
   const productId = params.get("id");
+  const isLoggedIn = useAuth();
 
   useEffect(() => {
     if (productId) {
@@ -218,6 +220,10 @@ const ProductDetails = () => {
     () => getProductImages(productDetails),
     [productDetails]
   );
+
+  const handleAddToCart = () => {
+    isLoggedIn ? setIsAddToCartActive(true) : setIsAuthForm(true);
+  };
 
   return (
     <>
@@ -298,7 +304,7 @@ const ProductDetails = () => {
                   </div>
                   <ProductActions
                     handleProductQuantity={setProductQuantity}
-                    onAddToCart={() => setIsAddToCartActive(true)}
+                    onAddToCart={handleAddToCart}
                   />
                 </div>
               </div>
@@ -328,6 +334,7 @@ const ProductDetails = () => {
           handleSecondaryButtonClick={() => setIsInstaCartActive(true)}
           product={productDetails}
           quantity={productQuantity}
+          isInstaCartActive={isInstaCartActive}
         />
       )}
       {isInstaCartActive && (

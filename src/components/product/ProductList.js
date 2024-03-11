@@ -78,12 +78,10 @@ const ProductList = ({
   const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
   const [totalPages, setTotalPages] = useState();
-  console.log("products", products);
 
   const getProducts = async (limit, pageNumber) => {
     const path = apiPath + `?limit=${limit}&page=${pageNumber}`;
     const response = await fetchProducts({ path });
-    console.log("response", response);
     if (response.success) {
       setTotalPages(response?.data?.totalPages);
       setProducts(response?.data?.docs || response?.data);

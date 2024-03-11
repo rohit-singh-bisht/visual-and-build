@@ -40,10 +40,11 @@ const CreateInstaCartModal = ({ onMaskClick }) => {
       method: "POST",
       body: JSON.stringify({ name: instaCartName }),
     });
-    if (response.success) {
-      toast.success(response.message);
+    if (!response.success) {
+      return toast.error(response.message);
     }
-    toast.error(response.message);
+    toast.success(response.message);
+    onMaskClick();
     // eslint-disable-next-line
   }, [instaCartName]);
 
