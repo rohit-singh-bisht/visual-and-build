@@ -10,6 +10,7 @@ const AppContextProvider = ({ children }) => {
   const [isTablet, setIsTablet] = useState(false);
   const [user, setUser] = useLocalStorage("user", "");
   const [isAuthForm, setIsAuthForm] = useState(false);
+  const [checkoutCartData, setCheckoutCartData] = useState();
 
   const handleWindowResize = () => {
     const windowWidth = window.innerWidth;
@@ -37,6 +38,8 @@ const AppContextProvider = ({ children }) => {
     setUser,
     isAuthForm,
     setIsAuthForm,
+    checkoutCartData,
+    setCheckoutCartData,
   };
 
   return (

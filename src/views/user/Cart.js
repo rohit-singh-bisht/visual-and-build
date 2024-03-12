@@ -100,6 +100,8 @@ const Cart = () => {
     );
   }
 
+  console.log("cartData", cartData);
+
   return (
     <CartStyle>
       <div className="container">
@@ -113,7 +115,7 @@ const Cart = () => {
           <div className="cart__order__summary__hodler">
             <CartOrderSummary
               isQtyChanged={isQtyChanged}
-              cartId={cartData?.data?._id}
+              cartData={cartData?.data}
             />
           </div>
         </div>

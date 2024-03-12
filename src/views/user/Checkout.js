@@ -1,8 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import Steps from "../../components/common/Steps";
 import Information from "../../components/checkout/tabs/Information";
 import Payment from "../../components/checkout/tabs/Payment";
+import { useAppContext } from "../../context/useAppContext";
+import { useNavigate } from "react-router-dom";
+import { useRequest } from "../../hooks/useRequest";
 
 const CheckoutStyle = styled.div`
   padding: 70px 0;
@@ -34,10 +37,11 @@ const tabsList = [
   {
     id: 1,
     title: "Specification",
-    component: (handleChangeBilling, handleOrderNow) => (
+    component: (handleChangeBilling, handleOrderNow, orderSummaryData) => (
       <Information
         handleChangeBilling={handleChangeBilling}
         handleOrderNow={handleOrderNow}
+        orderSummaryData={orderSummaryData}
       />
     ),
   },
@@ -49,9 +53,31 @@ const tabsList = [
 ];
 
 const Checkout = () => {
-  // eslint-disable-next-line
   const [billingType, setBillingType] = useState();
   const [activeStep, setActiveStep] = useState(1);
+  const { checkoutCartData } = useAppContext();
+  const navigate = useNavigate();
+  const [orderSummaryData, setOrderSummaryData] = useState([]);
+  const [fetchOrderSummary] = useRequest("/order/checkout/summary");
+  const checkoutCartId = checkoutCartData?._id;
+
+  useEffect(() => {
+    async function getOrderSummary(cartId, coupon) {
+      const path = `/order/checkout/summary`;
+      const response = await fetchOrderSummary({
+        path: path,
+        method: "POST",
+        body: JSON.stringify({
+          cartId,
+          coupon,
+        }),
+      });
+      if (response.success) {
+        setOrderSummaryData(response?.data);
+      }
+    }
+    checkoutCartId ? getOrderSummary(checkoutCartId, "") : navigate(-1);
+  }, [checkoutCartId]);
 
   const handleChangeBilling = useCallback((e) => {
     setBillingType(e.target.value);
@@ -77,7 +103,7 @@ const Checkout = () => {
         </div>
         {tabsList
           ?.find((item) => item?.id === activeStep)
-          ?.component(handleChangeBilling, handleOrderNow)}
+          ?.component(handleChangeBilling, handleOrderNow, orderSummaryData)}
       </div>
     </CheckoutStyle>
   );

@@ -15,6 +15,7 @@ import AuthenticationForm from "../components/forms/authentication/Authenticatio
 import styled from "styled-components";
 import { useAuth } from "../hooks/useAuth";
 import { useAppContext } from "../context/useAppContext";
+import PrivateRoute from "./PrivateRoute";
 
 const AuthPopupStyle = styled.div`
   position: fixed;
@@ -48,7 +49,9 @@ const UserRoutes = () => {
         <Route path="/seller/:sellerId" element={<Vendor />} />
         <Route path="/product/:productId" element={<ProductDetails />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/checkout" element={<Checkout />} />
+        </Route>
         <Route path="*" element={<Navigate to={"/"} />} />
         <Route path="/account/*" element={<UserAccountRoutes />} />
       </Routes>

@@ -69,7 +69,11 @@ const InformationStyle = styled.div`
   }
 `;
 
-const Information = ({ handleChangeBilling, handleOrderNow }) => {
+const Information = ({
+  handleChangeBilling,
+  handleOrderNow,
+  orderSummaryData,
+}) => {
   return (
     <>
       <InformationStyle>
@@ -115,7 +119,10 @@ const Information = ({ handleChangeBilling, handleOrderNow }) => {
             </div>
           </div>
           <div className="checkout__order__summary__wrapper">
-            <CheckoutOrderSummary handleOrderNow={handleOrderNow} />
+            <CheckoutOrderSummary
+              orderSummaryData={orderSummaryData}
+              handleOrderNow={handleOrderNow}
+            />
           </div>
         </div>
       </InformationStyle>

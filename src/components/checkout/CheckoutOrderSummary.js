@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as InfoSvg } from "../../assets/info.svg";
+import { useAppContext } from "../../context/useAppContext";
 
 const CheckoutOrderSummaryStyle = styled.div`
   padding: 30px;
@@ -99,22 +100,28 @@ const CheckoutOrderSummaryStyle = styled.div`
   }
 `;
 
-const CheckoutOrderSummary = ({ handleOrderNow }) => {
+const CheckoutOrderSummary = ({ orderSummaryData, handleOrderNow }) => {
+  const { checkoutCartData } = useAppContext();
+
   return (
     <CheckoutOrderSummaryStyle>
       <h3 className="checkout__order__summary__title">Order Summary</h3>
       <div className="checkout__order__summary__item__list">
-        {Array.from({ length: 5 }, (_, index) => index + 1).map((item) => (
-          <div className="checkout__order__summary__item">
-            <p className="checkout__order__summary__item__title">
-              Rust-Oleum Varathane Ultra Thick Floor Finish...
-            </p>
-            <h4 className="checkout__order__summary__item__quantity">{item}</h4>
-            <h4 className="checkout__order__summary__item__totals">
-              $1,659.00
-            </h4>
-          </div>
-        ))}
+        {checkoutCartData?.items?.length &&
+          checkoutCartData?.items?.map((item) => (
+            <div className="checkout__order__summary__item" key={item?._id}>
+              <p className="checkout__order__summary__item__title">
+                {item?.product?.name}
+              </p>
+              <h4 className="checkout__order__summary__item__quantity">
+                {item?.quantity}
+              </h4>
+              <h4 className="checkout__order__summary__item__totals">
+                {process.env.REACT_APP_PRICE_SYMBOL}
+                {item?.product?.price * item?.quantity}
+              </h4>
+            </div>
+          ))}
         <div className="checkout__order__summary__item">
           <p className="checkout__order__summary__item__title flex">
             Shipping Fee
@@ -122,14 +129,18 @@ const CheckoutOrderSummary = ({ handleOrderNow }) => {
               <InfoSvg className="shipping__info__icon" />
             </sup>
           </p>
-          <h4 className="checkout__order__summary__item__totals">$1,659.00</h4>
+          <h4 className="checkout__order__summary__item__totals">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.shippingCharges}
+          </h4>
         </div>
       </div>
       <div className="checkout__order__summary__handler">
         <div className="checkout__order__summary__subtotals">
           <div className="checkout__items__total__title">Total</div>
           <div className="checkout__order__summary__item__totals">
-            $4,999.00
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.totalAmount}
           </div>
         </div>
         <button className="checkout__now__button" onClick={handleOrderNow}>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useRequest } from "../../hooks/useRequest";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../context/useAppContext";
 
 const CartOrderSummaryStyle = styled.div`
   width: 380px;
@@ -55,6 +57,10 @@ const CartOrderSummaryStyle = styled.div`
       &.error {
         border: 0.75px solid #ff0000;
       }
+    }
+    .invalid__coupon {
+      font-size: 10px;
+      color: #ff0000;
     }
   }
   .cart__summary__subtitle {
@@ -144,11 +150,14 @@ const CartOrderSummaryStyle = styled.div`
   }
 `;
 
-const CartOrderSummary = ({ isQtyChanged, cartId }) => {
+const CartOrderSummary = ({ isQtyChanged, cartData }) => {
   const [orderSummary] = useRequest("/order/checkout/summary");
   const [orderSummaryData, setOrderSummaryData] = useState();
   const [couponCode, setCouponCode] = useState("");
   const [isCouponInvalid, setIsCouponInvalid] = useState(false);
+  const navigate = useNavigate();
+  const { setCheckoutCartData } = useAppContext();
+  const cartId = cartData?._id;
 
   async function getOrderSummary(cartId, coupon) {
     const path = `/order/checkout/summary`;
@@ -162,8 +171,10 @@ const CartOrderSummary = ({ isQtyChanged, cartId }) => {
     });
     if (response.success) {
       setOrderSummaryData(response?.data);
-      if (response?.data?.discountAmount === 0 && !coupon) {
+      if (response?.data?.discountAmount === 0 && coupon) {
         setIsCouponInvalid(true);
+      } else {
+        setIsCouponInvalid(false);
       }
     }
   }
@@ -178,6 +189,11 @@ const CartOrderSummary = ({ isQtyChanged, cartId }) => {
     const { value } = e.target;
     setIsCouponInvalid(false);
     setCouponCode(value);
+  };
+
+  const handleCheckout = () => {
+    setCheckoutCartData(cartData);
+    navigate("/checkout");
   };
 
   return (
@@ -203,6 +219,9 @@ const CartOrderSummary = ({ isQtyChanged, cartId }) => {
           value={couponCode}
           onChange={handleChange}
         />
+        {isCouponInvalid && (
+          <span className="invalid__coupon">Invalid coupon code</span>
+        )}
         <p className="cart__summary__subtitle">
           Coupon code will be applied on the checkout page
         </p>
@@ -210,7 +229,12 @@ const CartOrderSummary = ({ isQtyChanged, cartId }) => {
       <div className="cart__summary__total__wrapper">
         {orderSummaryData?.discountAmount ? (
           <div className="cart__summary__total other">
-            <div className="subtotal__title">Discount</div>
+            <div className="subtotal__title">
+              Discount{" "}
+              <span style={{ fontSize: "10px", color: "#4caf50" }}>
+                ( {couponCode} )
+              </span>
+            </div>
             <div className="subtotal__value" style={{ color: "#4caf50" }}>
               {process.env.REACT_APP_PRICE_SYMBOL}
               {orderSummaryData?.discountAmount}
@@ -246,8 +270,12 @@ const CartOrderSummary = ({ isQtyChanged, cartId }) => {
         </p>
       </div>
       <div className="cart__summary__buttons">
-        <button className="continue__shopping">Continue Shopping</button>
-        <button className="checkout">Checkout</button>
+        <button className="continue__shopping" onClick={() => navigate("/")}>
+          Continue Shopping
+        </button>
+        <button className="checkout" onClick={handleCheckout}>
+          Checkout
+        </button>
       </div>
     </CartOrderSummaryStyle>
   );

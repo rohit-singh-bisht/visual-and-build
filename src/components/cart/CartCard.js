@@ -152,7 +152,7 @@ const CartProductCard = ({
       }),
     });
     if (!response.success) {
-      toast.error(response?.message || "Error changing quantity of cart");
+      toast.error(response?.message || "Error changing quantity of items");
     }
     setIsQtyChanged((prev) => !prev);
   };
