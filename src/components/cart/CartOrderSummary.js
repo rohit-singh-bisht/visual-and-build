@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useRequest } from "../../hooks/useRequest";
 
@@ -52,6 +52,9 @@ const CartOrderSummaryStyle = styled.div`
       padding: 17.25px;
       width: 100%;
       display: block;
+      &.error {
+        border: 0.75px solid #ff0000;
+      }
     }
   }
   .cart__summary__subtitle {
@@ -63,14 +66,25 @@ const CartOrderSummaryStyle = styled.div`
   .cart__summary__coupon__title,
   .cart__summart__total__title {
     color: #000;
-    font-size: 16.5px;
+    font-size: 16px;
     font-weight: 500;
     margin-bottom: 17.5px;
   }
   .cart__summary__total__wrapper {
     padding: 27px 22px 24px;
     .cart__summary__total {
-      margin-bottom: 32px;
+      &.other {
+        .subtotal__title {
+          font-size: 12px;
+        }
+        .subtotal__value {
+          font-size: 14px;
+        }
+      }
+      &:nth-last-child(2) {
+        margin-bottom: 32px;
+        margin-top: 12px;
+      }
     }
   }
   .cart__summary__buttons {
@@ -130,8 +144,41 @@ const CartOrderSummaryStyle = styled.div`
   }
 `;
 
-const CartOrderSummary = () => {
-  const [orderSummary, { state }] = useRequest("/checkout/summary");
+const CartOrderSummary = ({ isQtyChanged, cartId }) => {
+  const [orderSummary] = useRequest("/order/checkout/summary");
+  const [orderSummaryData, setOrderSummaryData] = useState();
+  const [couponCode, setCouponCode] = useState("");
+  const [isCouponInvalid, setIsCouponInvalid] = useState(false);
+
+  async function getOrderSummary(cartId, coupon) {
+    const path = `/order/checkout/summary`;
+    const response = await orderSummary({
+      path: path,
+      method: "POST",
+      body: JSON.stringify({
+        cartId,
+        coupon,
+      }),
+    });
+    if (response.success) {
+      setOrderSummaryData(response?.data);
+      if (response?.data?.discountAmount === 0 && !coupon) {
+        setIsCouponInvalid(true);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (cartId) {
+      getOrderSummary(cartId, couponCode);
+    }
+  }, [cartId, couponCode, isQtyChanged]);
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setIsCouponInvalid(false);
+    setCouponCode(value);
+  };
 
   return (
     <CartOrderSummaryStyle>
@@ -139,7 +186,10 @@ const CartOrderSummary = () => {
         <div className="cart__summary__title">Order Summary</div>
         <div className="cart__summary__subtotal">
           <div className="subtotal__title">Subtotal</div>
-          <div className="subtotal__value">$7,733.00</div>
+          <div className="subtotal__value">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.subtotal}
+          </div>
         </div>
       </div>
       <div className="cart__summary__coupon">
@@ -147,16 +197,48 @@ const CartOrderSummary = () => {
         <input
           type="text"
           placeholder="Enter coupon code (ex: FIRSTPAY)"
-          className="cart__summary__coupon__input"
+          className={`cart__summary__coupon__input ${
+            isCouponInvalid ? "error" : ""
+          }`}
+          value={couponCode}
+          onChange={handleChange}
         />
         <p className="cart__summary__subtitle">
           Coupon code will be applied on the checkout page
         </p>
       </div>
       <div className="cart__summary__total__wrapper">
+        {orderSummaryData?.discountAmount ? (
+          <div className="cart__summary__total other">
+            <div className="subtotal__title">Discount</div>
+            <div className="subtotal__value" style={{ color: "#4caf50" }}>
+              {process.env.REACT_APP_PRICE_SYMBOL}
+              {orderSummaryData?.discountAmount}
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+        <div className="cart__summary__total other">
+          <div className="subtotal__title">Shipping</div>
+          <div className="subtotal__value">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.shippingCharges}
+          </div>
+        </div>
+        <div className="cart__summary__total other">
+          <div className="subtotal__title">Taxes</div>
+          <div className="subtotal__value">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.taxAmount}
+          </div>
+        </div>
         <div className="cart__summary__total">
           <div className="subtotal__title">Total</div>
-          <div className="subtotal__value">$7,733.00</div>
+          <div className="subtotal__value">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.totalAmount}
+          </div>
         </div>
 
         <p className="cart__summary__subtitle">

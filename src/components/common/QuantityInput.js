@@ -10,6 +10,18 @@ const QuantityInputStyle = styled.div`
   .icon__wrapper {
     cursor: pointer;
     user-select: none;
+    &.disabled {
+      background-color: #eaeaea;
+      cursor: not-allowed;
+      .icon {
+        fill: #919191;
+        &:focus,
+        &:active,
+        &:hover {
+          outline: 1px solid #919191;
+        }
+      }
+    }
   }
   .icon {
     font-size: 14px;
@@ -32,30 +44,43 @@ const QuantityInputStyle = styled.div`
   }
 `;
 
-const QuantityInput = ({ className, handleProductQuantity }) => {
-  const [count, setCount] = useState(1);
+const QuantityInput = ({
+  className,
+  handleIncrement,
+  handleDecrement,
+  handleProductQuantity,
+  itemQuantity = 1,
+  isDisabled,
+}) => {
+  const [count, setCount] = useState(itemQuantity);
 
   const handleClick = (e) => {
-    if (e === "remove" && count !== 1) {
+    if (isDisabled) return;
+    if (e === "remove" && count !== 0) {
       setCount((prev) => prev - 1);
       handleProductQuantity && handleProductQuantity((prev) => prev - 1);
+      handleDecrement && handleDecrement();
     }
     if (e === "add") {
       setCount((prev) => prev + 1);
       handleProductQuantity && handleProductQuantity((prev) => prev + 1);
+      handleIncrement && handleIncrement();
     }
   };
 
   return (
     <QuantityInputStyle className={className}>
       <div
-        className="icon__wrapper remove"
+        className={`icon__wrapper remove ${isDisabled ? "disabled" : ""}`}
         onClick={() => handleClick("remove")}
       >
         <IoIosRemove className="icon" />
       </div>
       <input value={count} className="number__input" />
-      <div className="icon__wrapper add" onClick={() => handleClick("add")}>
+      <div
+        className={`icon__wrapper add ${isDisabled ? "disabled" : ""}`}
+        onClick={() => handleClick("add")}
+      >
         <IoIosAdd className="icon" />
       </div>
     </QuantityInputStyle>

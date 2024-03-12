@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import QuantityInput from "../common/QuantityInput";
+import { useRequest } from "../../hooks/useRequest";
+import { toast } from "react-toastify";
 
 const CartProductCardStyle = styled.div`
   display: flex;
@@ -37,6 +39,7 @@ const CartProductCardStyle = styled.div`
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        text-transform: capitalize;
       }
       .cart__product__variant {
         color: #303030;
@@ -119,7 +122,49 @@ const CartProductCardStyle = styled.div`
   }
 `;
 
-const CartProductCard = ({ src, title, isSchedule }) => {
+const CartProductCard = ({
+  src,
+  title,
+  isSchedule,
+  price,
+  total,
+  itemQuantity,
+  loading,
+  category,
+  variant,
+  itemId,
+  setIsQtyChanged,
+}) => {
+  const [handleIncDec, { isLoading }] = useRequest();
+  if (loading) {
+    return <CartProductCardStyle></CartProductCardStyle>;
+  }
+
+  const handleIncrementDecrement = async (itemId, quantity) => {
+    if (isLoading) return;
+    const path = `/cart`;
+    const response = await handleIncDec({
+      path,
+      method: "POST",
+      body: JSON.stringify({
+        productId: itemId,
+        quantity: quantity,
+      }),
+    });
+    if (!response.success) {
+      toast.error(response?.message || "Error changing quantity of cart");
+    }
+    setIsQtyChanged((prev) => !prev);
+  };
+
+  const handleInc = () => {
+    handleIncrementDecrement(itemId, +1);
+  };
+
+  const handleDec = () => {
+    handleIncrementDecrement(itemId, -1);
+  };
+
   return (
     <CartProductCardStyle>
       <div className="cart__product__wrapper">
@@ -127,20 +172,35 @@ const CartProductCard = ({ src, title, isSchedule }) => {
           <img src={src} alt={title} />
         </div>
         <div className="cart__product__details">
-          <p className="cart__product__category">Flooring</p>
-          <p className="cart__product__title" title={title}>
-            Rust-Oleum Varathane Ultra Thick Floor Finish...
-          </p>
-          <p className="cart__product__variant">
-            Variant: <span>Space Gray</span>
-          </p>
+          {category && <p className="cart__product__category">{category}</p>}
+          {title && (
+            <p className="cart__product__title" title={title}>
+              {title}
+            </p>
+          )}
+          {variant && (
+            <p className="cart__product__variant">
+              Variant: <span>{variant}</span>
+            </p>
+          )}
         </div>
       </div>
-      <h2 className="cart__cell cart__product__price">$1,659.00</h2>
+      <h2 className="cart__cell cart__product__price">
+        {process.env.REACT_APP_PRICE_SYMBOL}
+        {price}
+      </h2>
       <div className="cart__cell cart__product__qty">
-        <QuantityInput />
+        <QuantityInput
+          handleIncrement={handleInc}
+          handleDecrement={handleDec}
+          itemQuantity={itemQuantity}
+          isDisabled={isLoading}
+        />
       </div>
-      <h2 className="cart__cell cart__product__total">$1,659.00</h2>
+      <h2 className="cart__cell cart__product__total">
+        {process.env.REACT_APP_PRICE_SYMBOL}
+        {total}
+      </h2>
       <button className="cart__product__wishlist">
         {isSchedule ? "Schedule" : "Add to wishlist"}
       </button>

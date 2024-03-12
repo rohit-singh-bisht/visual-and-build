@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import IconWithTextList from "../../components/common/IconWithTextList";
 import CartTable from "../../components/cart/CartTable";
@@ -69,18 +69,21 @@ const MissingCartItems = styled.div`
 `;
 
 const Cart = () => {
-  const [getCart, { state: cartData }] = useRequest();
+  const [getCart, { isLoading: isFetchingCarts }] = useRequest();
   const auth = useAuth();
   const { setIsAuthForm } = useAppContext();
+  const [isQtyChanged, setIsQtyChanged] = useState(false);
+  const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
     (async function () {
       const path = `/cart?limit=10&page=1`;
-      await getCart({ path });
+      const response = await getCart({ path });
+      setCartData(response);
     })();
 
     // eslint-disable-next-line
-  }, []);
+  }, [isQtyChanged]);
 
   if (!auth) {
     return (
@@ -102,9 +105,16 @@ const Cart = () => {
       <div className="container">
         <div className="page__title">Your Cart</div>
         <div className="cart__wrapper">
-          <CartTable cartData={cartData?.data?.docs} />
+          <CartTable
+            loading={isFetchingCarts}
+            cartData={cartData?.data?.items}
+            setIsQtyChanged={setIsQtyChanged}
+          />
           <div className="cart__order__summary__hodler">
-            <CartOrderSummary />
+            <CartOrderSummary
+              isQtyChanged={isQtyChanged}
+              cartId={cartData?.data?._id}
+            />
           </div>
         </div>
         <CollapsibleCart />

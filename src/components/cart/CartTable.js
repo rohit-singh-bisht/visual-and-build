@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import CartCard from "./CartCard";
 import { useAppContext } from "../../context/useAppContext";
+import { Skeleton } from "@mui/material";
 
 const CartTableStyle = styled.div`
   flex: 1;
@@ -56,7 +57,18 @@ const CartTableStyle = styled.div`
   }
 `;
 
-const CartTable = ({ isSchedule, cartData }) => {
+const SkeletonStyle = styled.div`
+  display: flex;
+  gap: 10px;
+  padding: 30px 24px;
+  .skeleton {
+    flex: 1;
+    height: 70px;
+    border-radius: 7.5px;
+  }
+`;
+
+const CartTable = ({ isSchedule, cartData, loading, setIsQtyChanged }) => {
   const { isDesktop } = useAppContext();
 
   return (
@@ -72,22 +84,52 @@ const CartTable = ({ isSchedule, cartData }) => {
           </div>
         )}
         <div>
-          {cartData && cartData?.length ? (
-            cartData?.map((item, index) => {
-              return (
-                <div key={item}>
-                  <CartCard isSchedule={isSchedule} />
-                  <hr
-                    style={{
-                      border: "0px",
-                      borderBottom: "0.75px solid #CCC2C2",
-                    }}
-                  />
-                </div>
-              );
-            })
+          {loading && !cartData ? (
+            <SkeletonStyle>
+              {Array?.from({ length: 5 }, (_, index) => index + 1)?.map(
+                (item) => (
+                  <Skeleton variant="rectangular" className="skeleton" />
+                )
+              )}
+            </SkeletonStyle>
           ) : (
-            <div className="no_items_found">No items found in your cart</div>
+            <>
+              {cartData && cartData?.length ? (
+                cartData?.map((item, index) => {
+                  if (item?.quantity > 0) {
+                    return (
+                      <div key={item}>
+                        <CartCard
+                          src={
+                            process.env.REACT_APP_MEDIA_ASSETS_URL +
+                            "/" +
+                            item?.product?.image
+                          }
+                          title={item?.product?.name}
+                          isSchedule={isSchedule}
+                          price={item?.product?.price}
+                          itemQuantity={item?.quantity}
+                          total={item?.quantity * item?.product?.price}
+                          itemId={item?.product?.id}
+                          setIsQtyChanged={setIsQtyChanged}
+                        />
+                        <hr
+                          style={{
+                            border: "0px",
+                            borderBottom: "0.75px solid #CCC2C2",
+                          }}
+                        />
+                      </div>
+                    );
+                  }
+                  return "";
+                })
+              ) : (
+                <div className="no_items_found">
+                  No items found in your cart
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
