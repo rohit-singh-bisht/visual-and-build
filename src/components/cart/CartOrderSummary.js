@@ -178,7 +178,6 @@ const CartOrderSummary = ({
   );
 
   async function getOrderSummary(cartId, coupon) {
-    console.log("cartId", cartId);
     const path = `/order/checkout/summary`;
     const response = await orderSummary({
       path: path,
@@ -202,6 +201,8 @@ const CartOrderSummary = ({
     if (cartId) {
       getOrderSummary(cartId, couponCode);
     }
+
+    //eslint-disable-next-line
   }, [cartId, couponCode, isQtyChanged]);
 
   const handleChange = (e) => {
