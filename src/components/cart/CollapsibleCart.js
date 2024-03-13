@@ -41,7 +41,7 @@ const CollapsibleCartStyle = styled.div`
   }
 `;
 
-const CollapsibleCart = () => {
+const CollapsibleCart = ({ title, cartData, loading, setIsQtyChanged }) => {
   const [isActive, setIsActive] = useState(false);
   const heightRef = useRef();
 
@@ -51,7 +51,7 @@ const CollapsibleCart = () => {
         className={`cart__main__title ${isActive ? "active" : ""}`}
         onClick={() => setIsActive(!isActive)}
       >
-        Instabuild cart FOUNDATION
+        {title}
         <IoChevronDown className="icon" />
       </div>
       <div
@@ -59,10 +59,17 @@ const CollapsibleCart = () => {
         ref={heightRef}
         style={{ height: isActive ? heightRef?.current?.scrollHeight : 0 }}
       >
-        <CartTable isSchedule={true} />
-        <div className="cart__order__summary__hodler">
-          <CartOrderSummary />
-        </div>
+        <CartTable
+          loading={loading}
+          cartData={cartData?.items}
+          isSchedule={true}
+          setIsQtyChanged={setIsQtyChanged}
+        />
+        {cartData?.items?.length > 0 && (
+          <div className="cart__order__summary__hodler">
+            <CartOrderSummary cartData={cartData} />
+          </div>
+        )}
       </div>
     </CollapsibleCartStyle>
   );

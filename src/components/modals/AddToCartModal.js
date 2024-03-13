@@ -32,6 +32,7 @@ const AddToCartModal = ({
   const requestPayload = {
     productId: product?.id,
     quantity: quantity,
+    deliveryDate: "",
   };
   const [
     fetchInstaCarts,
@@ -43,8 +44,6 @@ const AddToCartModal = ({
     !isInstaCartActive && fetchInstaCarts();
   }, [isInstaCartActive]);
 
-  console.log("requestPayload", requestPayload);
-
   const addInstaBuilds = async (paths) => {
     const results = await Promise.all(
       paths?.map((item) =>
@@ -53,7 +52,6 @@ const AddToCartModal = ({
           method: "POST",
           body: JSON.stringify({
             ...requestPayload,
-            instacart_id: item?.id,
           }),
         })
       )
@@ -82,7 +80,7 @@ const AddToCartModal = ({
       try {
         const paths = addInstabuildIds?.map((item) => {
           return {
-            path: `/cart/instabuild/${item}`,
+            path: `/instacart/instabuild/${item}`,
             id: item,
           };
         });

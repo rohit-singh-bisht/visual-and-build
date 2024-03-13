@@ -73,13 +73,25 @@ const Cart = () => {
   const auth = useAuth();
   const { setIsAuthForm } = useAppContext();
   const [isQtyChanged, setIsQtyChanged] = useState(false);
-  const [cartData, setCartData] = useState([]);
+  const [cartData, setCartData] = useState();
+  const [instacartData, setInstacartData] = useState([]);
 
   useEffect(() => {
     (async function () {
-      const path = `/cart?limit=10&page=1`;
+      const path = `/instacart?limit=20&page=1`;
       const response = await getCart({ path });
-      setCartData(response);
+      if (response.success) {
+        response.data.forEach((item) => {
+          if (!item?.isInstabuild) {
+            return setCartData(item);
+          } else {
+            return setInstacartData((prev) => [
+              ...prev?.filter((data) => data?._id !== item?._id),
+              item,
+            ]);
+          }
+        });
+      }
     })();
 
     // eslint-disable-next-line
@@ -100,8 +112,7 @@ const Cart = () => {
     );
   }
 
-  console.log("cartData", cartData);
-
+  console.log("instacartData", instacartData);
   return (
     <CartStyle>
       <div className="container">
@@ -109,17 +120,22 @@ const Cart = () => {
         <div className="cart__wrapper">
           <CartTable
             loading={isFetchingCarts}
-            cartData={cartData?.data?.items}
+            cartData={cartData?.items}
             setIsQtyChanged={setIsQtyChanged}
           />
           <div className="cart__order__summary__hodler">
-            <CartOrderSummary
-              isQtyChanged={isQtyChanged}
-              cartData={cartData?.data}
-            />
+            <CartOrderSummary isQtyChanged={isQtyChanged} cartData={cartData} />
           </div>
         </div>
-        <CollapsibleCart />
+        {instacartData?.map((item) => (
+          <CollapsibleCart
+            key={item?._id}
+            loading={isFetchingCarts}
+            title={item?.name}
+            cartData={item}
+            setIsQtyChanged={setIsQtyChanged}
+          />
+        ))}
       </div>
       <div className="icon__with__text">
         <div className="container">
