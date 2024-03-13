@@ -3,6 +3,7 @@ import styled from "styled-components";
 import QuantityInput from "../common/QuantityInput";
 import { useRequest } from "../../hooks/useRequest";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CartProductCardStyle = styled.div`
   display: flex;
@@ -40,6 +41,10 @@ const CartProductCardStyle = styled.div`
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-transform: capitalize;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
       }
       .cart__product__variant {
         color: #303030;
@@ -134,27 +139,36 @@ const CartProductCard = ({
   variant,
   itemId,
   setIsQtyChanged,
+  setIsCheckoutButtonDisabled,
+  product,
+  instabuildId = "",
 }) => {
   const [handleIncDec, { isLoading }] = useRequest();
+  const navigate = useNavigate();
+
   if (loading) {
     return <CartProductCardStyle></CartProductCardStyle>;
   }
 
   const handleIncrementDecrement = async (itemId, quantity) => {
+    setIsCheckoutButtonDisabled && setIsCheckoutButtonDisabled(true);
     if (isLoading) return;
-    const path = `/cart`;
+    const path = !instabuildId?.length
+      ? `/cart`
+      : `/instacart/instabuild/${instabuildId}`;
     const response = await handleIncDec({
       path,
       method: "POST",
       body: JSON.stringify({
         productId: itemId,
         quantity: quantity,
+        deliveryDate: "",
       }),
     });
     if (!response.success) {
       toast.error(response?.message || "Error changing quantity of items");
     }
-    setIsQtyChanged((prev) => !prev);
+    setIsQtyChanged && setIsQtyChanged((prev) => !prev);
   };
 
   const handleInc = () => {
@@ -163,6 +177,11 @@ const CartProductCard = ({
 
   const handleDec = () => {
     handleIncrementDecrement(itemId, -1);
+  };
+
+  const handleTitleClick = (product) => {
+    const path = `/product/${product?.slug}?id=${product?.id}`;
+    navigate(path);
   };
 
   return (
@@ -174,7 +193,11 @@ const CartProductCard = ({
         <div className="cart__product__details">
           {category && <p className="cart__product__category">{category}</p>}
           {title && (
-            <p className="cart__product__title" title={title}>
+            <p
+              className="cart__product__title"
+              onClick={() => handleTitleClick(product)}
+              title={title}
+            >
               {title}
             </p>
           )}

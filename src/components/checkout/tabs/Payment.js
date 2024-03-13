@@ -15,6 +15,24 @@ const PaymentStyle = styled.div`
     .payment__method__wrapper {
       position: relative;
       margin: 22px 0;
+      .pay__now {
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 23px;
+        text-align: center;
+        height: 52px;
+        padding: 0 52px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        background-color: #ae0000;
+        color: #fff;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 26px;
+      }
     }
     .payment__method {
       border: 0.75px solid #d9d9d9;
@@ -124,6 +142,7 @@ const Payment = () => {
             <label for="method1" className="payment__method">
               <img src="/images/stripe.png" alt="stripe" />
             </label>
+            <button className="pay__now">Pay Now</button>
           </div>
           <div className="payment__method__wrapper">
             <input
@@ -135,6 +154,7 @@ const Payment = () => {
             <label for="method2" className="payment__method">
               Cash on delivery
             </label>
+            <button className="pay__now">Pay Now</button>
           </div>
         </div>
         <div className="coupon__and__subtotal">

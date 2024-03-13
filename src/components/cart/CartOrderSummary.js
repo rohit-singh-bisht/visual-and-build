@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useRequest } from "../../hooks/useRequest";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/useAppContext";
+import useDebounce from "../../hooks/useDebounce";
 
 const CartOrderSummaryStyle = styled.div`
   width: 380px;
@@ -116,6 +117,9 @@ const CartOrderSummaryStyle = styled.div`
       margin-top: 12px;
       color: #fff;
       background: #ae0000;
+      &:disabled {
+        background: #a7a7a7;
+      }
     }
   }
   @media (max-width: 768px) {
@@ -150,8 +154,14 @@ const CartOrderSummaryStyle = styled.div`
   }
 `;
 
-const CartOrderSummary = ({ isQtyChanged, cartData }) => {
-  const [orderSummary] = useRequest("/order/checkout/summary");
+const CartOrderSummary = ({
+  isCheckoutButtonDisabled,
+  isQtyChanged,
+  cartData,
+}) => {
+  const [orderSummary, { isLoading: isOrderSummaryLoading }] = useRequest(
+    "/order/checkout/summary"
+  );
   const [orderSummaryData, setOrderSummaryData] = useState();
   const [couponCode, setCouponCode] = useState("");
   const [isCouponInvalid, setIsCouponInvalid] = useState(false);
@@ -159,7 +169,16 @@ const CartOrderSummary = ({ isQtyChanged, cartData }) => {
   const { setCheckoutCartData } = useAppContext();
   const cartId = cartData?._id;
 
+  useDebounce(
+    () => {
+      cartId && getOrderSummary(cartId, couponCode);
+    },
+    [couponCode],
+    300
+  );
+
   async function getOrderSummary(cartId, coupon) {
+    console.log("cartId", cartId);
     const path = `/order/checkout/summary`;
     const response = await orderSummary({
       path: path,
@@ -227,7 +246,7 @@ const CartOrderSummary = ({ isQtyChanged, cartData }) => {
         </p>
       </div>
       <div className="cart__summary__total__wrapper">
-        {orderSummaryData?.discountAmount ? (
+        {orderSummaryData?.discountAmount && couponCode ? (
           <div className="cart__summary__total other">
             <div className="subtotal__title">
               Discount{" "}
@@ -273,7 +292,11 @@ const CartOrderSummary = ({ isQtyChanged, cartData }) => {
         <button className="continue__shopping" onClick={() => navigate("/")}>
           Continue Shopping
         </button>
-        <button className="checkout" onClick={handleCheckout}>
+        <button
+          className="checkout"
+          disabled={isOrderSummaryLoading || isCheckoutButtonDisabled}
+          onClick={handleCheckout}
+        >
           Checkout
         </button>
       </div>

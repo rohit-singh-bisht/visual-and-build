@@ -41,7 +41,16 @@ const CollapsibleCartStyle = styled.div`
   }
 `;
 
-const CollapsibleCart = ({ title, cartData, loading, setIsQtyChanged }) => {
+const CollapsibleCart = ({
+  title,
+  cartData,
+  loading,
+  setIsQtyChanged,
+  setIsCheckoutButtonDisabled,
+  instabuildId,
+  isCheckoutButtonDisabled,
+  isQtyChanged,
+}) => {
   const [isActive, setIsActive] = useState(false);
   const heightRef = useRef();
 
@@ -64,10 +73,16 @@ const CollapsibleCart = ({ title, cartData, loading, setIsQtyChanged }) => {
           cartData={cartData?.items}
           isSchedule={true}
           setIsQtyChanged={setIsQtyChanged}
+          setIsCheckoutButtonDisabled={setIsCheckoutButtonDisabled}
+          instabuildId={instabuildId}
         />
         {cartData?.items?.length > 0 && (
           <div className="cart__order__summary__hodler">
-            <CartOrderSummary cartData={cartData} />
+            <CartOrderSummary
+              cartData={cartData}
+              isQtyChanged={isQtyChanged}
+              isCheckoutButtonDisabled={isCheckoutButtonDisabled}
+            />
           </div>
         )}
       </div>

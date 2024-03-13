@@ -75,9 +75,11 @@ const Cart = () => {
   const [isQtyChanged, setIsQtyChanged] = useState(false);
   const [cartData, setCartData] = useState();
   const [instacartData, setInstacartData] = useState([]);
+  const [isCheckoutButtonDisabled, setIsCheckoutButtonDisabled] =
+    useState(true);
 
   useEffect(() => {
-    (async function () {
+    const fetchCarts = async () => {
       const path = `/instacart?limit=20&page=1`;
       const response = await getCart({ path });
       if (response.success) {
@@ -91,9 +93,10 @@ const Cart = () => {
             ]);
           }
         });
+        setIsCheckoutButtonDisabled(false);
       }
-    })();
-
+    };
+    fetchCarts();
     // eslint-disable-next-line
   }, [isQtyChanged]);
 
@@ -112,7 +115,6 @@ const Cart = () => {
     );
   }
 
-  console.log("instacartData", instacartData);
   return (
     <CartStyle>
       <div className="container">
@@ -122,9 +124,14 @@ const Cart = () => {
             loading={isFetchingCarts}
             cartData={cartData?.items}
             setIsQtyChanged={setIsQtyChanged}
+            setIsCheckoutButtonDisabled={setIsCheckoutButtonDisabled}
           />
           <div className="cart__order__summary__hodler">
-            <CartOrderSummary isQtyChanged={isQtyChanged} cartData={cartData} />
+            <CartOrderSummary
+              isCheckoutButtonDisabled={isCheckoutButtonDisabled}
+              isQtyChanged={isQtyChanged}
+              cartData={cartData}
+            />
           </div>
         </div>
         {instacartData?.map((item) => (
@@ -133,7 +140,11 @@ const Cart = () => {
             loading={isFetchingCarts}
             title={item?.name}
             cartData={item}
+            isCheckoutButtonDisabled={isCheckoutButtonDisabled}
+            isQtyChanged={isQtyChanged}
             setIsQtyChanged={setIsQtyChanged}
+            setIsCheckoutButtonDisabled={setIsCheckoutButtonDisabled}
+            instabuildId={item?.isInstabuild ? item?._id : ""}
           />
         ))}
       </div>

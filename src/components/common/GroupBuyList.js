@@ -37,7 +37,9 @@ const GroupBuyList = ({ groupBuyList, isLoading }) => {
   return (
     <>
       {isLoading ? (
-        <GroupBuySkeleton className="group__buy__item" />
+        <div className="container">
+          <GroupBuySkeleton className="group__buy__item" />
+        </div>
       ) : (
         <GroupBuyListStyle>
           <div className="container group_buy">

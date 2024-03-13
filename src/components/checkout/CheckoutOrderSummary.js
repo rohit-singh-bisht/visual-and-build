@@ -29,11 +29,12 @@ const CheckoutOrderSummaryStyle = styled.div`
   .checkout__order__summary__item__title {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    line-clamp: 2;
+    -webkit-line-clamp: 2;
     color: #303030;
     font-size: 15px;
     font-weight: 400;
     line-height: 22.5px;
+    text-transform: capitalize;
     &.flex {
       display: flex;
       gap: 4px;

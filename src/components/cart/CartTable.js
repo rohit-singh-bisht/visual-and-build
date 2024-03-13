@@ -68,7 +68,14 @@ const SkeletonStyle = styled.div`
   }
 `;
 
-const CartTable = ({ isSchedule, cartData, loading, setIsQtyChanged }) => {
+const CartTable = ({
+  setIsCheckoutButtonDisabled,
+  isSchedule,
+  cartData,
+  loading,
+  setIsQtyChanged,
+  instabuildId = "",
+}) => {
   const { isDesktop } = useAppContext();
 
   return (
@@ -98,7 +105,7 @@ const CartTable = ({ isSchedule, cartData, loading, setIsQtyChanged }) => {
                 cartData?.map((item, index) => {
                   if (item?.quantity > 0) {
                     return (
-                      <div key={item}>
+                      <div key={item?._id}>
                         <CartCard
                           src={
                             process.env.REACT_APP_MEDIA_ASSETS_URL +
@@ -112,6 +119,11 @@ const CartTable = ({ isSchedule, cartData, loading, setIsQtyChanged }) => {
                           total={item?.quantity * item?.product?.price}
                           itemId={item?.product?.id}
                           setIsQtyChanged={setIsQtyChanged}
+                          setIsCheckoutButtonDisabled={
+                            setIsCheckoutButtonDisabled
+                          }
+                          product={item?.product}
+                          instabuildId={instabuildId}
                         />
                         <hr
                           style={{
