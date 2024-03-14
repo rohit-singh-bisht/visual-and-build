@@ -76,7 +76,7 @@ const QuantityInput = ({
       >
         <IoIosRemove className="icon" />
       </div>
-      <input value={count} className="number__input" />
+      <input value={count} onChange={() => {}} className="number__input" />
       <div
         className={`icon__wrapper add ${isDisabled ? "disabled" : ""}`}
         onClick={() => handleClick("add")}

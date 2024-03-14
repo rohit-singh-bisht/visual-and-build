@@ -71,6 +71,9 @@ const CheckoutOrderSummaryStyle = styled.div`
       height: 38px;
       background: #ae0000;
       margin-top: 20px;
+      &:disabled {
+        background: #a7a7a7;
+      }
     }
   }
   @media (max-width: 768px) {
@@ -101,7 +104,11 @@ const CheckoutOrderSummaryStyle = styled.div`
   }
 `;
 
-const CheckoutOrderSummary = ({ orderSummaryData, handleOrderNow }) => {
+const CheckoutOrderSummary = ({
+  orderSummaryData,
+  handleOrderNow,
+  isCheckoutDisabled,
+}) => {
   const { checkoutCartData } = useAppContext();
 
   return (
@@ -144,7 +151,11 @@ const CheckoutOrderSummary = ({ orderSummaryData, handleOrderNow }) => {
             {orderSummaryData?.totalAmount}
           </div>
         </div>
-        <button className="checkout__now__button" onClick={handleOrderNow}>
+        <button
+          className="checkout__now__button"
+          disabled={isCheckoutDisabled}
+          onClick={handleOrderNow}
+        >
           Order Now
         </button>
       </div>

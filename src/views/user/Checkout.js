@@ -37,11 +37,17 @@ const tabsList = [
   {
     id: 1,
     title: "Specification",
-    component: (handleChangeBilling, handleOrderNow, orderSummaryData) => (
+    component: (
+      handleChangeBilling,
+      handleOrderNow,
+      orderSummaryData,
+      checkoutAddress
+    ) => (
       <Information
         handleChangeBilling={handleChangeBilling}
         handleOrderNow={handleOrderNow}
         orderSummaryData={orderSummaryData}
+        checkoutAddress={checkoutAddress}
       />
     ),
   },
@@ -53,13 +59,16 @@ const tabsList = [
 ];
 
 const Checkout = () => {
-  const [billingType, setBillingType] = useState();
   const [activeStep, setActiveStep] = useState(1);
   const { checkoutCartData } = useAppContext();
   const navigate = useNavigate();
   const [orderSummaryData, setOrderSummaryData] = useState([]);
   const [fetchOrderSummary] = useRequest("/order/checkout/summary");
   const checkoutCartId = checkoutCartData?._id;
+  const [checkoutAddress, setCheckoutAddress] = useState({
+    billing: "",
+    shipping: "",
+  });
 
   useEffect(() => {
     async function getOrderSummary(cartId, coupon) {
@@ -79,8 +88,8 @@ const Checkout = () => {
     checkoutCartId ? getOrderSummary(checkoutCartId, "") : navigate(-1);
   }, [checkoutCartId]);
 
-  const handleChangeBilling = useCallback((e) => {
-    setBillingType(e.target.value);
+  const handleChangeBilling = useCallback((e, address, addressType, method) => {
+    setCheckoutAddress((prev) => ({ ...prev, [method]: address }));
   }, []);
 
   const handleOrderNow = () => {
@@ -103,7 +112,12 @@ const Checkout = () => {
         </div>
         {tabsList
           ?.find((item) => item?.id === activeStep)
-          ?.component(handleChangeBilling, handleOrderNow, orderSummaryData)}
+          ?.component(
+            handleChangeBilling,
+            handleOrderNow,
+            orderSummaryData,
+            checkoutAddress
+          )}
       </div>
     </CheckoutStyle>
   );

@@ -95,7 +95,11 @@ const CartTable = ({
             <SkeletonStyle>
               {Array?.from({ length: 5 }, (_, index) => index + 1)?.map(
                 (item) => (
-                  <Skeleton variant="rectangular" className="skeleton" />
+                  <Skeleton
+                    key={item}
+                    variant="rectangular"
+                    className="skeleton"
+                  />
                 )
               )}
             </SkeletonStyle>

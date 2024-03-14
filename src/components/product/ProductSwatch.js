@@ -37,7 +37,7 @@ const ProductSwatch = ({ name, label, index, isDisabled }) => {
   return (
     <ProductSwatchStyle>
       <input type="radio" id={name + index} name={name} disabled={isDisabled} />
-      <label for={name + index} className="product__swatches">
+      <label htmlFor={name + index} className="product__swatches">
         {label}
       </label>
     </ProductSwatchStyle>

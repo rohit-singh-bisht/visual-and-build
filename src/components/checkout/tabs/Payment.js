@@ -139,7 +139,7 @@ const Payment = () => {
               name="payment_method"
               value={"stripe"}
             />
-            <label for="method1" className="payment__method">
+            <label htmlFor="method1" className="payment__method">
               <img src="/images/stripe.png" alt="stripe" />
             </label>
             <button className="pay__now">Pay Now</button>
@@ -151,7 +151,7 @@ const Payment = () => {
               name="payment_method"
               value={"cod"}
             />
-            <label for="method2" className="payment__method">
+            <label htmlFor="method2" className="payment__method">
               Cash on delivery
             </label>
             <button className="pay__now">Pay Now</button>

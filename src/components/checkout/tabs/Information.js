@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import BillingDetails from "../BillingDetails";
 import CheckoutOrderSummary from "../CheckoutOrderSummary";
 import CheckoutSubscribe from "../../forms/subscribe/CheckoutSubscribe";
+import { useRequest } from "../../../hooks/useRequest";
+import { Skeleton } from "@mui/material";
 
 const InformationStyle = styled.div`
   .checkout__wrapper {
@@ -11,12 +13,16 @@ const InformationStyle = styled.div`
     margin-top: 60px;
     .checkout__billing__wrapper {
       flex: 1;
-      .checkout__billing__title {
+      .checkout__billing__title,
+      .checkout__shipping__title {
         color: #303030;
         font-size: 27px;
         font-weight: 600;
         line-height: 34.5px;
         margin-bottom: 32.5px;
+      }
+      .checkout__billing__title {
+        margin-top: 30px;
       }
       .checkout__billing__details {
         margin-bottom: 15.75px;
@@ -73,42 +79,80 @@ const Information = ({
   handleChangeBilling,
   handleOrderNow,
   orderSummaryData,
+  checkoutAddress,
 }) => {
+  const [
+    fetchAddresses,
+    { isLoading: isFetchingAddresses, state: addressData },
+  ] = useRequest(`/address?page=1&limit=10`);
+
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
+
   return (
     <>
       <InformationStyle>
         <div className="checkout__wrapper">
           <div className="checkout__billing__wrapper">
-            <h2 className="checkout__billing__title">Billing Details</h2>
-            <div className="checkout__billing__details">
-              <BillingDetails
-                billingMethod={"Choose Pickup"}
-                billerName={"The mechanical Shop"}
-                billingAddress={
-                  "House no 11 Sawaswati colony naya pul sehatpur, Naya pul Faridabad - 121003, Haryana"
-                }
-                billingPhone={"7503063585, 7503063585"}
-                billingType={"pickup"}
-                onClick={handleChangeBilling}
-                index={1}
+            <h2 className="checkout__shipping__title">Shipping Details</h2>
+            {isFetchingAddresses && !addressData?.data?.docs && (
+              <Skeleton
+                variant="rectangular"
+                width={"100%"}
+                height={110}
+                style={{ borderRadius: "10px" }}
               />
-            </div>
-            <div className="checkout__billing__details">
-              <BillingDetails
-                billingMethod={"Choose Pickup"}
-                billerName={"The mechanical Shop"}
-                billingAddress={
-                  "House no 11 Sawaswati colony naya pul sehatpur, Naya pul Faridabad - 121003, Haryana"
-                }
-                billingPhone={"7503063585, 7503063585"}
-                billingType={"delivery"}
-                onClick={handleChangeBilling}
-                index={2}
-              />
-            </div>
-            <div className="checkout__add__new__address__wrapper">
+            )}
+            {addressData?.data?.docs?.map((address) => (
+              <div
+                className="checkout__billing__details"
+                key={"shipping" + address?.id}
+              >
+                <BillingDetails
+                  billingTitle={"Choose Delivery"}
+                  billerName={address?.label}
+                  billingAddress={address?.format}
+                  billingPhone={address?.phoneNumber}
+                  billingType={"delivery"}
+                  billingMethod={"shipping"}
+                  onClick={handleChangeBilling}
+                  index={address?.id}
+                  isChecked={checkoutAddress?.shipping === address?.format}
+                />
+              </div>
+            ))}
+            {/* <div className="checkout__add__new__address__wrapper">
               <div className="checkout__add__new__address">Add New Address</div>
-            </div>
+            </div> */}
+
+            <h2 className="checkout__billing__title">Billing Details</h2>
+            {isFetchingAddresses && !addressData?.data?.docs && (
+              <Skeleton
+                variant="rectangular"
+                width={"100%"}
+                height={110}
+                style={{ borderRadius: "10px" }}
+              />
+            )}
+            {addressData?.data?.docs?.map((address) => (
+              <div
+                className="checkout__billing__details"
+                key={"billing" + address?.id}
+              >
+                <BillingDetails
+                  billingTitle={"Choose Delivery"}
+                  billingMethod={"billing"}
+                  billerName={address?.label}
+                  billingAddress={address?.format}
+                  billingPhone={address?.phoneNumber}
+                  billingType={"delivery"}
+                  onClick={handleChangeBilling}
+                  index={address?.id}
+                  isChecked={checkoutAddress?.billing === address?.format}
+                />
+              </div>
+            ))}
 
             <div className="checkout__order__notes">
               <h3 className="checkout__order__notes__title">Order Notes</h3>
@@ -122,6 +166,9 @@ const Information = ({
             <CheckoutOrderSummary
               orderSummaryData={orderSummaryData}
               handleOrderNow={handleOrderNow}
+              isCheckoutDisabled={
+                !checkoutAddress?.shipping || !checkoutAddress?.billing
+              }
             />
           </div>
         </div>

@@ -44,6 +44,7 @@ const BillingDetailsStyle = styled.div`
     }
   }
   .billing__details {
+    text-transform: capitalize;
     .billing__method {
       color: #000;
       font-size: 12px;
@@ -88,6 +89,7 @@ const BillingDetailsStyle = styled.div`
 `;
 
 const BillingDetails = ({
+  billingTitle,
   billingMethod,
   billerName,
   billingAddress,
@@ -95,38 +97,46 @@ const BillingDetails = ({
   billingType,
   onClick,
   index,
+  isChecked,
 }) => {
   return (
     <>
       <BillingDetailsStyle>
         <input
-          id={"billing__address" + index}
-          onClick={onClick}
-          value={billingType}
-          name="billing__address"
+          id={"billing__address" + billingMethod + index}
+          onChange={(e) =>
+            onClick(e, billingAddress, billingType, billingMethod)
+          }
+          value={billingAddress}
+          name={billingMethod}
           type="radio"
           className="billing__input"
+          checked={isChecked}
         />
         <label
           className={"billing__details__wrapper"}
-          htmlFor={"billing__address" + index}
+          htmlFor={"billing__address" + billingMethod + index}
         >
           <div className="billing__radio__icon">
             <RadioEmpty className="icon empty" />
             <RadioFilled className="icon filled" />
           </div>
           <div className="billing__details">
-            <div className="billing__method">{billingMethod}</div>
+            <div className="billing__method">{billingTitle}</div>
             <div className="details billing__details__name">{billerName}</div>
             <div className="details billing__details__address">
               {billingAddress}
             </div>
-            <div className="details billing__details__phone__title">
-              Phone number
-            </div>
-            <div className="details billing__details__phone">
-              {billingPhone}
-            </div>
+            {billingPhone?.length > 0 && (
+              <>
+                <div className="details billing__details__phone__title">
+                  Phone number
+                </div>
+                <div className="details billing__details__phone">
+                  {billingPhone}
+                </div>
+              </>
+            )}
             {billingType === "pickup" && (
               <p className="distance__from__home">
                 <HelpCircle /> 5 km Far From Your House
