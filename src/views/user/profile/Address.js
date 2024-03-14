@@ -19,12 +19,13 @@ const AddressStyled = styled.div`
 const Address = () => {
   const [isAddressModal, setIsAddressModal] = useState(false);
   const [fetchAddress, { isLoading: isFetchingAddress, state }] = useRequest();
+  const [getAddressUpdates, setGetAddressUpdates] = useState(false);
 
   useEffect(() => {
     const path = `/address?page=1&limit=10`;
     fetchAddress({ path });
     // eslint-disable-next-line
-  }, []);
+  }, [getAddressUpdates]);
 
   return (
     <>
@@ -36,11 +37,17 @@ const Address = () => {
           />
         </div>
         {state?.data?.docs?.map((item) => (
-          <AddressCard />
+          <AddressCard
+            addressItem={item}
+            setGetAddressUpdates={setGetAddressUpdates}
+          />
         ))}
       </AddressStyled>
       {isAddressModal && (
-        <AddAddressModal setIsAddressModal={setIsAddressModal} />
+        <AddAddressModal
+          setIsAddressModal={setIsAddressModal}
+          setGetAddressUpdates={setGetAddressUpdates}
+        />
       )}
       {isFetchingAddress && <Progress />}
     </>

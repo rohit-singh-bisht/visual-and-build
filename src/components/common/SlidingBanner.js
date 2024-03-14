@@ -42,7 +42,7 @@ const SlidingBanner = ({
     return (
       <Slider {...settings}>
         {bannerData?.map((item) => (
-          <div>
+          <div key={item?._id}>
             <Banner
               title={item?.heading}
               subtitle={item?.tagline}

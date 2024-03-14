@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as More } from "../../assets/vertical-options.svg";
 import Dropdown from "../common/Dropdown";
@@ -39,6 +39,7 @@ const AddressCardStyle = styled.div`
     font-weight: 400;
     line-height: normal;
     margin: 13.5px 0;
+    text-transform: capitalize;
   }
   .user__phone__number {
     color: #000;
@@ -76,28 +77,73 @@ const AddressFormStyle = styled.div`
   margin-bottom: 24px;
 `;
 
-const AddressCard = () => {
+const AddressCard = ({ addressItem, setGetAddressUpdates }) => {
+  const {
+    phoneNumber,
+    pincode,
+    locality,
+    address,
+    city,
+    state,
+    landmark,
+    label,
+    id: addressId,
+  } = addressItem || {};
   const [isOptionsActive, setIsOptionsActive] = useState(false);
   const [dropdownAction, setDropdownAction] = useState("");
-  const [addAddress, { isLoading }] = useRequest();
-  const [addressData, setAddressData] = useState();
+  const [handleAddress, { isLoading }] = useRequest();
+  const [addressData, setAddressData] = useState({
+    fullName: "",
+    phoneNumber,
+    pincode,
+    locality,
+    address,
+    city,
+    state,
+    landmark,
+    alternateNumber: "",
+    label,
+  });
 
-  const handleAddAddress = useCallback(async () => {
-    try {
-      const path = `/address`;
-      const response = await addAddress({
-        path,
-        method: "POST",
-        body: JSON.stringify(addressData),
-      });
-      if (!response.success) {
-        return toast.error(response.message);
+  const handleEditAddress = useCallback(
+    async (addressId) => {
+      try {
+        const path = `/address/${addressId}/edit`;
+        const response = await handleAddress({
+          path,
+          method: "PUT",
+          body: JSON.stringify(addressData),
+        });
+        if (!response.success) {
+          return toast.error(response.message);
+        }
+        toast.success(response.message);
+        setIsOptionsActive(false);
+        setGetAddressUpdates((prev) => !prev);
+      } catch (err) {
+        console.log("err", err);
       }
-    } catch (err) {
-      console.log("err", err);
+      // eslint-disable-next-line
+    },
+    [addressData, addressId]
+  );
+
+  const handleDeleteAddress = async (addressId) => {
+    const path = `/address/${addressId}/remove`;
+    const response = await handleAddress({ path, method: "DELETE" });
+    if (!response.success) {
+      return toast.error(response.message);
     }
-    // eslint-disable-next-line
-  }, []);
+    toast.success(response.message);
+    setIsOptionsActive(false);
+    setGetAddressUpdates((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (dropdownAction === "delete") {
+      handleDeleteAddress(addressId);
+    }
+  }, [dropdownAction, addressId]);
 
   return (
     <>
@@ -105,22 +151,22 @@ const AddressCard = () => {
         <AddressFormStyle>
           <AddressForm
             title=""
-            onClick={handleAddAddress}
+            onClick={() => handleEditAddress(addressId)}
             setState={setAddressData}
+            state={addressData}
           />
         </AddressFormStyle>
       ) : (
         <AddressCardStyle>
-          <div className="user__address__type">Home</div>
-          <div className="user__address__name">Nishant Choudhary</div>
-          <div className="user__address__details">
-            House no 11 Sawaswati colony naya pul sehatpur, Naya pul Faridabad -
-            121003, Haryana
-          </div>
-          <div className="user__phone__number">
-            <span className="user__phone__number__title">Phone number</span>
-            7503063585, 7503063585
-          </div>
+          <div className="user__address__type">{addressItem?.label}</div>
+          {/* <div className="user__address__name">Nishant Choudhary</div> */}
+          <div className="user__address__details">{addressItem?.format}</div>
+          {addressItem?.phoneNumber && (
+            <div className="user__phone__number">
+              <span className="user__phone__number__title">Phone number</span>
+              {addressItem?.phoneNumber}
+            </div>
+          )}
           <div
             className="user__address__icon"
             onClick={() => setIsOptionsActive(true)}

@@ -27,7 +27,7 @@ const AddAddressModalStyle = styled.div`
   }
 `;
 
-const AddAddressModal = ({ setIsAddressModal }) => {
+const AddAddressModal = ({ setIsAddressModal, setGetAddressUpdates }) => {
   const [addressData, setAddressData] = useState();
   const [addAddress, { isLoading }] = useRequest();
 
@@ -42,8 +42,11 @@ const AddAddressModal = ({ setIsAddressModal }) => {
     if (!response.success) {
       return toast.error(response.message);
     }
+    toast.success(response.message);
+    setIsAddressModal(false);
+    setGetAddressUpdates((prev) => !prev);
     // eslint-disable-next-line
-  }, []);
+  }, [addressData]);
 
   return (
     <>

@@ -55,7 +55,7 @@ const CategoryListStyle = styled.div`
 
 const CategoryList = ({ title, allText, allLink, list }) => {
   const navigate = useNavigate();
-  const { pathname, search } = useLocation();
+  const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const categoryId = searchParams.getAll("categories[]");
 
@@ -63,7 +63,7 @@ const CategoryList = ({ title, allText, allLink, list }) => {
     (id) => {
       if (!categoryId?.includes(id)) {
         searchParams.append("categories[]", id);
-        const newUrl = `${pathname}?${searchParams.toString()}`;
+        const newUrl = `/category?${searchParams.toString()}`;
         navigate(newUrl);
       }
 

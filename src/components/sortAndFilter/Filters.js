@@ -186,7 +186,7 @@ const Filters = ({
                 <div className="dropdown">
                   {categories?.length > 0 ? (
                     categories?.map((item) => (
-                      <div className="filter__group">
+                      <div className="filter__group" key={item?._id}>
                         <input
                           type="checkbox"
                           name="categories"
@@ -212,7 +212,7 @@ const Filters = ({
         </div>
 
         {categoriesData?.map((item) => (
-          <div className="filter__group">
+          <div className="filter__group" key={item?._id}>
             <input
               type="checkbox"
               name="categories"
@@ -259,7 +259,7 @@ const Filters = ({
                 <div className="dropdown">
                   {brands?.length > 0 ? (
                     brands?.map((item) => (
-                      <div className="filter__group">
+                      <div className="filter__group" key={item?._id}>
                         <input
                           type="checkbox"
                           name="brands"
@@ -284,7 +284,7 @@ const Filters = ({
             )}
         </div>
         {brandsData?.map((item) => (
-          <div className="filter__group">
+          <div className="filter__group" key={item?._id}>
             <input
               type="checkbox"
               name="brands"

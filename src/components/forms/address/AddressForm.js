@@ -46,10 +46,13 @@ const AddressFormStyle = styled.div`
           border-radius: 3.75px;
           border: 0.75px solid #d9d9d9;
           background: #fff;
-          color: #898989;
+          color: #000;
           font-size: 13.5px;
           font-weight: 400;
           line-height: 22.5px;
+          &::placeholder {
+            color: #898989;
+          }
         }
         textarea {
           height: 100px;
@@ -89,7 +92,7 @@ const AddressFormStyle = styled.div`
 `;
 
 const AddressForm = ({ title = "Add Address", state, setState, onClick }) => {
-  const [addressData, setAddressData] = useState(addressFormObj);
+  const [addressData, setAddressData] = useState(state || addressFormObj);
 
   useEffect(() => {
     setState && setState(addressData);
