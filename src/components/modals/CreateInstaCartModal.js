@@ -31,7 +31,6 @@ const CreateInstaCartModalStyle = styled.div`
 const CreateInstaCartModal = ({ onMaskClick }) => {
   const [instaCartName, setInstaCartName] = useState("");
   const [createInstaCart, { isLoading }] = useRequest();
-  console.log("instaCartName", instaCartName);
 
   const handlePrimaryClick = useCallback(async () => {
     if (!instaCartName) return toast.error("Please enter your Instacart name");
