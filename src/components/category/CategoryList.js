@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import CategoryCard from "./CategoryCard";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CategoryListStyle = styled.div`
   .title_wrapper {
@@ -55,12 +55,22 @@ const CategoryListStyle = styled.div`
 
 const CategoryList = ({ title, allText, allLink, list }) => {
   const navigate = useNavigate();
+  const { pathname, search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const categoryId = searchParams.getAll("categories[]");
 
-  const handleClick = useCallback((slug) => {
-    navigate(`/category?name[]=${slug}`);
+  const handleClick = useCallback(
+    (id) => {
+      if (!categoryId?.includes(id)) {
+        searchParams.append("categories[]", id);
+        const newUrl = `${pathname}?${searchParams.toString()}`;
+        navigate(newUrl);
+      }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [categoryId, searchParams]
+  );
 
   return (
     <CategoryListStyle>
@@ -76,7 +86,7 @@ const CategoryList = ({ title, allText, allLink, list }) => {
               <CategoryCard
                 key={item?.id}
                 {...item}
-                onClick={() => handleClick(item?.slug)}
+                onClick={() => handleClick(item?._id)}
               />
             );
           })}

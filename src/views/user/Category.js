@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CategoryCard from "../../components/category/CategoryCard";
 import ProductCard from "../../components/product/ProductCard";
-import ProductList from "../../components/product/ProductList";
 import Pagination from "@mui/material/Pagination";
 import { useRequest } from "../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import GroupBuyGrid from "../../components/common/GroupBuyGrid";
+import Filters from "../../components/sortAndFilter/Filters";
 
 const CategoryStyle = styled.div`
   .categories {
@@ -62,55 +62,88 @@ const CategoryStyle = styled.div`
   }
 `;
 
+const ProductsNotFound = styled.div`
+  text-align: center;
+  padding: 50px 0;
+  .sad__emoji {
+    font-size: 100px;
+  }
+  .not__found {
+    font-size: 24px;
+    font-weight: 500;
+  }
+`;
+
 const Category = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const [
-    fetchCategories,
-    { isLoading: isFetchingCategories, state: category },
-  ] = useRequest(`/category?limit=100&page=1`);
+  const [fetchCategories, { isLoading: isFetchingCategories }] = useRequest();
+  const [searchInput, setSearchInput] = useState({ type: "", value: "" });
+  const [fetchBrands] = useRequest();
   const [fetchProducts, { isLoading: isFetchingProducts, state: products }] =
     useRequest();
-  const { search } = useLocation();
-  const categoriesData = category?.data?.docs;
+  const [categoriesData, setCategoriesData] = useState([]);
+  const [brandsData, setBrandsData] = useState([]);
+  const { pathname, search } = useLocation();
   const navigate = useNavigate();
   const [categoriesIdList, setCategoriesIdList] = useState();
+  const [brandsIdList, setBrandsIdList] = useState();
+  const searchParams = new URLSearchParams(search);
 
   useEffect(() => {
-    const params = new URLSearchParams(search);
-    const categoryNames = params.getAll("name[]");
-    const categoriesIdList = getCategoriesId(categoriesData, categoryNames);
-    setCategoriesIdList(categoriesIdList);
-  }, [search, categoriesData]);
-
-  useEffect(() => {
-    fetchCategories();
+    (async function () {
+      const categoryData = await fetchCategories({
+        path: `/category?limit=100&page=1`,
+      });
+      const brandData = await fetchBrands({
+        path: `/brand?limit=100&page=1`,
+      });
+      setCategoriesData(categoryData?.data?.docs);
+      setBrandsData(brandData?.data?.docs);
+    })();
     // eslint-disable-next-line
   }, []);
 
-  const generateURL = (pageNumber, categories) => {
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const categoryNames = params.getAll("categories[]");
+    const brandNames = params.getAll("brands[]");
+    // const categoriesIdList = getCategoriesId(categoriesData, categoryNames);
+    // const brandsIdList = getCategoriesId(brandsData, brandNames);
+    setCategoriesIdList(categoryNames);
+    setBrandsIdList(brandNames);
+  }, [search, categoriesData, brandsData]);
+
+  const generateURL = (pageNumber, categories, brands) => {
     let url = `/product?limit=16&page=${pageNumber}`;
     categories.forEach((category) => {
-      url += `&category[]=${category}`;
+      url += `&categories[]=${category}`;
+    });
+    brands?.forEach((brand) => {
+      url += `&brands[]=${brand}`;
     });
     return url;
   };
 
-  function getCategoriesId(categoriesData, categoryNames) {
-    return categoriesData
-      ?.filter((category) => categoryNames.includes(category?.name))
-      .map((category) => category?.id);
-  }
+  // function getCategoriesId(categoriesData, categoryNames) {
+  //   return categoriesData
+  //     ?.filter((category) => categoryNames.includes(category?.name))
+  //     .map((category) => category?.id);
+  // }
 
   useEffect(() => {
     if (categoriesIdList) {
-      const path = generateURL(pageNumber, categoriesIdList);
+      const path = generateURL(pageNumber, categoriesIdList, brandsIdList);
       fetchProducts({ path });
     }
     // eslint-disable-next-line
-  }, [pageNumber, categoriesIdList]);
+  }, [pageNumber, categoriesIdList, brandsIdList]);
 
   const handleCategoryClick = (item) => {
-    navigate(`/category?name[]=${item?.name}`);
+    if (!categoriesIdList?.includes(item?._id)) {
+      searchParams.append("categories[]", item?._id);
+      const newUrl = `${pathname}?${searchParams.toString()}`;
+      navigate(newUrl);
+    }
   };
 
   const handleProductClick = (item) => {
@@ -149,10 +182,17 @@ const Category = () => {
           </>
         )}
       </div>
-      {categoriesIdList?.length ? (
+      {categoriesIdList?.length || brandsIdList?.length ? (
         <section className="products__wrapper">
           <aside>
-            <div className="products__filters"></div>
+            <div className="products__filters">
+              <Filters
+                categoriesData={categoriesData}
+                brandsData={brandsData}
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+              />
+            </div>
           </aside>
           <div className="products">
             <h2 className="title">Products</h2>
@@ -178,7 +218,13 @@ const Category = () => {
                   (item) => <ProductCard key={item} isLoading={true} />
                 )}
             </div>
-            {!isFetchingProducts && (
+            {!isFetchingProducts && products?.data?.docs?.length <= 0 && (
+              <ProductsNotFound>
+                <span className="sad__emoji">😞</span>
+                <h2 className="not__found">No Products Found!</h2>
+              </ProductsNotFound>
+            )}
+            {!isFetchingProducts && products?.data?.docs?.length > 0 && (
               <div className="product__list__pagination">
                 <Pagination
                   className="pagination"
