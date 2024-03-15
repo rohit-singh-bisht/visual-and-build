@@ -11,6 +11,7 @@ const AppContextProvider = ({ children }) => {
   const [user, setUser] = useLocalStorage("user", "");
   const [isAuthForm, setIsAuthForm] = useState(false);
   const [checkoutCartData, setCheckoutCartData] = useState();
+  const [appliedCoupon, setAppliedCoupon] = useState("");
 
   const handleWindowResize = () => {
     const windowWidth = window.innerWidth;
@@ -40,6 +41,8 @@ const AppContextProvider = ({ children }) => {
     setIsAuthForm,
     checkoutCartData,
     setCheckoutCartData,
+    appliedCoupon,
+    setAppliedCoupon,
   };
 
   return (

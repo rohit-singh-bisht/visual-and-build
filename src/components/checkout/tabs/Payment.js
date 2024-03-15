@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import IconWithTextList from "../../common/IconWithTextList";
+import { useRequest } from "../../../hooks/useRequest";
+import useRazorpay from "react-razorpay";
+import { useAppContext } from "../../../context/useAppContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const PaymentStyle = styled.div`
   .tittle {
@@ -32,6 +37,9 @@ const PaymentStyle = styled.div`
         top: 50%;
         transform: translateY(-50%);
         right: 26px;
+        &:disabled {
+          background: #a7a7a7;
+        }
       }
     }
     .payment__method {
@@ -126,7 +134,55 @@ const PaymentStyle = styled.div`
   }
 `;
 
-const Payment = () => {
+const Payment = ({ createOrderData }) => {
+  const [handleRequest] = useRequest();
+  const [Razorpay] = useRazorpay();
+  const { user, checkoutCartData } = useAppContext();
+  const [selectedMethod, setSelectedMethod] = useState();
+  const navigate = useNavigate();
+
+  const handleDeleteCart = async (cartId) => {
+    const path = `/instacart/${cartId}/delete`;
+    await handleRequest({ path, method: "DELETE" });
+  };
+
+  const handleCreateOrder = async (paymentId, orderData) => {
+    const path = `/order/checkout/store`;
+    const response = await handleRequest({
+      path,
+      method: "POST",
+      body: JSON.stringify({ ...orderData, paymentRefNumber: paymentId }),
+    });
+    if (!response.success) {
+      return toast.error(response.message);
+    }
+    handleDeleteCart(checkoutCartData?._id);
+    navigate("/thankyou", { state: { fromCheckout: true } });
+  };
+
+  const handlePayment = (createOrderData) => {
+    const options = {
+      key: process.env.REACT_APP_RAZORPAY_KEY,
+      amount: createOrderData?.subtotal * 100,
+      name: "Visual And Build",
+      handler: function (response) {
+        const { razorpay_payment_id } = response;
+        handleCreateOrder(razorpay_payment_id, createOrderData);
+      },
+      prefill: {
+        name: user?.name,
+        email: user?.email,
+        // contact: "9999999999",
+      },
+      theme: {
+        color: "#ae0000",
+      },
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  };
+
   return (
     <>
       <PaymentStyle>
@@ -138,35 +194,52 @@ const Payment = () => {
               type="radio"
               name="payment_method"
               value={"stripe"}
+              onChange={(e) => setSelectedMethod(e.target.value)}
+              checked={selectedMethod === "stripe"}
             />
             <label htmlFor="method1" className="payment__method">
               <img src="/images/stripe.png" alt="stripe" />
             </label>
-            <button className="pay__now">Pay Now</button>
+            <button
+              className="pay__now"
+              onClick={() => handlePayment(createOrderData)}
+              disabled={selectedMethod !== "stripe"}
+            >
+              Pay Now
+            </button>
           </div>
-          <div className="payment__method__wrapper">
+          {/* <div className="payment__method__wrapper">
             <input
               id="method2"
               type="radio"
               name="payment_method"
               value={"cod"}
+              onChange={(e) => setSelectedMethod(e.target.value)}
+              checked={selectedMethod === "cod"}
             />
             <label htmlFor="method2" className="payment__method">
               Cash on delivery
             </label>
-            <button className="pay__now">Pay Now</button>
-          </div>
+            <button className="pay__now" disabled={selectedMethod !== "cod"}>
+              Pay Now
+            </button>
+          </div> */}
         </div>
         <div className="coupon__and__subtotal">
           <div className="coupon__wrapper">
-            <input type="text" placeholder="Enter coupon code (ex: FIRSTPAY)" />
+            <input
+              type="text"
+              placeholder="Enter coupon code (ex: FIRSTPAY)"
+              value={createOrderData?.coupon}
+            />
             <h2 className="apply__code">Apply Code</h2>
           </div>
           <div className="subtotal__amount">
             <h3 className="title">SUB TOTAL</h3>
             <h2 className="amount">
-              $7,733.00
-              <span>( excl. shipping fee )</span>
+              {process.env.REACT_APP_PRICE_SYMBOL}
+              {createOrderData?.subtotal}
+              {/* <span>( excl. shipping fee )</span> */}
             </h2>
           </div>
         </div>

@@ -166,7 +166,7 @@ const CartOrderSummary = ({
   const [couponCode, setCouponCode] = useState("");
   const [isCouponInvalid, setIsCouponInvalid] = useState(false);
   const navigate = useNavigate();
-  const { setCheckoutCartData } = useAppContext();
+  const { setCheckoutCartData, setAppliedCoupon } = useAppContext();
   const cartId = cartData?._id;
 
   useDebounce(
@@ -193,17 +193,18 @@ const CartOrderSummary = ({
         setIsCouponInvalid(true);
       } else {
         setIsCouponInvalid(false);
+        setAppliedCoupon(coupon);
       }
     }
   }
 
   useEffect(() => {
     if (cartId) {
-      getOrderSummary(cartId, couponCode);
+      getOrderSummary(cartId, "");
     }
 
     //eslint-disable-next-line
-  }, [cartId, couponCode, isQtyChanged]);
+  }, [cartId, isQtyChanged]);
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -224,7 +225,7 @@ const CartOrderSummary = ({
           <div className="subtotal__title">Subtotal</div>
           <div className="subtotal__value">
             {process.env.REACT_APP_PRICE_SYMBOL}
-            {orderSummaryData?.subtotal}
+            {orderSummaryData?.subtotal.toFixed(2)}
           </div>
         </div>
       </div>
@@ -257,7 +258,7 @@ const CartOrderSummary = ({
             </div>
             <div className="subtotal__value" style={{ color: "#4caf50" }}>
               {process.env.REACT_APP_PRICE_SYMBOL}
-              {orderSummaryData?.discountAmount}
+              {orderSummaryData?.discountAmount.toFixed(2)}
             </div>
           </div>
         ) : (
@@ -267,21 +268,21 @@ const CartOrderSummary = ({
           <div className="subtotal__title">Shipping</div>
           <div className="subtotal__value">
             {process.env.REACT_APP_PRICE_SYMBOL}
-            {orderSummaryData?.shippingCharges}
+            {orderSummaryData?.shippingCharges.toFixed(2)}
           </div>
         </div>
         <div className="cart__summary__total other">
           <div className="subtotal__title">Taxes</div>
           <div className="subtotal__value">
             {process.env.REACT_APP_PRICE_SYMBOL}
-            {orderSummaryData?.taxAmount}
+            {orderSummaryData?.taxAmount.toFixed(2)}
           </div>
         </div>
         <div className="cart__summary__total">
           <div className="subtotal__title">Total</div>
           <div className="subtotal__value">
             {process.env.REACT_APP_PRICE_SYMBOL}
-            {orderSummaryData?.totalAmount}
+            {orderSummaryData?.totalAmount.toFixed(2)}
           </div>
         </div>
 

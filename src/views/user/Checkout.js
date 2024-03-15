@@ -37,12 +37,12 @@ const tabsList = [
   {
     id: 1,
     title: "Specification",
-    component: (
+    component: ({
       handleChangeBilling,
       handleOrderNow,
       orderSummaryData,
-      checkoutAddress
-    ) => (
+      checkoutAddress,
+    }) => (
       <Information
         handleChangeBilling={handleChangeBilling}
         handleOrderNow={handleOrderNow}
@@ -54,13 +54,15 @@ const tabsList = [
   {
     id: 2,
     title: "Description",
-    component: () => <Payment />,
+    component: ({ createOrderData }) => (
+      <Payment createOrderData={createOrderData} />
+    ),
   },
 ];
 
 const Checkout = () => {
   const [activeStep, setActiveStep] = useState(1);
-  const { checkoutCartData } = useAppContext();
+  const { checkoutCartData, appliedCoupon } = useAppContext();
   const navigate = useNavigate();
   const [orderSummaryData, setOrderSummaryData] = useState([]);
   const [fetchOrderSummary] = useRequest("/order/checkout/summary");
@@ -69,8 +71,10 @@ const Checkout = () => {
     billing: "",
     shipping: "",
   });
+  const [createOrderData, setCreateOrderData] = useState();
 
   useEffect(() => {
+    if (!checkoutCartId) return navigate("/cart");
     async function getOrderSummary(cartId, coupon) {
       const path = `/order/checkout/summary`;
       const response = await fetchOrderSummary({
@@ -85,7 +89,7 @@ const Checkout = () => {
         setOrderSummaryData(response?.data);
       }
     }
-    checkoutCartId ? getOrderSummary(checkoutCartId, "") : navigate(-1);
+    getOrderSummary(checkoutCartId, "");
   }, [checkoutCartId]);
 
   const handleChangeBilling = useCallback((e, address, addressType, method) => {
@@ -103,6 +107,29 @@ const Checkout = () => {
     setActiveStep(step?.id);
   };
 
+  useEffect(() => {
+    if (!checkoutCartId) return;
+    const products = checkoutCartData.items.map((item) => ({
+      productId: item.product._id,
+      variation: "",
+      qty: item.quantity,
+      price: item.product.price,
+    }));
+
+    // New object in desired format
+    const newObject = {
+      products,
+      subtotal: orderSummaryData?.totalAmount,
+      coupon: appliedCoupon,
+      paymentRefNumber: "",
+      billingAddress: checkoutAddress?.billing,
+      shippingAddress: checkoutAddress?.shipping,
+      paymentMethod: "razorpay",
+    };
+
+    setCreateOrderData(newObject);
+  }, [checkoutAddress, orderSummaryData, checkoutCartData]);
+
   return (
     <CheckoutStyle>
       <div className="container">
@@ -112,12 +139,13 @@ const Checkout = () => {
         </div>
         {tabsList
           ?.find((item) => item?.id === activeStep)
-          ?.component(
+          ?.component({
             handleChangeBilling,
             handleOrderNow,
             orderSummaryData,
-            checkoutAddress
-          )}
+            checkoutAddress,
+            createOrderData,
+          })}
       </div>
     </CheckoutStyle>
   );

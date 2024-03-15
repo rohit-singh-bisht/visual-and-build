@@ -16,6 +16,7 @@ import styled from "styled-components";
 import { useAuth } from "../hooks/useAuth";
 import { useAppContext } from "../context/useAppContext";
 import PrivateRoute from "./PrivateRoute";
+import Thankyou from "../views/user/Thankyou";
 
 const AuthPopupStyle = styled.div`
   position: fixed;
@@ -52,6 +53,7 @@ const UserRoutes = () => {
         <Route element={<PrivateRoute />}>
           <Route path="/checkout" element={<Checkout />} />
         </Route>
+        <Route path="/thankyou" element={<Thankyou />} />
         <Route path="*" element={<Navigate to={"/"} />} />
         <Route path="/account/*" element={<UserAccountRoutes />} />
       </Routes>

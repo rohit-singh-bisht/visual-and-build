@@ -126,13 +126,15 @@ const Cart = () => {
             setIsQtyChanged={setIsQtyChanged}
             setIsCheckoutButtonDisabled={setIsCheckoutButtonDisabled}
           />
-          <div className="cart__order__summary__hodler">
-            <CartOrderSummary
-              isCheckoutButtonDisabled={isCheckoutButtonDisabled}
-              isQtyChanged={isQtyChanged}
-              cartData={cartData}
-            />
-          </div>
+          {cartData?.items?.length && (
+            <div className="cart__order__summary__hodler">
+              <CartOrderSummary
+                isCheckoutButtonDisabled={isCheckoutButtonDisabled}
+                isQtyChanged={isQtyChanged}
+                cartData={cartData}
+              />
+            </div>
+          )}
         </div>
         {instacartData?.map((item) => (
           <CollapsibleCart
