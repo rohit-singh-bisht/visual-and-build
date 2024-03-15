@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ListCard from "../../../components/account/ListCard";
 import styled from "styled-components";
 import { ReactComponent as PlusIcon } from "../../../assets/plus.svg";
+import CreateWishlistModal from "../../../components/modals/CreateWishlistModal";
+import { useRequest } from "../../../hooks/useRequest";
 
 const ListsStyle = styled.div`
   display: grid;
@@ -33,17 +35,35 @@ const AddProjectWishlistStyle = styled.div`
 `;
 
 const Lists = () => {
+  const [isAddWishlistActive, setIsAddWishlistActive] = useState(false);
+  const [getWishlist, { state: wishlistData }] = useRequest(
+    `/wishlist?limit=10&page=1`
+  );
+  const [isRefetchWishlist, setIsRefetchWishlist] = useState(false);
+
+  useEffect(() => {
+    isRefetchWishlist && getWishlist();
+  }, [isRefetchWishlist]);
+
   return (
     <ListsStyle>
-      {Array.from({ length: 3 }, (_, index) => index + 1)?.map((item) => (
-        <ListCard />
+      {wishlistData?.data?.map((item) => (
+        <ListCard title={item?.name} />
       ))}
-      <AddProjectWishlistStyle>
+      <AddProjectWishlistStyle onClick={() => setIsAddWishlistActive(true)}>
         <PlusIcon className="icon" />
         <div className="add__project__wishlist__title">
           Add project wishlist
         </div>
       </AddProjectWishlistStyle>
+      {isAddWishlistActive && (
+        <CreateWishlistModal
+          onMaskClick={() => {
+            setIsRefetchWishlist(true);
+            setIsAddWishlistActive(false);
+          }}
+        />
+      )}
     </ListsStyle>
   );
 };
