@@ -100,7 +100,12 @@ const ProductActionsStyle = styled.div`
   }
 `;
 
-const ProductActions = ({ onAddToCart, handleProductQuantity }) => {
+const ProductActions = ({
+  handleAddToCart,
+  handleAddToWishlist,
+  handleProductQuantity,
+  handleBuyNow,
+}) => {
   const { isDesktop } = useAppContext();
   return (
     <ProductActionsStyle>
@@ -108,14 +113,18 @@ const ProductActions = ({ onAddToCart, handleProductQuantity }) => {
         handleProductQuantity={handleProductQuantity}
         className={"product__details__quantity"}
       />
-      {isDesktop && <Button title={"Buy Now"} className="buy__now" />}
-      <div className="add__to__cart" onClick={onAddToCart}>
+      {isDesktop && (
+        <Button title={"Buy Now"} className="buy__now" onClick={handleBuyNow} />
+      )}
+      <div className="add__to__cart" onClick={handleAddToCart}>
         <AddToCart />
       </div>
-      <div className="add__to__wishlist">
+      <div className="add__to__wishlist" onClick={handleAddToWishlist}>
         <AddToWishlist />
       </div>
-      {!isDesktop && <Button title={"Buy Now"} className="buy__now" />}
+      {!isDesktop && (
+        <Button title={"Buy Now"} className="buy__now" onClick={handleBuyNow} />
+      )}
     </ProductActionsStyle>
   );
 };

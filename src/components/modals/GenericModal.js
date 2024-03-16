@@ -53,6 +53,13 @@ const GenericModalStyle = styled.div`
           }
         }
       }
+      label {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 28px;
+        text-align: left;
+        cursor: pointer;
+      }
       .checkbox {
         width: 35px;
         height: 35px;
@@ -72,6 +79,9 @@ const GenericModalStyle = styled.div`
     button {
       width: 225px;
       font-weight: 500;
+    }
+    .secondary__button {
+      background-color: #000;
     }
     .primary__button {
       margin-left: auto;

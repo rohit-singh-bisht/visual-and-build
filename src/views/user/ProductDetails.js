@@ -18,6 +18,8 @@ import GroupBuyGrid from "../../components/common/GroupBuyGrid";
 import { getProductImages } from "../../utils/helper";
 import CreateInstaCartModal from "../../components/modals/CreateInstaCartModal";
 import { useAuth } from "../../hooks/useAuth";
+import AddToWishlist from "../../components/modals/AddToWishlist";
+import CreateWishlistModal from "../../components/modals/CreateWishlistModal";
 
 const ProductDetailsStyle = styled.div`
   padding: 70px 0;
@@ -196,6 +198,8 @@ const ProductDetailsStyle = styled.div`
 const ProductDetails = () => {
   const [isAddToCartActive, setIsAddToCartActive] = useState(false);
   const [isInstaCartActive, setIsInstaCartActive] = useState(false);
+  const [isAddToWishlistActive, setIsAddToWishlistActive] = useState(false);
+  const [isCreateWishlistActive, setIsCreateWishlistActive] = useState(false);
   const { isDesktop, setIsAuthForm } = useAppContext();
   const [
     fetchProductDetails,
@@ -223,6 +227,10 @@ const ProductDetails = () => {
 
   const handleAddToCart = () => {
     isLoggedIn ? setIsAddToCartActive(true) : setIsAuthForm(true);
+  };
+
+  const handleAddToWishlist = () => {
+    isLoggedIn ? setIsAddToWishlistActive(true) : setIsAuthForm(true);
   };
 
   return (
@@ -304,7 +312,8 @@ const ProductDetails = () => {
                   </div> */}
                   <ProductActions
                     handleProductQuantity={setProductQuantity}
-                    onAddToCart={handleAddToCart}
+                    handleAddToCart={handleAddToCart}
+                    handleAddToWishlist={handleAddToWishlist}
                   />
                 </div>
               </div>
@@ -339,6 +348,19 @@ const ProductDetails = () => {
       )}
       {isInstaCartActive && (
         <CreateInstaCartModal onMaskClick={() => setIsInstaCartActive(false)} />
+      )}
+      {isAddToWishlistActive && (
+        <AddToWishlist
+          onMaskClick={() => setIsAddToWishlistActive(false)}
+          product={productDetails}
+          handleSecondaryButtonClick={() => setIsCreateWishlistActive(true)}
+          isCreateWishlistActive={isCreateWishlistActive}
+        />
+      )}
+      {isCreateWishlistActive && (
+        <CreateWishlistModal
+          onMaskClick={() => setIsCreateWishlistActive(false)}
+        />
       )}
     </>
   );
