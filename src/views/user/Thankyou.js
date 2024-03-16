@@ -70,7 +70,10 @@ const Thankyou = () => {
         </div>
         <h2 class="thank_you">Thank you!</h2>
         <p class="subtext">Your order has been placed!</p>
-        <Button title={"View Orders"} />
+        <Button
+          title={"View Orders"}
+          onClick={() => navigate("/account/purchase-history")}
+        />
       </div>
     </ThankyouStyle>
   );

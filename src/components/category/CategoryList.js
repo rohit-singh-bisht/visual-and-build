@@ -87,6 +87,7 @@ const CategoryList = ({ title, allText, allLink, list, loading }) => {
               height={130}
               variant="rectangular"
               className="skeleton"
+              key={item}
             />
           ))}
         </div>

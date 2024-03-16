@@ -299,9 +299,9 @@ const ProductDetails = () => {
                     <h2 className="product__options__title">Finish</h2>
                     <p className="product__options__value">Matte</p>
                   </div>
-                  <div className="product__options__variants">
+                  {/* <div className="product__options__variants">
                     <ProductVariants name={"Variant"} />
-                  </div>
+                  </div> */}
                   <ProductActions
                     handleProductQuantity={setProductQuantity}
                     onAddToCart={handleAddToCart}
