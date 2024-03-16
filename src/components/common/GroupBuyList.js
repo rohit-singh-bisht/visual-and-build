@@ -49,16 +49,11 @@ const GroupBuyList = ({ groupBuyList, isLoading }) => {
             </div>
             <div className="group__buy__products">
               {groupBuyList?.map((item, index) => {
-                const { name, price, numReviews } = item;
-                const productImages = getProductImages(item);
                 return (
                   <GroupBuy
                     key={item?.id}
                     reverse={index % 2 !== 0 ? "true" : "false"}
-                    productTitle={name}
-                    productPrice={price}
-                    reviewsCount={numReviews}
-                    images={productImages}
+                    product={item}
                   />
                 );
               })}

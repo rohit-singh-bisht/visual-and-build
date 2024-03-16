@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import Lists from "../views/user/profile/Lists";
 import PrivateRoute from "./PrivateRoute";
+import PurchaseHistory from "../views/user/profile/PurchaseHistory";
 
 const UserAccountRoutesStyle = styled.div`
   padding: 60px 0;
@@ -55,6 +56,13 @@ const routesInformation = [
     component: <Lists />,
     path: "/lists",
     pathname: "/account/lists",
+  },
+  {
+    id: 4,
+    title: "Purchase History",
+    component: <PurchaseHistory />,
+    path: "/purchase-history",
+    pathname: "/account/purchase-history",
   },
 ];
 

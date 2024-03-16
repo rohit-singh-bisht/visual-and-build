@@ -53,6 +53,9 @@ const Account = () => {
       title: `Purchase History`,
       sub1: `Add receipts and keep track of your online and in-store purchases.`,
       buttonText: `View Purchase History`,
+      onClick: () => {
+        navigate("/account/purchase-history");
+      },
     },
     {
       title: `My List`,

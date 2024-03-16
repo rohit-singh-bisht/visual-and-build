@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as ReviewStars } from "../../assets/reviewStars.svg";
 import ImageGallery from "react-image-gallery";
+import { useNavigate } from "react-router-dom";
+import { getProductImages } from "../../utils/helper";
 
 export const GroupBuyStyle = styled.div`
   display: flex;
@@ -22,6 +24,10 @@ export const GroupBuyStyle = styled.div`
       font-weight: 600;
       line-height: 34.5px;
       text-transform: capitalize;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
     .product__ratings {
       color: #303030;
@@ -103,21 +109,28 @@ export const GroupBuyStyle = styled.div`
   }
 `;
 
-const GroupBuy = ({
-  productTitle,
-  productDescription,
-  productOriginalPrice,
-  productPrice,
-  reverse,
-  reviewsCount = 0,
-  images,
-}) => {
+const GroupBuy = ({ product, reverse }) => {
+  const productImages = getProductImages(product);
+  const {
+    name: productTitle,
+    price: productPrice,
+    numReviews: reviewsCount = 0,
+    description,
+  } = product;
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
+  const navigate = useNavigate();
+  const productOriginalPrice = 0;
+
+  const handleProductClick = (product) => {
+    const path = `/product/${product?.slug}?id=${product?.id}`;
+    navigate(path);
+  };
+
   return (
     <GroupBuyStyle className="group__buy__item" reverse={reverse}>
       <div className="product__image">
         <ImageGallery
-          items={images}
+          items={productImages}
           showBullets={false}
           showNav={false}
           showPlayButton={false}
@@ -130,23 +143,28 @@ const GroupBuy = ({
             {reviewsCount} Reviews
           </span>
         </div>
-        <p className="product__title">{productTitle}</p>
-        <p className="product__description">{productDescription}</p>
+        <p
+          className="product__title"
+          onClick={() => handleProductClick(product)}
+        >
+          {productTitle}
+        </p>
+        <p className="product__description">{description}</p>
         <div className="product__price">
           <div className="product__selling__price">
             {priceSymbol + " " + productPrice.toFixed(2)}
           </div>
-          {productOriginalPrice && productOriginalPrice > 0 && (
+          {productOriginalPrice > 0 && (
             <div className="product__cost__price">
               {priceSymbol + " " + productOriginalPrice.toFixed(2)}
             </div>
           )}
         </div>
-        <div className="product__variants">
+        {/* <div className="product__variants">
           <div className="product__variants__button">Variant</div>
           <div className="product__variants__button active">Variant</div>
           <div className="product__variants__button">Variant</div>
-        </div>
+        </div> */}
         <div className="product__addToCart">Add to cart</div>
       </div>
     </GroupBuyStyle>

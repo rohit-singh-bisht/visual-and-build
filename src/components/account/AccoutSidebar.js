@@ -30,6 +30,7 @@ const AccountSidebar = () => {
       title: "Purchase History",
       to: "/",
       sublinks: [{}],
+      isActive: location?.pathname === "/account/purchase-history",
     },
     {
       title: "My List",
