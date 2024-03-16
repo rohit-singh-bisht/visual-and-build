@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import CategoryCard from "./CategoryCard";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Skeleton } from "@mui/material";
 
 const CategoryListStyle = styled.div`
   .title_wrapper {
@@ -53,7 +54,7 @@ const CategoryListStyle = styled.div`
   }
 `;
 
-const CategoryList = ({ title, allText, allLink, list }) => {
+const CategoryList = ({ title, allText, allLink, list, loading }) => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
@@ -78,24 +79,37 @@ const CategoryList = ({ title, allText, allLink, list }) => {
         <h2 className="title">{title}</h2>
         {allLink && allText && <p className="all_button">{allText}</p>}
       </div>
-      <div className="list_wrapper">
-        {list &&
-          list?.length &&
-          list?.map((item) => {
-            return (
-              <CategoryCard
-                key={item?.id}
-                {...item}
-                onClick={() => handleClick(item?._id)}
-              />
-            );
-          })}
-        <div className="view__all">
-          <div className="view__all__button">
-            View All <br /> categories
+      {loading ? (
+        <div className="list_wrapper">
+          {Array.from({ length: 6 }, (_, index) => index + 1)?.map((item) => (
+            <Skeleton
+              width={"100%"}
+              height={130}
+              variant="rectangular"
+              className="skeleton"
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="list_wrapper">
+          {list &&
+            list?.length &&
+            list?.map((item) => {
+              return (
+                <CategoryCard
+                  key={item?.id}
+                  {...item}
+                  onClick={() => handleClick(item?._id)}
+                />
+              );
+            })}
+          <div className="view__all">
+            <div className="view__all__button">
+              View All <br /> categories
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </CategoryListStyle>
   );
 };

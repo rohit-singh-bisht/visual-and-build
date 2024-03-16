@@ -9,11 +9,19 @@ import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
 import SlidingBanner from "../../components/common/SlidingBanner";
 import GroupBuyList from "../../components/common/GroupBuyList";
+import { Skeleton } from "@mui/material";
 
 const HompageStyle = styled.div`
   .category_list {
     padding-top: 72px;
     padding-bottom: 100px;
+    .skeleton__flex {
+      display: flex;
+      gap: 12px;
+      .skeleton {
+        border-radius: 8px;
+      }
+    }
   }
   .product_list {
     padding: 86px 0;
@@ -48,9 +56,10 @@ const HompageStyle = styled.div`
 const Homepage = () => {
   const { isDesktop } = useAppContext();
   const [fetchBanner, { isLoading: isFetchingBanner }] = useRequest();
-  const [fetchCategories, { state: category }] = useRequest(
-    `/category?limit=5&page=1`
-  );
+  const [
+    fetchCategories,
+    { isLoading: isFetchingCategories, state: category },
+  ] = useRequest(`/category?limit=5&page=1`);
   const [
     fetchGroupBuy,
     { isLoading: isFetchingGroupBuy, state: groupBuyState },
@@ -98,6 +107,7 @@ const Homepage = () => {
         <CategoryList
           title={"Shop by Categories"}
           list={category?.data?.docs}
+          loading={isFetchingCategories}
         />
       </div>
 

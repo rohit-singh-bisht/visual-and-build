@@ -3,15 +3,24 @@ import styled from "styled-components";
 
 const CategoryCardStyle = styled.div`
   cursor: pointer;
+  &:hover {
+    .image {
+      img {
+        transform: scale(1.2);
+      }
+    }
+  }
   .image {
     margin-bottom: 18px;
     height: 130px;
+    overflow: clip;
+    border-radius: 7.5px;
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 7.5px;
       overflow: clip;
+      transition: all 0.3s;
     }
   }
   .title {

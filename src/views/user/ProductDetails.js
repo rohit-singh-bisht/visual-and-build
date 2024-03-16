@@ -269,7 +269,7 @@ const ProductDetails = () => {
                   <div className="discounted__price">
                     {priceSymbol +
                       (productDetails?.discount
-                        ? productDetails.discount
+                        ? productDetails.discount.toFixed(2)
                         : productDetails?.price.toFixed(2))}
                   </div>
                   {productDetails?.discount && (
