@@ -109,6 +109,8 @@ const ProductDetailsStyle = styled.div`
     }
     .product__details__options {
       margin-top: 34px;
+      .product__message {
+      }
     }
     .product__options {
       display: flex;
@@ -276,9 +278,9 @@ const ProductDetails = () => {
                 <div className="product__price">
                   <div className="discounted__price">
                     {priceSymbol +
-                      (productDetails?.discount
-                        ? productDetails.discount.toFixed(2)
-                        : productDetails?.price.toFixed(2))}
+                      (
+                        productDetails?.price - productDetails?.discount
+                      ).toFixed(2)}
                   </div>
                   {productDetails?.discount && (
                     <div className="original__price">

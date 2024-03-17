@@ -13,6 +13,9 @@ const ButtonStyle = styled.button`
   &.dark {
     background: #000;
   }
+  &:hover {
+    background: #880202;
+  }
   @media (max-width: 768px) {
     font-size: 12px;
     line-height: normal;

@@ -24,7 +24,7 @@ const AddToCartModal = ({
   onMaskClick,
   handleSecondaryButtonClick,
   product,
-  quantity,
+  quantity = 1,
   isInstaCartActive,
 }) => {
   const [isNormalCartChecked, setIsNormalCartChecked] = useState(false);

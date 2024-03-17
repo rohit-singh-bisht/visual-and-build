@@ -16,6 +16,12 @@ const HeaderStyle = styled.header`
   align-items: center;
   padding: 0 50px;
   gap: 70px;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 8;
   nav {
     display: flex;
     gap: 20px;
@@ -67,50 +73,58 @@ const HeaderStyle = styled.header`
   }
 `;
 
+const Blank = styled.div`
+  height: 74px;
+  width: 100%;
+`;
+
 const Header = ({ setIsAuthForm }) => {
   const { isDesktop } = useAppContext();
   const isLoggedIn = useAuth();
   const navigate = useNavigate();
 
   return (
-    <HeaderStyle>
-      <Link to={"/"} className="logo">
-        <Logo />
-      </Link>
-      {isDesktop ? (
-        <>
-          <nav>
-            {navLinks?.map((link) => (
-              <Link className="link" key={link?.id} to={link?.link}>
-                {link?.title}
+    <>
+      <Blank />
+      <HeaderStyle>
+        <Link to={"/"} className="logo">
+          <Logo />
+        </Link>
+        {isDesktop ? (
+          <>
+            <nav>
+              {navLinks?.map((link) => (
+                <Link className="link" key={link?.id} to={link?.link}>
+                  {link?.title}
+                </Link>
+              ))}
+            </nav>
+            <Search />
+            <div className="other__links">
+              <div
+                onClick={() => {
+                  !isLoggedIn ? setIsAuthForm(true) : navigate("/account/");
+                }}
+                className="two__liners"
+              >
+                Hello, sign in
+                <span>Account & Lists</span>
+              </div>
+              <Link to={""} className="two__liners">
+                Returns
+                <span>& Orders</span>
               </Link>
-            ))}
-          </nav>
-          <Search />
-          <div className="other__links">
-            <div
-              onClick={() => {
-                !isLoggedIn ? setIsAuthForm(true) : navigate("/account/");
-              }}
-              className="two__liners"
-            >
-              Hello, sign in
-              <span>Account & Lists</span>
+              <Link to={"/cart"} className="cart">
+                <Cart />
+                Cart
+              </Link>
             </div>
-            <Link to={""} className="two__liners">
-              Returns
-              <span>& Orders</span>
-            </Link>
-            <Link to={"/cart"} className="cart">
-              <Cart />
-              Cart
-            </Link>
-          </div>
-        </>
-      ) : (
-        <HamburgerIcon />
-      )}
-    </HeaderStyle>
+          </>
+        ) : (
+          <HamburgerIcon />
+        )}
+      </HeaderStyle>
+    </>
   );
 };
 

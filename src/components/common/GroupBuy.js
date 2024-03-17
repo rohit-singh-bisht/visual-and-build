@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as ReviewStars } from "../../assets/reviewStars.svg";
 import ImageGallery from "react-image-gallery";
 import { useNavigate } from "react-router-dom";
 import { getProductImages } from "../../utils/helper";
+import { Link } from "react-router-dom";
+import AddToCartModal from "../modals/AddToCartModal";
+import CreateInstaCartModal from "../modals/CreateInstaCartModal";
 
 export const GroupBuyStyle = styled.div`
   display: flex;
@@ -102,6 +105,10 @@ export const GroupBuyStyle = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
+      cursor: pointer;
+      &:hover {
+        background: #880202;
+      }
     }
   }
   @media (max-width: 768px) {
@@ -113,13 +120,17 @@ const GroupBuy = ({ product, reverse }) => {
   const productImages = getProductImages(product);
   const {
     name: productTitle,
-    price: productPrice,
+    price,
+    discount,
     numReviews: reviewsCount = 0,
     description,
   } = product;
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
   const navigate = useNavigate();
-  const productOriginalPrice = 0;
+  const productPrice = price - discount;
+  const productOriginalPrice = discount ? price : 0;
+  const [isAddToCartActive, setIsAddToCartActive] = useState(false);
+  const [isInstaCartActive, setIsInstaCartActive] = useState(false);
 
   const handleProductClick = (product) => {
     const path = `/product/${product?.slug}?id=${product?.id}`;
@@ -127,47 +138,65 @@ const GroupBuy = ({ product, reverse }) => {
   };
 
   return (
-    <GroupBuyStyle className="group__buy__item" reverse={reverse}>
-      <div className="product__image">
-        <ImageGallery
-          items={productImages}
-          showBullets={false}
-          showNav={false}
-          showPlayButton={false}
-        />
-      </div>
-      <div className="product__details">
-        <div className="product__ratings">
-          <ReviewStars />
-          <span className="product__reviews__count">
-            {reviewsCount} Reviews
-          </span>
+    <>
+      <GroupBuyStyle className="group__buy__item" reverse={reverse}>
+        <div className="product__image">
+          <ImageGallery
+            items={productImages}
+            showBullets={false}
+            showNav={false}
+            showPlayButton={false}
+          />
         </div>
-        <p
-          className="product__title"
-          onClick={() => handleProductClick(product)}
-        >
-          {productTitle}
-        </p>
-        <p className="product__description">{description}</p>
-        <div className="product__price">
-          <div className="product__selling__price">
-            {priceSymbol + " " + productPrice.toFixed(2)}
+        <div className="product__details">
+          <div className="product__ratings">
+            <ReviewStars />
+            <span className="product__reviews__count">
+              {reviewsCount} Reviews
+            </span>
           </div>
-          {productOriginalPrice > 0 && (
-            <div className="product__cost__price">
-              {priceSymbol + " " + productOriginalPrice.toFixed(2)}
+          <p
+            className="product__title"
+            onClick={() => handleProductClick(product)}
+          >
+            {productTitle}
+          </p>
+          <p className="product__description">{description}</p>
+          <div className="product__price">
+            <div className="product__selling__price">
+              {priceSymbol + " " + productPrice.toFixed(2)}
             </div>
-          )}
-        </div>
-        {/* <div className="product__variants">
+            {productOriginalPrice > 0 && (
+              <div className="product__cost__price">
+                {priceSymbol + " " + productOriginalPrice.toFixed(2)}
+              </div>
+            )}
+          </div>
+          {/* <div className="product__variants">
           <div className="product__variants__button">Variant</div>
           <div className="product__variants__button active">Variant</div>
           <div className="product__variants__button">Variant</div>
         </div> */}
-        <div className="product__addToCart">Add to cart</div>
-      </div>
-    </GroupBuyStyle>
+          <div
+            className="product__addToCart"
+            onClick={() => setIsAddToCartActive(true)}
+          >
+            Add to cart
+          </div>
+        </div>
+      </GroupBuyStyle>
+      {isAddToCartActive && (
+        <AddToCartModal
+          onMaskClick={() => setIsAddToCartActive(false)}
+          handleSecondaryButtonClick={() => setIsInstaCartActive(true)}
+          product={product}
+          isInstaCartActive={isInstaCartActive}
+        />
+      )}
+      {isInstaCartActive && (
+        <CreateInstaCartModal onMaskClick={() => setIsInstaCartActive(false)} />
+      )}
+    </>
   );
 };
 
