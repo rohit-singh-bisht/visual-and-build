@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Homepage from "../views/user/Homepage";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
@@ -17,6 +17,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useAppContext } from "../context/useAppContext";
 import PrivateRoute from "./PrivateRoute";
 import Thankyou from "../views/user/Thankyou";
+import { useEffect } from "react";
 
 const AuthPopupStyle = styled.div`
   position: fixed;
@@ -33,6 +34,11 @@ const AuthPopupStyle = styled.div`
 const UserRoutes = () => {
   const { isAuthForm, setIsAuthForm } = useAppContext();
   const isLoggedIn = useAuth();
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   return (
     <>

@@ -135,9 +135,6 @@ const Vendor = () => {
       <div className="container products__list">
         <ProductList apiPath={`/seller/${sellerId}/products`} />
       </div>
-      <div>
-        <img className="w-100" src={vendorCoverSrc} alt={vendorName} />
-      </div>
     </VendorStyle>
   );
 };
