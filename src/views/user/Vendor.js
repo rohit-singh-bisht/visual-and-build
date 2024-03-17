@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ProductList from "../../components/product/ProductList";
-import CategoryCard from "../../components/category/CategoryCard";
-import categoryDummy from "../../assets/category-dummy.jpg";
 import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
+import CategoryList from "../../components/category/CategoryList";
+import SlidingBanner from "../../components/common/SlidingBanner";
 
 const VendorStyle = styled.div`
-  .vendor__cover {
-    margin-top: 60px;
-  }
   .vendor__logo {
     width: 185px;
     height: 185px;
@@ -19,12 +16,19 @@ const VendorStyle = styled.div`
     border: 0.75px solid #969696;
     background: #fff;
     overflow: clip;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
-  .categories {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px;
-    padding: 0 0 10px;
+  .seller__categories {
+    padding: 0 0 80px;
+    .list_wrapper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
   }
   .products__list {
     padding: 60px 0;
@@ -41,9 +45,11 @@ const VendorStyle = styled.div`
       width: 80px;
       height: 80px;
     }
-    .categories {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+    .seller__categories {
+      .list_wrapper {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
     }
     .products__list {
       padding: 30px 0;
@@ -54,58 +60,80 @@ const VendorStyle = styled.div`
   }
 `;
 
-const Vendor = (props) => {
+const Vendor = () => {
   const { sellerId } = useParams();
+  const { isDesktop } = useAppContext();
+  const [fetchSellerDetails, { isLoading: isFetchingSellerDetails }] =
+    useRequest();
+  const [sellerData, setSellerData] = useState();
   const {
     vendorCoverSrc = "/images/store-cover.jpg",
-    vendorLogo,
+    shopLogo,
     vendorName,
-  } = props;
-  const { isDesktop } = useAppContext();
-  const [fetchSellerDetails] = useRequest();
-  const [sliders, setSliders] = useState();
+    topBanner,
+    sliderBanners,
+  } = sellerData || {};
+  const [
+    fetchCategories,
+    { isLoading: isFetchingCategories, state: category },
+  ] = useRequest(`/category?limit=7&page=1`);
 
   useEffect(() => {
     const fetchSellerInfo = async (sellerId) => {
       const paths = [
         `/seller/${sellerId}/show`,
         `/seller/${sellerId}/products`,
-        `/seller/${sellerId}/sliders`,
       ];
       const results = await Promise.all(
         paths?.map((path) => fetchSellerDetails({ path }))
       );
+      console.log("results", results);
+      setSellerData(results[0]?.data);
     };
     fetchSellerInfo(sellerId);
   }, [sellerId]);
 
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   return (
     <VendorStyle>
       <div className="vendor__cover">
-        <img className="w-100" src={vendorCoverSrc} alt={vendorName} />
+        <img
+          className="w-100"
+          src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + topBanner}
+          alt={vendorName}
+        />
       </div>
       <div className="container">
         <div className="vendor__logo">
-          <img className="w-100" src={vendorLogo} alt={vendorName} />
+          <img
+            className="w-100"
+            src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + shopLogo}
+            alt={vendorName}
+          />
         </div>
-        <div className="categories">
-          {Array.from({ length: 8 }, (_, index) => index + 1)?.map((item) => (
-            <CategoryCard
-              src={categoryDummy}
-              title={"Bathroom & Kitchen"}
-              type={isDesktop && "text-in-image"}
-            />
-          ))}
-        </div>
-        <div className="products__list">
-          <ProductList pagination={false} />
+        <div className="seller__categories">
+          <CategoryList
+            title={"Shop by Categories"}
+            list={category?.data?.docs}
+            loading={isFetchingCategories}
+            type={"text-in-image"}
+          />
         </div>
       </div>
       <div>
-        <img className="w-100" src={vendorCoverSrc} alt={vendorName} />
+        {sliderBanners?.length > 0 && (
+          <SlidingBanner
+            bannerData={sliderBanners}
+            leftdistance={isDesktop ? 108 : 30}
+            loading={isFetchingSellerDetails}
+          />
+        )}
       </div>
       <div className="container products__list">
-        <ProductList pagination={false} />
+        <ProductList apiPath={`/seller/${sellerId}/products`} />
       </div>
       <div>
         <img className="w-100" src={vendorCoverSrc} alt={vendorName} />

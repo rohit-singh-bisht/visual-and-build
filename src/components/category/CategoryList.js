@@ -54,7 +54,7 @@ const CategoryListStyle = styled.div`
   }
 `;
 
-const CategoryList = ({ title, allText, allLink, list, loading }) => {
+const CategoryList = ({ title, allText, allLink, list, loading, type }) => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
@@ -101,6 +101,7 @@ const CategoryList = ({ title, allText, allLink, list, loading }) => {
                   key={item?.id}
                   {...item}
                   onClick={() => handleClick(item?._id)}
+                  type={type}
                 />
               );
             })}
