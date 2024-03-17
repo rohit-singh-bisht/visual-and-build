@@ -51,7 +51,7 @@ const SlidingBanner = ({
               }`}
               leftdistance={leftdistance}
               textDark={true}
-              buttonTitle={"Get Started"}
+              buttonTitle={item?.ctaUrl ? "Get Started" : ""}
               buttonLink={item?.ctaUrl}
             />
           </div>

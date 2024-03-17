@@ -85,7 +85,9 @@ const Banner = ({
           className="subtitle"
           dangerouslySetInnerHTML={{ __html: subtitle }}
         ></p>
-        <Button title={buttonTitle} type={buttonType} onClick={handleClick} />
+        {buttonTitle && (
+          <Button title={buttonTitle} type={buttonType} onClick={handleClick} />
+        )}
       </div>
     </BannerStyle>
   );
