@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as UserIcon } from "../../assets/user.svg";
 import { ReactComponent as ClockIcon } from "../../assets/clock.svg";
+import { useNavigate } from "react-router-dom";
 
 const BlogCardStyle = styled.div`
   padding: 30px;
@@ -92,9 +93,15 @@ const BlogCardStyle = styled.div`
   }
 `;
 
-const BlogCard = ({ blogSrc, blogTitle, tag, author, date }) => {
+const BlogCard = ({ blogSrc, blogTitle, tag, author, date, id }) => {
+  const navigate = useNavigate();
+
+  const handleBlogClick = (id) => {
+    id && navigate(`/blog/${id}`);
+  };
+
   return (
-    <BlogCardStyle>
+    <BlogCardStyle onClick={() => handleBlogClick(id)}>
       <div className="blog__card__image">
         <img src={blogSrc} alt={blogTitle} />
         <h4 className="blog__card__tag">{tag}</h4>

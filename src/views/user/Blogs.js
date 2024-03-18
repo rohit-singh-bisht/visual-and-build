@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import BlogCard from "../../components/blogs/BlogCard";
-import categoryDummy from "../../assets/category-dummy.jpg";
-import BlogSearch from "../../components/blogs/BlogSearch";
-import BlogCategoryList from "../../components/blogs/BlogCategoryList";
-import BlogTags from "../../components/blogs/BlogTags";
-import RecentBlogs from "../../components/blogs/RecentBlogs";
 import Pagination from "@mui/material/Pagination";
 import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
+import BlogSidebar from "../../components/blogs/BlogSidebar";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const BlogsStyle = styled.section`
   .blogs__banner {
@@ -108,29 +105,26 @@ const Blogs = () => {
   const [isFetchingBlogs, setIsFetchingBlogs] = useState(false);
   const [totalPages, setTotalPages] = useState();
   const [pageNumber, setPageNumber] = useState(1);
-  const [category, setCategory] = useState();
-  const [searchValue, setSearchValue] = useState();
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const category = params?.get("category");
 
   useEffect(() => {
     setIsFetchingBlogs(true);
-    const fetchBlogs = async (pageNumber) => {
+    const fetchBlogs = async (pageNumber, category) => {
       const path = `/blog?limit=10&page=${pageNumber}${
         category ? `&category=${category}` : ""
-      }${searchValue ? `&search=${searchValue}` : ""}`;
+      }`;
       const response = await getBlogs({ path });
       setTotalPages(response?.data?.totalPages);
       setBlogsData(response?.data?.docs);
       setIsFetchingBlogs(false);
     };
-    fetchBlogs(pageNumber);
-  }, [pageNumber, category, searchValue]);
+    fetchBlogs(pageNumber, category);
+  }, [pageNumber, category]);
 
   const handlePaginationChange = (e, value) => {
     setPageNumber(value);
-  };
-
-  const onCategoryClick = (category) => {
-    setCategory(category.toLowerCase());
   };
 
   return (
@@ -141,30 +135,7 @@ const Blogs = () => {
           <div className="page__title">Blogs</div>
         </div>
         <div className="blogs__body">
-          {isDesktop && (
-            <aside>
-              <BlogSearch setValue={setSearchValue} />
-              <div className="gap-30" />
-              <BlogCategoryList
-                title={"Categories"}
-                blogCategories={["Tip", "Trend", "Growth", "Review"]}
-                onClick={onCategoryClick}
-                selected={category}
-              />
-              <div className="gap-30" />
-              {/* <BlogTags
-                blogTagsList={[
-                  "Categories",
-                  "Categories",
-                  "Categories",
-                  "Cat",
-                  "Dpgs",
-                ]}
-              /> */}
-              <div className="gap-30" />
-              <RecentBlogs recentBlogsList={blogsData?.slice(0, 2)} />
-            </aside>
-          )}
+          {isDesktop && <BlogSidebar />}
           <div className="blogs__wrapper">
             <div className="blogs__grid">
               {isFetchingBlogs
@@ -196,6 +167,8 @@ const Blogs = () => {
                         day: "2-digit",
                         year: "numeric",
                       })}
+                      key={item?.id}
+                      id={item?.id}
                     />
                   ))}
             </div>

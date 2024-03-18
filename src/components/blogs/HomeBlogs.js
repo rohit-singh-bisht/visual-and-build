@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as ArrowIcon } from "../../assets/arrow.svg";
-import categoryDummy from "../../assets/category-dummy.jpg";
 import { useAppContext } from "../../context/useAppContext";
 import BlogCard from "./BlogCard";
 import { useRequest } from "../../hooks/useRequest";
@@ -284,20 +283,22 @@ const HomeBlogs = () => {
           </>
         ) : (
           <>
-            {Array.from({ length: 10 }, (_, index) => index + 1)?.map(
-              (item) => (
-                <BlogCard
-                  key={item}
-                  blogSrc={categoryDummy}
-                  blogTitle={
-                    "Sorem ipsum dolor sit amet, consectetur adipiscing elit."
-                  }
-                  tag={"Tips"}
-                  author={"Janet Polly"}
-                  date={"12th, April 2023"}
-                />
-              )
-            )}
+            {blogsData?.map((item) => (
+              <BlogCard
+                blogSrc={
+                  process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + item?.banner
+                }
+                blogTitle={item?.title}
+                tag={item?.category}
+                date={new Date(item?.date).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "2-digit",
+                  year: "numeric",
+                })}
+                key={item?.id}
+                id={item?.id}
+              />
+            ))}
           </>
         )}
       </div>

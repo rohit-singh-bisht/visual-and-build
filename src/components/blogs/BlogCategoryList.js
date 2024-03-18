@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const BlogCategoryListStyle = styled.div`
   padding: 30px;
@@ -31,18 +32,29 @@ const BlogCategoryListStyle = styled.div`
   }
 `;
 
-const BlogCategoryList = ({ title, blogCategories, onClick, selected }) => {
+const BlogCategoryList = ({ title, blogCategories, onClick }) => {
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const paramCategory = params?.get("category");
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (category) => {
+    onClick && onClick(category);
+    navigate(`/blogs?category=${category.toLowerCase()}`);
+  };
+
   return (
     <BlogCategoryListStyle>
       <h2 className="blog__categories__title">{title}</h2>
       {blogCategories?.map((category) => (
         <p
           className={`blog__category ${
-            selected?.toLowerCase() === category?.toLowerCase()
+            paramCategory?.toLowerCase() === category?.toLowerCase()
               ? "selected"
               : ""
           }`}
-          onClick={() => onClick(category)}
+          onClick={() => handleCategoryClick(category)}
+          key={category}
         >
           {category}
         </p>

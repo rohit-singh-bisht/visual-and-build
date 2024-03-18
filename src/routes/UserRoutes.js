@@ -18,6 +18,7 @@ import { useAppContext } from "../context/useAppContext";
 import PrivateRoute from "./PrivateRoute";
 import Thankyou from "../views/user/Thankyou";
 import { useEffect } from "react";
+import BlogDetails from "../views/user/BlogDetails";
 
 const AuthPopupStyle = styled.div`
   position: fixed;
@@ -52,6 +53,7 @@ const UserRoutes = () => {
         <Route exact path="/" element={<Homepage />} />
         <Route path="/category" element={<Category />} />
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blog/:blogId" element={<BlogDetails />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/seller/:sellerId" element={<Vendor />} />
         <Route path="/product/:productId" element={<ProductDetails />} />

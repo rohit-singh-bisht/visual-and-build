@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useRequest } from "../../hooks/useRequest";
 
 const RecentBlogsStyle = styled.div`
   .recent__blogs__section__title {
@@ -59,15 +60,23 @@ const RecentBlogsStyle = styled.div`
   }
 `;
 
-const RecentBlogs = ({ recentTitle = "Recent Blogs", recentBlogsList }) => {
+const RecentBlogs = ({ recentTitle = "Recent Blogs" }) => {
+  const [fetchRecentBlogs, { state: recentBlogs }] =
+    useRequest(`/blog?limit=2`);
+  const recentBlogsList = recentBlogs?.data?.docs;
+
+  useEffect(() => {
+    fetchRecentBlogs();
+  }, []);
+
   return (
     <RecentBlogsStyle>
       <h2 className="recent__blogs__section__title">{recentTitle}</h2>
       <div className="recent__blogs__wrapper">
         {recentBlogsList?.map((blog) => {
-          const { banner, title: blogTitle, date } = blog;
+          const { banner, title: blogTitle, date, id } = blog;
           return (
-            <div className="recent__blog__card">
+            <div className="recent__blog__card" key={id}>
               <div className="recent__blog__image">
                 <img
                   src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + banner}
