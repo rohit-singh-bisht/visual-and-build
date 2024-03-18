@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { GoSearch } from "react-icons/go";
+import useDebounce from "../../hooks/useDebounce";
 
 const BlogSearchStyle = styled.form`
   border-radius: 18px;
@@ -28,7 +29,7 @@ const BlogSearchStyle = styled.form`
     }
     .blog__search__icon {
       font-size: 12px;
-      color: ##303030;
+      color: #303030;
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -37,7 +38,16 @@ const BlogSearchStyle = styled.form`
   }
 `;
 
-const BlogSearch = ({ title = "Blog Search" }) => {
+const BlogSearch = ({ title = "Blog Search", setValue }) => {
+  const [searchValue, setSearchValue] = useState();
+  useDebounce(
+    () => {
+      setValue(searchValue);
+    },
+    [searchValue],
+    300
+  );
+
   return (
     <BlogSearchStyle>
       <h3 className="blog__search__title">{title}</h3>
@@ -46,6 +56,8 @@ const BlogSearch = ({ title = "Blog Search" }) => {
           type="text"
           className="blog__search__input"
           placeholder={"Search Article ..."}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
         />
         <GoSearch className="blog__search__icon" />
       </div>

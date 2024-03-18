@@ -21,18 +21,31 @@ const BlogCategoryListStyle = styled.div`
     padding: 9px 0;
     cursor: pointer;
     margin-bottom: 6px;
+    &.selected {
+      border-bottom: 0.75px solid #ff6060;
+      color: #ff6060;
+    }
     &:last-child {
       margin-bottom: 0;
     }
   }
 `;
 
-const BlogCategoryList = ({ title, blogCategories }) => {
+const BlogCategoryList = ({ title, blogCategories, onClick, selected }) => {
   return (
     <BlogCategoryListStyle>
       <h2 className="blog__categories__title">{title}</h2>
       {blogCategories?.map((category) => (
-        <p className="blog__category">{category}</p>
+        <p
+          className={`blog__category ${
+            selected?.toLowerCase() === category?.toLowerCase()
+              ? "selected"
+              : ""
+          }`}
+          onClick={() => onClick(category)}
+        >
+          {category}
+        </p>
       ))}
     </BlogCategoryListStyle>
   );

@@ -65,15 +65,24 @@ const RecentBlogs = ({ recentTitle = "Recent Blogs", recentBlogsList }) => {
       <h2 className="recent__blogs__section__title">{recentTitle}</h2>
       <div className="recent__blogs__wrapper">
         {recentBlogsList?.map((blog) => {
-          const { src, blogTitle, blogDate } = blog;
+          const { banner, title: blogTitle, date } = blog;
           return (
             <div className="recent__blog__card">
               <div className="recent__blog__image">
-                <img src={src} alt={blogTitle} />
+                <img
+                  src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + banner}
+                  alt={blogTitle}
+                />
               </div>
               <div className="recent__blog__content">
                 <h3 className="recent__blog__title">{blogTitle}</h3>
-                <div className="recent__blog__date">{blogDate}</div>
+                <div className="recent__blog__date">
+                  {new Date(date).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                  })}
+                </div>
               </div>
             </div>
           );

@@ -44,6 +44,7 @@ const BlogCardStyle = styled.div`
     font-size: 18px;
     font-weight: 600;
     line-height: 22.5px;
+    text-transform: capitalize;
   }
   .blog__card_meta {
     margin-top: 14px;
@@ -100,9 +101,11 @@ const BlogCard = ({ blogSrc, blogTitle, tag, author, date }) => {
       </div>
       <h3 className="blog__card__title">{blogTitle}</h3>
       <div className="blog__card_meta">
-        <div className="blog__card__author">
-          <UserIcon /> {author}
-        </div>
+        {author && (
+          <div className="blog__card__author">
+            <UserIcon /> {author}
+          </div>
+        )}
         <div className="blog__card__date">
           <ClockIcon /> {date}
         </div>

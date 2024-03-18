@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import BlogCard from "../../components/blogs/BlogCard";
 import categoryDummy from "../../assets/category-dummy.jpg";
@@ -8,6 +8,8 @@ import BlogTags from "../../components/blogs/BlogTags";
 import RecentBlogs from "../../components/blogs/RecentBlogs";
 import Pagination from "@mui/material/Pagination";
 import { useAppContext } from "../../context/useAppContext";
+import { useRequest } from "../../hooks/useRequest";
+import { Skeleton } from "@mui/material";
 
 const BlogsStyle = styled.section`
   .blogs__banner {
@@ -101,6 +103,35 @@ const BlogsStyle = styled.section`
 
 const Blogs = () => {
   const { isDesktop } = useAppContext();
+  const [getBlogs] = useRequest();
+  const [blogsData, setBlogsData] = useState([]);
+  const [isFetchingBlogs, setIsFetchingBlogs] = useState(false);
+  const [totalPages, setTotalPages] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
+  const [category, setCategory] = useState();
+  const [searchValue, setSearchValue] = useState();
+
+  useEffect(() => {
+    setIsFetchingBlogs(true);
+    const fetchBlogs = async (pageNumber) => {
+      const path = `/blog?limit=10&page=${pageNumber}${
+        category ? `&category=${category}` : ""
+      }${searchValue ? `&search=${searchValue}` : ""}`;
+      const response = await getBlogs({ path });
+      setTotalPages(response?.data?.totalPages);
+      setBlogsData(response?.data?.docs);
+      setIsFetchingBlogs(false);
+    };
+    fetchBlogs(pageNumber);
+  }, [pageNumber, category, searchValue]);
+
+  const handlePaginationChange = (e, value) => {
+    setPageNumber(value);
+  };
+
+  const onCategoryClick = (category) => {
+    setCategory(category.toLowerCase());
+  };
 
   return (
     <BlogsStyle>
@@ -112,19 +143,16 @@ const Blogs = () => {
         <div className="blogs__body">
           {isDesktop && (
             <aside>
-              <BlogSearch />
+              <BlogSearch setValue={setSearchValue} />
               <div className="gap-30" />
               <BlogCategoryList
                 title={"Categories"}
-                blogCategories={[
-                  "Categories",
-                  "Categories",
-                  "Categories",
-                  "Categories",
-                ]}
+                blogCategories={["Tip", "Trend", "Growth", "Review"]}
+                onClick={onCategoryClick}
+                selected={category}
               />
               <div className="gap-30" />
-              <BlogTags
+              {/* <BlogTags
                 blogTagsList={[
                   "Categories",
                   "Categories",
@@ -132,42 +160,52 @@ const Blogs = () => {
                   "Cat",
                   "Dpgs",
                 ]}
-              />
+              /> */}
               <div className="gap-30" />
-              <RecentBlogs
-                recentBlogsList={[
-                  {
-                    src: categoryDummy,
-                    blogTitle: "Rorem ipsum dolor sit",
-                    blogDate: "April 14, 2023",
-                  },
-                  {
-                    src: categoryDummy,
-                    blogTitle: "Rorem ipsum dolor sit",
-                    blogDate: "April 14, 2023",
-                  },
-                ]}
-              />
+              <RecentBlogs recentBlogsList={blogsData?.slice(0, 2)} />
             </aside>
           )}
           <div className="blogs__wrapper">
             <div className="blogs__grid">
-              {Array.from({ length: 10 }, (_, index) => index + 1)?.map(
-                (item) => (
-                  <BlogCard
-                    blogSrc={categoryDummy}
-                    blogTitle={
-                      "Sorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    }
-                    tag={"Tips"}
-                    author={"Janet Polly"}
-                    date={"12th, April 2023"}
-                  />
-                )
-              )}
+              {isFetchingBlogs
+                ? Array.from({ length: 4 }, (_, index) => index + 1)?.map(
+                    (item) => (
+                      <Skeleton
+                        key={item}
+                        variant="rectangular"
+                        style={{
+                          borderRadius: "8px",
+                          display: "inline-block",
+                          margin: "0 8px",
+                        }}
+                        height={200}
+                      />
+                    )
+                  )
+                : blogsData?.map((item) => (
+                    <BlogCard
+                      blogSrc={
+                        process.env.REACT_APP_MEDIA_ASSETS_URL +
+                        "/" +
+                        item?.banner
+                      }
+                      blogTitle={item?.title}
+                      tag={item?.category}
+                      date={new Date(item?.date).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                      })}
+                    />
+                  ))}
             </div>
             <div className="blogs__list__pagination">
-              <Pagination className="pagination" count={10} shape="rounded" />
+              <Pagination
+                className="pagination"
+                count={totalPages}
+                shape="rounded"
+                onChange={handlePaginationChange}
+              />
             </div>
           </div>
         </div>
