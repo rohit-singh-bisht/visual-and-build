@@ -11,6 +11,7 @@ const AddAddressModalStyle = styled.div`
   width: 100vw;
   height: 100vh;
   inset: 0;
+  z-index: 9;
   background-color: rgba(0, 0, 0, 0.4);
   .add__address__modal {
     position: absolute;
@@ -44,7 +45,7 @@ const AddAddressModal = ({ setIsAddressModal, setGetAddressUpdates }) => {
     }
     toast.success(response.message);
     setIsAddressModal(false);
-    setGetAddressUpdates((prev) => !prev);
+    setGetAddressUpdates && setGetAddressUpdates((prev) => !prev);
     // eslint-disable-next-line
   }, [addressData]);
 

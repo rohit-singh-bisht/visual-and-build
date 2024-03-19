@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import BillingDetails from "../BillingDetails";
 import CheckoutOrderSummary from "../CheckoutOrderSummary";
 import CheckoutSubscribe from "../../forms/subscribe/CheckoutSubscribe";
 import { useRequest } from "../../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
+import AddAddressModal from "../../modals/AddAddressModal";
 
 const InformationStyle = styled.div`
   .checkout__wrapper {
@@ -39,6 +40,7 @@ const InformationStyle = styled.div`
       font-size: 12px;
       font-weight: 600;
       display: inline-block;
+      cursor: pointer;
     }
     .checkout__order__notes {
       margin-top: 54px;
@@ -85,17 +87,23 @@ const Information = ({
     fetchAddresses,
     { isLoading: isFetchingAddresses, state: addressData },
   ] = useRequest(`/address?page=1&limit=10`);
+  const [isAddAddress, setIsAddAddress] = useState(false);
+  const [getUpdatedAddress, setGetUpdatedAddress] = useState(false);
 
   useEffect(() => {
     fetchAddresses();
-  }, []);
+  }, [getUpdatedAddress]);
 
   return (
     <>
       <InformationStyle>
         <div className="checkout__wrapper">
           <div className="checkout__billing__wrapper">
-            <h2 className="checkout__shipping__title">Shipping Details</h2>
+            {addressData?.data?.docs?.length > 0 ? (
+              <h2 className="checkout__shipping__title">Shipping Details</h2>
+            ) : (
+              <h2 className="checkout__shipping__title">Add New Address</h2>
+            )}
             {isFetchingAddresses && !addressData?.data?.docs && (
               <Skeleton
                 variant="rectangular"
@@ -122,11 +130,10 @@ const Information = ({
                 />
               </div>
             ))}
-            {/* <div className="checkout__add__new__address__wrapper">
-              <div className="checkout__add__new__address">Add New Address</div>
-            </div> */}
 
-            <h2 className="checkout__billing__title">Billing Details</h2>
+            {addressData?.data?.docs?.length > 0 && (
+              <h2 className="checkout__billing__title">Billing Details</h2>
+            )}
             {isFetchingAddresses && !addressData?.data?.docs && (
               <Skeleton
                 variant="rectangular"
@@ -154,6 +161,15 @@ const Information = ({
               </div>
             ))}
 
+            <div className="checkout__add__new__address__wrapper">
+              <div
+                className="checkout__add__new__address"
+                onClick={() => setIsAddAddress(true)}
+              >
+                Add New Address
+              </div>
+            </div>
+
             <div className="checkout__order__notes">
               <h3 className="checkout__order__notes__title">Order Notes</h3>
               <textarea
@@ -173,6 +189,12 @@ const Information = ({
           </div>
         </div>
       </InformationStyle>
+      {isAddAddress && (
+        <AddAddressModal
+          setIsAddressModal={setIsAddAddress}
+          setGetAddressUpdates={setGetUpdatedAddress}
+        />
+      )}
       <CheckoutSubscribe />
     </>
   );
