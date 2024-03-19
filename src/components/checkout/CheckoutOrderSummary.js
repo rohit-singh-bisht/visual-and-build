@@ -35,6 +35,7 @@ const CheckoutOrderSummaryStyle = styled.div`
     font-weight: 400;
     line-height: 22.5px;
     text-transform: capitalize;
+    overflow: hidden;
     &.flex {
       display: flex;
       gap: 4px;
@@ -116,20 +117,25 @@ const CheckoutOrderSummary = ({
       <h3 className="checkout__order__summary__title">Order Summary</h3>
       <div className="checkout__order__summary__item__list">
         {checkoutCartData?.items?.length &&
-          checkoutCartData?.items?.map((item) => (
-            <div className="checkout__order__summary__item" key={item?._id}>
-              <p className="checkout__order__summary__item__title">
-                {item?.product?.name}
-              </p>
-              <h4 className="checkout__order__summary__item__quantity">
-                {item?.quantity}
-              </h4>
-              <h4 className="checkout__order__summary__item__totals">
-                {process.env.REACT_APP_PRICE_SYMBOL}
-                {item?.product?.price * item?.quantity}
-              </h4>
-            </div>
-          ))}
+          checkoutCartData?.items?.map((item) => {
+            if (item?.quantity > 0) {
+              return (
+                <div className="checkout__order__summary__item" key={item?._id}>
+                  <p className="checkout__order__summary__item__title">
+                    {item?.product?.name}
+                  </p>
+                  <h4 className="checkout__order__summary__item__quantity">
+                    {item?.quantity}
+                  </h4>
+                  <h4 className="checkout__order__summary__item__totals">
+                    {process.env.REACT_APP_PRICE_SYMBOL}
+                    {item?.product?.price * item?.quantity}
+                  </h4>
+                </div>
+              );
+            }
+            return;
+          })}
         <div className="checkout__order__summary__item">
           <p className="checkout__order__summary__item__title flex">
             Shipping Fee
