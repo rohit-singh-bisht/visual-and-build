@@ -177,6 +177,10 @@ const HomeBlogs = () => {
     fetchBlogs();
   }, []);
 
+  const handleBlogClick = (id) => {
+    id && navigate(`/blog/${id}`);
+  };
+
   return (
     <HomeBlogsStyle>
       <h2 className="blogs__title">Blogs</h2>
@@ -262,7 +266,10 @@ const HomeBlogs = () => {
             </div>
             <div className="other__blogs">
               {blogsData?.slice(1)?.map((item) => (
-                <div className="other__blogs__card">
+                <div
+                  className="other__blogs__card"
+                  onClick={() => handleBlogClick(item?.id)}
+                >
                   <span className="other__blogs__card__category">
                     {item?.category}
                   </span>

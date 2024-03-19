@@ -10,21 +10,25 @@ import { ReactComponent as HamburgerIcon } from "../assets/hamburger.svg";
 import { useAuth } from "../hooks/useAuth";
 
 const HeaderStyle = styled.header`
-  background-color: #ae0000;
-  height: 74px;
-  display: flex;
-  align-items: center;
-  padding: 0 50px;
-  gap: 70px;
   position: fixed;
-  width: 100%;
-  left: 0;
   top: 0;
   right: 0;
+  left: 0;
   z-index: 8;
+  background-color: #ae0000;
+  .header__wrapper {
+    height: 74px;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+    gap: 70px;
+    width: 100%;
+    max-width: 1440px;
+    margin: auto;
+  }
   nav {
     display: flex;
-    gap: 20px;
+    gap: 40px;
   }
   .link {
     color: #fff;
@@ -44,7 +48,7 @@ const HeaderStyle = styled.header`
   .other__links {
     display: flex;
     align-items: flex-end;
-    gap: 25px;
+    gap: 40px;
     > div {
       cursor: pointer;
     }
@@ -62,9 +66,11 @@ const HeaderStyle = styled.header`
     }
   }
   @media (max-width: 768px) {
-    padding: 0 24px;
-    height: 60px;
-    justify-content: space-between;
+    .header__wrapper {
+      padding: 0 24px;
+      height: 60px;
+      justify-content: space-between;
+    }
     .logo {
       svg {
         width: 100px;
@@ -87,42 +93,44 @@ const Header = ({ setIsAuthForm }) => {
     <>
       <Blank />
       <HeaderStyle>
-        <Link to={"/"} className="logo">
-          <Logo />
-        </Link>
-        {isDesktop ? (
-          <>
-            <nav>
-              {navLinks?.map((link) => (
-                <Link className="link" key={link?.id} to={link?.link}>
-                  {link?.title}
+        <div className="header__wrapper">
+          <Link to={"/"} className="logo">
+            <Logo />
+          </Link>
+          {isDesktop ? (
+            <>
+              <nav>
+                {navLinks?.map((link) => (
+                  <Link className="link" key={link?.id} to={link?.link}>
+                    {link?.title}
+                  </Link>
+                ))}
+              </nav>
+              <Search />
+              <div className="other__links">
+                <div
+                  onClick={() => {
+                    !isLoggedIn ? setIsAuthForm(true) : navigate("/account/");
+                  }}
+                  className="two__liners"
+                >
+                  Hello, sign in
+                  <span>Account & Lists</span>
+                </div>
+                <Link to={""} className="two__liners">
+                  Returns
+                  <span>& Orders</span>
                 </Link>
-              ))}
-            </nav>
-            <Search />
-            <div className="other__links">
-              <div
-                onClick={() => {
-                  !isLoggedIn ? setIsAuthForm(true) : navigate("/account/");
-                }}
-                className="two__liners"
-              >
-                Hello, sign in
-                <span>Account & Lists</span>
+                <Link to={"/cart"} className="cart">
+                  <Cart />
+                  Cart
+                </Link>
               </div>
-              <Link to={""} className="two__liners">
-                Returns
-                <span>& Orders</span>
-              </Link>
-              <Link to={"/cart"} className="cart">
-                <Cart />
-                Cart
-              </Link>
-            </div>
-          </>
-        ) : (
-          <HamburgerIcon />
-        )}
+            </>
+          ) : (
+            <HamburgerIcon />
+          )}
+        </div>
       </HeaderStyle>
     </>
   );

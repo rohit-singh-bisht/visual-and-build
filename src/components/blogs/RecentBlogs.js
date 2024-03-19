@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useRequest } from "../../hooks/useRequest";
+import { useNavigate } from "react-router-dom";
 
 const RecentBlogsStyle = styled.div`
   .recent__blogs__section__title {
@@ -64,10 +65,15 @@ const RecentBlogs = ({ recentTitle = "Recent Blogs" }) => {
   const [fetchRecentBlogs, { state: recentBlogs }] =
     useRequest(`/blog?limit=2`);
   const recentBlogsList = recentBlogs?.data?.docs;
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchRecentBlogs();
   }, []);
+
+  const handleBlogClick = (id) => {
+    id && navigate(`/blog/${id}`);
+  };
 
   return (
     <RecentBlogsStyle>
@@ -76,7 +82,11 @@ const RecentBlogs = ({ recentTitle = "Recent Blogs" }) => {
         {recentBlogsList?.map((blog) => {
           const { banner, title: blogTitle, date, id } = blog;
           return (
-            <div className="recent__blog__card" key={id}>
+            <div
+              className="recent__blog__card"
+              onClick={() => handleBlogClick(id)}
+              key={id}
+            >
               <div className="recent__blog__image">
                 <img
                   src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + banner}
