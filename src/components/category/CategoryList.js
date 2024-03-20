@@ -64,7 +64,7 @@ const CategoryList = ({ title, allText, allLink, list, loading, type }) => {
     (id) => {
       if (!categoryId?.includes(id)) {
         searchParams.append("categories[]", id);
-        const newUrl = `/category?${searchParams.toString()}`;
+        const newUrl = `/search?${searchParams.toString()}`;
         navigate(newUrl);
       }
 
@@ -105,7 +105,7 @@ const CategoryList = ({ title, allText, allLink, list, loading, type }) => {
                 />
               );
             })}
-          <div className="view__all">
+          <div className="view__all" onClick={() => navigate(`categories`)}>
             <div className="view__all__button">
               View All <br /> categories
             </div>

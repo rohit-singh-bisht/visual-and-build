@@ -12,6 +12,6 @@ export const navLinks = [
   {
     id: 3,
     title: "Best seller",
-    link: "#",
+    link: "/search",
   },
 ];

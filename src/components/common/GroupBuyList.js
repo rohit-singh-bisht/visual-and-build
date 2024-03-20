@@ -3,6 +3,7 @@ import styled from "styled-components";
 import GroupBuy from "./GroupBuy";
 import GroupBuySkeleton from "../skeleton/GroupBuySkeleton";
 import { getProductImages } from "../../utils/helper";
+import { useNavigate } from "react-router-dom";
 
 const GroupBuyListStyle = styled.div`
   .group_buy {
@@ -34,6 +35,7 @@ const GroupBuyListStyle = styled.div`
 `;
 
 const GroupBuyList = ({ groupBuyList, isLoading }) => {
+  const navigate = useNavigate();
   return (
     <>
       {isLoading ? (
@@ -45,7 +47,12 @@ const GroupBuyList = ({ groupBuyList, isLoading }) => {
           <div className="container group_buy">
             <div className="group__buy__title__wrapper">
               <p className="group__buy__title">Group By</p>
-              <button className="group__buy__button">See all options</button>
+              <button
+                className="group__buy__button"
+                onClick={() => navigate(`/group-buy`)}
+              >
+                See all options
+              </button>
             </div>
             <div className="group__buy__products">
               {groupBuyList?.map((item, index) => {

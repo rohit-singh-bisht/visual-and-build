@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Homepage from "../views/user/Homepage";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
-import Category from "../views/user/Category";
+import Search from "../views/user/Search";
 import Blogs from "../views/user/Blogs";
 import Vendor from "../views/user/Vendor";
 import Cart from "../views/user/Cart";
@@ -19,6 +19,7 @@ import PrivateRoute from "./PrivateRoute";
 import Thankyou from "../views/user/Thankyou";
 import { useEffect } from "react";
 import BlogDetails from "../views/user/BlogDetails";
+import GroupBuy from "../views/user/GroupBuy";
 
 const AuthPopupStyle = styled.div`
   position: fixed;
@@ -51,7 +52,18 @@ const UserRoutes = () => {
       <Header setIsAuthForm={setIsAuthForm} />
       <Routes>
         <Route exact path="/" element={<Homepage />} />
-        <Route path="/category" element={<Category />} />
+        <Route path="/search" element={<Search />} />
+        <Route
+          path="/categories"
+          element={
+            <Search
+              showCategory={true}
+              showProducts={false}
+              showRelated={false}
+            />
+          }
+        />
+        <Route path="/group-buy" element={<GroupBuy />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blog/:blogId" element={<BlogDetails />} />
         <Route path="/cart" element={<Cart />} />
