@@ -105,7 +105,7 @@ const CategoryList = ({ title, allText, allLink, list, loading, type }) => {
                 />
               );
             })}
-          <div className="view__all" onClick={() => navigate(`categories`)}>
+          <div className="view__all" onClick={() => navigate(`/categories`)}>
             <div className="view__all__button">
               View All <br /> categories
             </div>

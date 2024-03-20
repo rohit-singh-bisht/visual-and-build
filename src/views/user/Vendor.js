@@ -6,6 +6,7 @@ import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
 import CategoryList from "../../components/category/CategoryList";
 import SlidingBanner from "../../components/common/SlidingBanner";
+import { Skeleton } from "@mui/material";
 
 const VendorStyle = styled.div`
   .vendor__logo {
@@ -100,11 +101,15 @@ const Vendor = () => {
   return (
     <VendorStyle>
       <div className="vendor__cover">
-        <img
-          className="w-100"
-          src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + topBanner}
-          alt={vendorName}
-        />
+        {isFetchingSellerDetails ? (
+          <Skeleton width={"100%"} height={400} variant="rectangular" />
+        ) : (
+          <img
+            className="w-100"
+            src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + topBanner}
+            alt={vendorName}
+          />
+        )}
       </div>
       <div className="container">
         <div className="vendor__logo">

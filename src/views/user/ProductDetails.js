@@ -12,7 +12,7 @@ import ProductInformationTabs from "../../components/product/ProductInformationT
 import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProductDetailsSkeleton from "../../components/skeleton/ProductDetailsSkeleton";
 import GroupBuyGrid from "../../components/common/GroupBuyGrid";
 import { getProductImages } from "../../utils/helper";
@@ -20,6 +20,7 @@ import CreateInstaCartModal from "../../components/modals/CreateInstaCartModal";
 import { useAuth } from "../../hooks/useAuth";
 import AddToWishlist from "../../components/modals/AddToWishlist";
 import CreateWishlistModal from "../../components/modals/CreateWishlistModal";
+import { toast } from "react-toastify";
 
 const ProductDetailsStyle = styled.div`
   padding: 70px 0;
@@ -214,6 +215,8 @@ const ProductDetails = () => {
   const params = new URLSearchParams(search);
   const productId = params.get("id");
   const isLoggedIn = useAuth();
+  const navigate = useNavigate();
+  const [addCart, { isLoading }] = useRequest();
 
   useEffect(() => {
     if (productId) {
@@ -233,6 +236,26 @@ const ProductDetails = () => {
 
   const handleAddToWishlist = () => {
     isLoggedIn ? setIsAddToWishlistActive(true) : setIsAuthForm(true);
+  };
+
+  const handleBuyNow = async () => {
+    if (isLoggedIn) {
+      const response = await addCart({
+        path: `/cart`,
+        method: "POST",
+        body: JSON.stringify({
+          productId: productId,
+          quantity: productQuantity,
+          deliveryDate: "",
+        }),
+      });
+      if (!response.success) {
+        return toast.error(response.message, { toastId: "error" });
+      }
+      navigate(`/cart`);
+    } else {
+      setIsAuthForm(true);
+    }
   };
 
   return (
@@ -264,7 +287,12 @@ const ProductDetails = () => {
             ) : (
               <div className="product__details">
                 <div className="vendor__details__reviews">
-                  <div className="vendor__details">
+                  <div
+                    className="vendor__details"
+                    onClick={() =>
+                      navigate(`/seller/${productDetails?.seller?.id}`)
+                    }
+                  >
                     {productDetails?.seller?.name}
                   </div>
                   <div className="product__reviews">
@@ -316,6 +344,7 @@ const ProductDetails = () => {
                     handleProductQuantity={setProductQuantity}
                     handleAddToCart={handleAddToCart}
                     handleAddToWishlist={handleAddToWishlist}
+                    handleBuyNow={handleBuyNow}
                   />
                 </div>
               </div>

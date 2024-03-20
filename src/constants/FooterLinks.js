@@ -68,6 +68,11 @@ export const supportLinks = [
     link: "",
   },
   {
+    id: 1,
+    title: "Contact Us",
+    link: "/contact",
+  },
+  {
     id: 2,
     title: "Privacy Policy",
     link: "",
