@@ -1,9 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { categoriesLinks } from "../constants/FooterLinks";
-import { supportLinks } from "../constants/FooterLinks";
-import { links } from "../constants/FooterLinks";
-import { aboutLinks } from "../constants/FooterLinks";
+import { supportLinks, links, aboutLinks } from "../constants/FooterLinks";
 import FooterLinks from "../components/common/FooterLinks";
 import { Link } from "react-router-dom";
 import { ReactComponent as VisaIcon } from "../assets/visa.svg";
@@ -13,6 +10,7 @@ import { ReactComponent as ApplePayIcon } from "../assets/applePay.svg";
 import { socialLinks } from "../constants/FooterLinks";
 import { ReactComponent as LogoIcon } from "../assets/logo-square.svg";
 import Subscribe from "../components/forms/subscribe/Subscribe";
+import { useRequest } from "../hooks/useRequest";
 
 const FooterStyle = styled.footer`
   background: #000;
@@ -84,6 +82,28 @@ const FooterStyle = styled.footer`
 `;
 
 const Footer = () => {
+  const [categoriesLinks, setCategoriesLinks] = useState();
+  const [
+    fetchCategories,
+    { isLoading: isFetchingCategories, state: category },
+  ] = useRequest(`/category?limit=6&page=1`);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const finalCategories = category?.data?.docs?.reduce((acc, curr) => {
+      const data = {
+        id: curr?.id,
+        title: curr?.name,
+        link: `/search?categories%5B%5D=${curr?.id}`,
+      };
+      return acc.concat(data);
+    }, []);
+    setCategoriesLinks(finalCategories);
+  }, [category]);
+
   return (
     <FooterStyle>
       <Subscribe />

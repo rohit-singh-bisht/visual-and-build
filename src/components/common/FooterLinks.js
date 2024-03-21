@@ -13,6 +13,7 @@ const FooterLinksStyle = styled.div`
       line-height: 18px;
       display: inline-flex;
       gap: 9px;
+      text-transform: capitalize;
     }
   }
 `;
