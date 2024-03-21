@@ -88,7 +88,13 @@ const star = (
   </svg>
 );
 
-const ProductReviewCard = ({ imgSrc, customerName, customerRatingCount }) => {
+const ProductReviewCard = ({
+  imgSrc,
+  customerName,
+  customerReview,
+  reviewDate,
+  customerRatingCount = 0,
+}) => {
   return (
     <ProductReviewCardStyle className="product__review__card">
       <div className="customer__pic">
@@ -96,17 +102,15 @@ const ProductReviewCard = ({ imgSrc, customerName, customerRatingCount }) => {
       </div>
       <div className="review__content">
         <div className="customer__name__rating__wrapper">
-          <div className="customer__name">{customerName}</div>
+          {customerName && <div className="customer__name">{customerName}</div>}
           <div className="customer__rating">
             {star} {customerRatingCount}
           </div>
         </div>
-        <div className="customer__review__date">March 21, 2023</div>
-        <div className="customer__review">
-          Jorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-          vulputate libero et velit interdum, ac aliquet odio mattis. Class
-          aptent taciti sociosqu ad litora torquent per conubia nostra.
-        </div>
+        {reviewDate && (
+          <div className="customer__review__date">{reviewDate}</div>
+        )}
+        <div className="customer__review">{customerReview}</div>
       </div>
     </ProductReviewCardStyle>
   );

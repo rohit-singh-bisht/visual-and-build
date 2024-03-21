@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as WhiteStarIcon } from "../../../assets/white-star.svg";
 import Button from "../../common/Button";
+import { useRequest } from "../../../hooks/useRequest";
+import { toast } from "react-toastify";
+import Progress from "../../common/Progress";
 
 const ProductReviewFormStyle = styled.div`
   margin-top: 35px;
@@ -26,6 +29,21 @@ const ProductReviewFormStyle = styled.div`
       }
     }
   }
+  .product__review__form__text {
+    input {
+      border-radius: 5px;
+      border: 1px solid #d9d9d9;
+      background: #fff;
+      padding: 0 22px;
+      width: 100%;
+      line-height: 52px;
+      height: 52px;
+      margin-bottom: 10px;
+      &:focus-visible {
+        outline: 1px solid #353535;
+      }
+    }
+  }
   .product__review__form__textarea {
     textarea {
       border-radius: 5px;
@@ -36,10 +54,12 @@ const ProductReviewFormStyle = styled.div`
       resize: none;
       height: 160px;
       overflow: auto;
-      color: #7d7d7d;
       font-size: 14px;
       font-weight: 400;
       display: block;
+      &:placeholder {
+        color: #7d7d7d;
+      }
       &:focus-visible {
         outline: 1px solid #353535;
       }
@@ -51,8 +71,32 @@ const ProductReviewFormStyle = styled.div`
   }
 `;
 
-const ProductReviewForm = () => {
-  const [ratingCount, setRatingCount] = useState(0);
+const ProductReviewForm = ({ productId }) => {
+  const [name, setName] = useState("");
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [postReview, { isLoading }] = useRequest();
+
+  const handleSubmit = async (productId, rating, comment, name) => {
+    if (!name || !comment || rating === 0) {
+      return toast.error("Please enter all the details");
+    }
+
+    const path = `/review/${productId}/post`;
+    const response = await postReview({
+      path,
+      method: "POST",
+      body: JSON.stringify({
+        rating,
+        comment,
+        name,
+      }),
+    });
+    if (!response.success) {
+      return toast.error(response.message || "Can't add review to the product");
+    }
+    toast.success(response.message);
+  };
 
   return (
     <ProductReviewFormStyle>
@@ -60,19 +104,35 @@ const ProductReviewForm = () => {
       <div className="product__review__form__stars__wrapper">
         {Array.from({ length: 5 }, (_, index) => index + 1).map((item) => (
           <div
-            className={`star ${item <= ratingCount ? "active" : ""}`}
-            onClick={() => setRatingCount(item)}
+            className={`star ${item <= rating ? "active" : ""}`}
+            onClick={() => setRating(item)}
           >
             <WhiteStarIcon />
           </div>
         ))}
       </div>
+      <div className="product__review__form__text">
+        <input
+          placeholder="Enter Full Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
       <div className="product__review__form__textarea">
-        <textarea placeholder="Write Something.."></textarea>
+        <textarea
+          placeholder="Write Something.."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        ></textarea>
       </div>
       <div className="product__review__form__button">
-        <Button type={"save"} title={"Comment"} />
+        <Button
+          type={"save"}
+          title={"Comment"}
+          onClick={() => handleSubmit(productId, rating, comment, name)}
+        />
       </div>
+      {isLoading && <Progress />}
     </ProductReviewFormStyle>
   );
 };

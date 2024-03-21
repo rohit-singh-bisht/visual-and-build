@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ProductSpecification from "./tabPanels/ProductSpecification";
 import ProductDescription from "./tabPanels/ProductDescription";
-import ProductReturn from "./tabPanels/ProductReturn";
 import ProductReviews from "./tabPanels/ProductReviews";
 import { useAppContext } from "../../context/useAppContext";
 
@@ -55,7 +54,11 @@ const ProductInformationTabsStyle = styled.div`
   }
 `;
 
-const ProductInformationTabs = ({ specifications, description }) => {
+const ProductInformationTabs = ({
+  specifications,
+  description,
+  returnText,
+}) => {
   const [selectedTabId, setSelectedTabId] = useState(0);
   const { isDesktop } = useAppContext();
 
@@ -77,7 +80,7 @@ const ProductInformationTabs = ({ specifications, description }) => {
     {
       id: 2,
       title: "Return",
-      component: <ProductReturn />,
+      component: <ProductDescription description={returnText} />,
     },
     {
       id: 3,
