@@ -38,13 +38,9 @@ const AccountSidebar = () => {
       isActive: location?.pathname === "/account/lists",
     },
     {
-      title: "Shipping Addresses",
+      title: "Addresses",
       to: "/account/address",
       isActive: location?.pathname === "/account/address",
-    },
-    {
-      title: "Payment Methods",
-      to: "/",
     },
     {
       title: "Profile Information",

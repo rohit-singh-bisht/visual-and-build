@@ -22,3 +22,11 @@ export const getProductImages = (product) => {
   }
   return itemImages;
 };
+
+export const getDate = (date) => {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+};

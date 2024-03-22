@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useRequest } from "../../hooks/useRequest";
 import { useNavigate } from "react-router-dom";
+import { getDate } from "../../utils/helper";
 
 const RecentBlogsStyle = styled.div`
   .recent__blogs__section__title {
@@ -95,13 +96,7 @@ const RecentBlogs = ({ recentTitle = "Recent Blogs" }) => {
               </div>
               <div className="recent__blog__content">
                 <h3 className="recent__blog__title">{blogTitle}</h3>
-                <div className="recent__blog__date">
-                  {new Date(date).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                  })}
-                </div>
+                <div className="recent__blog__date">{getDate(date)}</div>
               </div>
             </div>
           );

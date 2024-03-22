@@ -6,7 +6,8 @@ import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
 import BlogSidebar from "../../components/blogs/BlogSidebar";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { getDate } from "../../utils/helper";
 
 const BlogsStyle = styled.section`
   .blogs__banner {
@@ -162,11 +163,7 @@ const Blogs = () => {
                       }
                       blogTitle={item?.title}
                       tag={item?.category}
-                      date={new Date(item?.date).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "2-digit",
-                        year: "numeric",
-                      })}
+                      date={getDate(item?.date)}
                       key={item?.id}
                       id={item?.id}
                     />

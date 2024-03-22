@@ -13,7 +13,7 @@ const SearchStyle = styled.form`
   input {
     height: 39px;
     width: 100%;
-    padding-left: 9px;
+    padding-left: 12px;
   }
   .search__button {
     width: 39px;

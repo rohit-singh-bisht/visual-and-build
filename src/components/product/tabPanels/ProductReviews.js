@@ -7,6 +7,7 @@ import { useAppContext } from "../../../context/useAppContext";
 import { useRequest } from "../../../hooks/useRequest";
 import { useLocation } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
+import { getDate } from "../../../utils/helper";
 
 const ProductReviewsStyle = styled.div`
   .avg__ratings__bars__wrapper {
@@ -185,11 +186,7 @@ const ProductReviews = () => {
             customerName={item?.name}
             customerRatingCount={item?.rating}
             customerReview={item?.comment}
-            reviewDate={new Date(item?.updatedAt).toLocaleDateString("en-US", {
-              month: "short",
-              day: "2-digit",
-              year: "numeric",
-            })}
+            reviewDate={getDate(item?.updatedAt)}
           />
         ))}
         {isDesktop && (

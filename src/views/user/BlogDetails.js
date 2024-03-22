@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useRequest } from "../../hooks/useRequest";
 import { ReactComponent as ClockIcon } from "../../assets/clock.svg";
 import { Skeleton } from "@mui/material";
+import { getDate } from "../../utils/helper";
 
 const BlogDetailsStyle = styled.div`
   padding: 60px 0;
@@ -79,12 +80,7 @@ const BlogDetails = () => {
               <div className="blog__details__title">{title}</div>
               <div className="blog__details__metadata">
                 <div className="blog__details__metadata__item">
-                  <ClockIcon className="icon" />{" "}
-                  {new Date(date).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                  })}
+                  <ClockIcon className="icon" /> {getDate(date)}
                 </div>
               </div>
               <div className="blog__details__image">

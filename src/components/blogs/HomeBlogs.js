@@ -6,6 +6,7 @@ import BlogCard from "./BlogCard";
 import { useRequest } from "../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { getDate } from "../../utils/helper";
 
 const HomeBlogsStyle = styled.section`
   .blogs__title {
@@ -256,11 +257,7 @@ const HomeBlogs = () => {
                   )}
                 </span>
                 <span className="other__blogs__card__date">
-                  {new Date(blogsData?.[0]?.date).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                  })}
+                  {getDate(blogsData?.[0]?.date)}
                 </span>
               </div>
             </div>
@@ -278,11 +275,7 @@ const HomeBlogs = () => {
                     {item?.short_description}
                   </p>
                   <div className="other__blogs__card__date">
-                    {new Date(item?.date).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "2-digit",
-                      year: "numeric",
-                    })}
+                    {getDate(item?.date)}
                   </div>
                 </div>
               ))}
@@ -297,11 +290,7 @@ const HomeBlogs = () => {
                 }
                 blogTitle={item?.title}
                 tag={item?.category}
-                date={new Date(item?.date).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "2-digit",
-                  year: "numeric",
-                })}
+                date={getDate(item?.date)}
                 key={item?.id}
                 id={item?.id}
               />
