@@ -42,13 +42,13 @@ const Lists = () => {
   const [isRefetchWishlist, setIsRefetchWishlist] = useState(false);
 
   useEffect(() => {
-    isRefetchWishlist && getWishlist();
+    getWishlist();
   }, [isRefetchWishlist]);
 
   return (
     <ListsStyle>
       {wishlistData?.data?.map((item) => (
-        <ListCard title={item?.name} />
+        <ListCard key={item?._id} title={item?.name} />
       ))}
       <AddProjectWishlistStyle onClick={() => setIsAddWishlistActive(true)}>
         <PlusIcon className="icon" />

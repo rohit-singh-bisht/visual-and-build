@@ -266,6 +266,7 @@ const HomeBlogs = () => {
                 <div
                   className="other__blogs__card"
                   onClick={() => handleBlogClick(item?.id)}
+                  key={item?.id}
                 >
                   <span className="other__blogs__card__category">
                     {item?.category}

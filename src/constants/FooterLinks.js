@@ -68,32 +68,32 @@ export const supportLinks = [
     link: "",
   },
   {
-    id: 1,
+    id: 2,
     title: "Contact Us",
     link: "/contact",
   },
   {
-    id: 2,
+    id: 3,
     title: "Privacy Policy",
     link: "",
   },
   {
-    id: 3,
+    id: 4,
     title: "Return Policy",
     link: "",
   },
   {
-    id: 4,
+    id: 5,
     title: "Help Centre",
     link: "",
   },
   {
-    id: 5,
+    id: 6,
     title: "Store Locations",
     link: "",
   },
   {
-    id: 6,
+    id: 7,
     title: "Careers",
     link: "",
   },

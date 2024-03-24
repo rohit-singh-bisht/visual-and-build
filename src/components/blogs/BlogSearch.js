@@ -114,6 +114,7 @@ const BlogSearch = ({ title = "Blog Search" }) => {
             <div
               className="dropdown__item"
               onClick={() => handleBlogClick(item?.id)}
+              key={item?.id}
             >
               {item?.title}
             </div>

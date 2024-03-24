@@ -183,7 +183,7 @@ const ProductReviews = () => {
         {reviewData?.map((item) => (
           <ProductReviewCard
             key={item?._id}
-            customerName={item?.name}
+            customerName={item?.user?.name}
             customerRatingCount={item?.rating}
             customerReview={item?.comment}
             reviewDate={getDate(item?.updatedAt)}

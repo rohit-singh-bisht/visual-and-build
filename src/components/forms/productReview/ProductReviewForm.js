@@ -72,13 +72,12 @@ const ProductReviewFormStyle = styled.div`
 `;
 
 const ProductReviewForm = ({ productId }) => {
-  const [name, setName] = useState("");
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [postReview, { isLoading }] = useRequest();
 
-  const handleSubmit = async (productId, rating, comment, name) => {
-    if (!name || !comment || rating === 0) {
+  const handleSubmit = async (productId, rating, comment) => {
+    if (!comment || rating === 0) {
       return toast.error("Please enter all the details");
     }
 
@@ -89,7 +88,6 @@ const ProductReviewForm = ({ productId }) => {
       body: JSON.stringify({
         rating,
         comment,
-        name,
       }),
     });
     if (!response.success) {
@@ -104,19 +102,13 @@ const ProductReviewForm = ({ productId }) => {
       <div className="product__review__form__stars__wrapper">
         {Array.from({ length: 5 }, (_, index) => index + 1).map((item) => (
           <div
+            key={item}
             className={`star ${item <= rating ? "active" : ""}`}
             onClick={() => setRating(item)}
           >
             <WhiteStarIcon />
           </div>
         ))}
-      </div>
-      <div className="product__review__form__text">
-        <input
-          placeholder="Enter Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
       </div>
       <div className="product__review__form__textarea">
         <textarea
@@ -129,7 +121,7 @@ const ProductReviewForm = ({ productId }) => {
         <Button
           type={"save"}
           title={"Comment"}
-          onClick={() => handleSubmit(productId, rating, comment, name)}
+          onClick={() => handleSubmit(productId, rating, comment)}
         />
       </div>
       {isLoading && <Progress />}

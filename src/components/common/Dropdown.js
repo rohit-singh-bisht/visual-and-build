@@ -29,6 +29,7 @@ const Dropdown = ({ options, left, right, top, bottom, setValue, zIndex }) => {
             <div
               className="dropdown__options"
               onClick={() => handleDropdownClick(item?.value)}
+              key={item?.label}
             >
               {item?.label}
             </div>

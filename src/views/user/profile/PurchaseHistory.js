@@ -4,6 +4,7 @@ import { useRequest } from "../../../hooks/useRequest";
 import { Skeleton } from "@mui/material";
 import { getDate } from "../../../utils/helper";
 import TablePagination from "@mui/material/TablePagination";
+import { useNavigate } from "react-router-dom";
 
 const PurchaseHistoryStyle = styled.div`
   flex: 1;
@@ -73,6 +74,7 @@ const PurchaseHistory = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [limitNumber, setLimitNumber] = useState(10);
   const [orderHistory, setOrderHistory] = useState([]);
+  const navigate = useNavigate();
 
   const fetchOrderSummary = async (pageNumber, limitNumber) => {
     const path = `/order?limit=${limitNumber}&page=${pageNumber}&seach=&date=&orderStatus=&sort=`;
@@ -139,7 +141,11 @@ const PurchaseHistory = () => {
           ) : (
             <>
               {orderHistory?.docs?.map((item) => (
-                <tr className="table__data__row" key={item?._id}>
+                <tr
+                  className="table__data__row"
+                  key={item?._id}
+                  onClick={() => navigate(`/account/transaction/${item?._id}`)}
+                >
                   <td>{getDate(item?.date)}</td>
                   <td>{item?.orderId}</td>
                   <td>{item?.shippingAddress}</td>

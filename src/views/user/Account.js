@@ -16,7 +16,7 @@ const AccountStyle = styled.div`
   }
   .account__info__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     column-gap: 24px;
     row-gap: 32px;
   }
@@ -65,11 +65,11 @@ const Account = () => {
         navigate("/account/lists");
       },
     },
-    {
-      title: `My Wallet`,
-      sub1: `Add a Payment method for Faster Checkout.`,
-      buttonText: `View Wallet`,
-    },
+    // {
+    //   title: `My Wallet`,
+    //   sub1: `Add a Payment method for Faster Checkout.`,
+    //   buttonText: `View Wallet`,
+    // },
     {
       title: `My Addresses`,
       sub1: `Add and manage your addresses like shipping`,
@@ -78,11 +78,11 @@ const Account = () => {
         navigate("/account/address");
       },
     },
-    {
-      title: `Payment Methods`,
-      sub1: `Add a Payment method for Faster Checkout.`,
-      buttonText: `Add Payment Method`,
-    },
+    // {
+    //   title: `Payment Methods`,
+    //   sub1: `Add a Payment method for Faster Checkout.`,
+    //   buttonText: `Add Payment Method`,
+    // },
   ];
 
   useEffect(() => {
@@ -103,11 +103,11 @@ const Account = () => {
           {!isFetchingAccountData ? (
             <>
               {accountData?.map((data) => (
-                <InfoCard {...data} />
+                <InfoCard key={data?._id} {...data} />
               ))}
             </>
           ) : (
-            Array.from({ length: 6 }, (_, index) => (
+            Array.from({ length: 4 }, (_, index) => (
               <Skeleton
                 variant="rectangle"
                 key={index + 1}

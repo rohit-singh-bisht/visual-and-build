@@ -117,7 +117,7 @@ const Header = ({ setIsAuthForm }) => {
                   Hello, sign in
                   <span>Account & Lists</span>
                 </div>
-                <Link to={""} className="two__liners">
+                <Link to={"/account/purchase-history"} className="two__liners">
                   Returns
                   <span>& Orders</span>
                 </Link>

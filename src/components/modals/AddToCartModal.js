@@ -139,7 +139,7 @@ const AddToCartModal = ({
               ?.filter((item) => item?.isInstabuild)
               ?.map((item) => {
                 return (
-                  <div className="checkbox__group">
+                  <div className="checkbox__group" key={item?.id}>
                     <label htmlFor={item?._id}>
                       <input
                         type="checkbox"

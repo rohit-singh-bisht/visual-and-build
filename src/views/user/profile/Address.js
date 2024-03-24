@@ -38,6 +38,7 @@ const Address = () => {
         </div>
         {state?.data?.docs?.map((item) => (
           <AddressCard
+            key={item?._id}
             addressItem={item}
             setGetAddressUpdates={setGetAddressUpdates}
           />

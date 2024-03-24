@@ -11,6 +11,7 @@ import { socialLinks } from "../constants/FooterLinks";
 import { ReactComponent as LogoIcon } from "../assets/logo-square.svg";
 import Subscribe from "../components/forms/subscribe/Subscribe";
 import { useRequest } from "../hooks/useRequest";
+import { useAppContext } from "../context/useAppContext";
 
 const FooterStyle = styled.footer`
   background: #000;
@@ -83,16 +84,18 @@ const FooterStyle = styled.footer`
 
 const Footer = () => {
   const [categoriesLinks, setCategoriesLinks] = useState();
+  const { categoryData, setCategoriesData } = useAppContext();
   const [
     fetchCategories,
     { isLoading: isFetchingCategories, state: category },
   ] = useRequest(`/category?limit=6&page=1`);
 
   useEffect(() => {
-    fetchCategories();
+    !categoryData && fetchCategories();
   }, []);
 
   useEffect(() => {
+    setCategoriesData(category);
     const finalCategories = category?.data?.docs?.reduce((acc, curr) => {
       const data = {
         id: curr?.id,

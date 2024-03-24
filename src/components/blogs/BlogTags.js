@@ -37,7 +37,9 @@ const BlogTags = ({ title = "Tags", blogTagsList }) => {
       <h2 className="tags__list__title">{title}</h2>
       <div className="blog__tags__wrapper">
         {blogTagsList?.map((tag) => (
-          <div className="blog__tag__pill">{tag}</div>
+          <div className="blog__tag__pill" key={tag}>
+            {tag}
+          </div>
         ))}
       </div>
     </BlogTagsStyle>

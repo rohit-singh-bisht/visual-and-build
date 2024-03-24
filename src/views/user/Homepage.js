@@ -54,12 +54,8 @@ const HompageStyle = styled.div`
 `;
 
 const Homepage = () => {
-  const { isDesktop } = useAppContext();
+  const { isDesktop, categoriesData } = useAppContext();
   const [fetchBanner, { isLoading: isFetchingBanner }] = useRequest();
-  const [
-    fetchCategories,
-    { isLoading: isFetchingCategories, state: category },
-  ] = useRequest(`/category?limit=5&page=1`);
   const [
     fetchGroupBuy,
     { isLoading: isFetchingGroupBuy, state: groupBuyState },
@@ -90,7 +86,6 @@ const Homepage = () => {
     };
     fetchSlidingBanner();
     fetchAllBanners();
-    fetchCategories();
     fetchGroupBuy();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -106,8 +101,8 @@ const Homepage = () => {
       <div className="container category_list">
         <CategoryList
           title={"Shop by Categories"}
-          list={category?.data?.docs}
-          loading={isFetchingCategories}
+          list={categoriesData?.data?.docs}
+          loading={!categoriesData?.data?.docs?.length}
         />
       </div>
 

@@ -76,7 +76,11 @@ const Steps = ({ activeIndex, handleStepClick }) => {
   return (
     <StepsStyled>
       {stepsData?.map((step, index) => (
-        <div className="step__holder" onClick={() => handleStepClick(step)}>
+        <div
+          className="step__holder"
+          key={step?.title}
+          onClick={() => handleStepClick(step)}
+        >
           {activeIndex === index + 1 && (
             <span className="count">{("0" + (index + 1)).slice(-2)}</span>
           )}

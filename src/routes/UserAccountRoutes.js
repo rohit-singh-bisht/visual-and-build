@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import ProfileInformation from "../views/user/profile/ProfileInformation";
 import Address from "../views/user/profile/Address";
 import Account from "../views/user/Account";
@@ -9,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import Lists from "../views/user/profile/Lists";
 import PrivateRoute from "./PrivateRoute";
 import PurchaseHistory from "../views/user/profile/PurchaseHistory";
+import TransactionDetails from "../views/user/profile/TransactionDetails";
 
 const UserAccountRoutesStyle = styled.div`
   padding: 60px 0;
@@ -32,37 +39,46 @@ const routesInformation = [
   {
     id: 0,
     title: "Account",
-    component: <Account />,
+    component: () => <Account />,
     path: "/",
     pathname: "/account",
   },
   {
     id: 1,
     title: "Profile Information",
-    component: <ProfileInformation />,
+    component: () => <ProfileInformation />,
     path: "/profile-information/",
     pathname: "/account/profile-information",
   },
   {
     id: 2,
     title: "My Addresses",
-    component: <Address />,
+    component: () => <Address />,
     path: "/address",
     pathname: "/account/address",
   },
   {
     id: 3,
     title: "My List",
-    component: <Lists />,
+    component: () => <Lists />,
     path: "/lists",
     pathname: "/account/lists",
   },
   {
     id: 4,
     title: "Purchase History",
-    component: <PurchaseHistory />,
+    component: () => <PurchaseHistory />,
     path: "/purchase-history",
     pathname: "/account/purchase-history",
+  },
+  {
+    id: 5,
+    title: "Transaction History",
+    component: ({ setPageTitle }) => (
+      <TransactionDetails setPageTitle={setPageTitle} />
+    ),
+    path: "/transaction/:transactionId",
+    pathname: "/account/transaction/",
   },
 ];
 
@@ -71,23 +87,22 @@ const UserAccountRoutes = () => {
   const [pageTitle, setPageTitle] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
+  const locationPath = location.pathname;
+  const hasTrailingSlash = locationPath.endsWith("/");
 
   useEffect(() => {
-    const locationPath = location.pathname;
-    const hasTrailingSlash = locationPath.endsWith("/");
-
     // Redirect if there's a trailing slash
     if (hasTrailingSlash && locationPath !== "/") {
       navigate(locationPath.slice(0, -1), { replace: true });
     }
 
-    const filteredRoute = routesInformation?.find(
-      (route) => route?.pathname === locationPath
-    );
+    const filteredRoute = routesInformation?.find((route) => {
+      return route?.pathname === locationPath;
+    });
 
     setPageTitle(filteredRoute?.title);
     setActiveRouteId(filteredRoute?.id);
-  }, [location.pathname, navigate]);
+  }, [hasTrailingSlash, locationPath, navigate]);
 
   return (
     <UserAccountRoutesStyle className="container">
@@ -99,7 +114,11 @@ const UserAccountRoutes = () => {
         <Routes>
           <Route path="/" element={<PrivateRoute />}>
             {routesInformation?.map((route) => (
-              <Route path={route?.path} element={route?.component} />
+              <Route
+                key={route?.id}
+                path={route?.path}
+                element={route?.component({ setPageTitle })}
+              />
             ))}
             <Route path="*" element={<Navigate to="/account/" />} />
           </Route>

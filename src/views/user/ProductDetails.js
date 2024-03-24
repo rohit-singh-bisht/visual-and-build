@@ -317,26 +317,20 @@ const ProductDetails = () => {
                   )}
                 </div>
                 <div className="product__details__options">
-                  <div className="product__options">
-                    <h2 className="product__options__title">Brand</h2>
-                    <p className="product__options__value">
-                      The Drywall Company
-                    </p>
-                  </div>
-                  <div className="product__options">
-                    <h2 className="product__options__title">Model Number</h2>
-                    <p className="product__options__value">
-                      3D PVC Wall Panels Wave Design D026 (Pack of 6)
-                    </p>
-                  </div>
-                  <div className="product__options">
-                    <h2 className="product__options__title">Material</h2>
-                    <p className="product__options__value">PVC</p>
-                  </div>
-                  <div className="product__options">
-                    <h2 className="product__options__title">Finish</h2>
-                    <p className="product__options__value">Matte</p>
-                  </div>
+                  {productDetails?.brand && (
+                    <div className="product__options">
+                      <h2 className="product__options__title">Brand</h2>
+                      <p className="product__options__value">
+                        {productDetails?.brand}
+                      </p>
+                    </div>
+                  )}
+                  {productDetails?.specs?.slice(0, 4)?.map((item) => (
+                    <div className="product__options">
+                      <h2 className="product__options__title">{item?.label}</h2>
+                      <p className="product__options__value">{item?.value}</p>
+                    </div>
+                  ))}
                   {/* <div className="product__options__variants">
                     <ProductVariants name={"Variant"} />
                   </div> */}
