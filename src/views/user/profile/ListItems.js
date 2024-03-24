@@ -88,7 +88,6 @@ const ListItems = ({ listItems, setListItems, setIsRefetchWishlist }) => {
   const handleRemoveProduct = async (wishlistId, productId, listItemId) => {
     const path = `/wishlist/${wishlistId}/clear-product/${productId}`;
     const response = await removeProduct({ path, method: "DELETE" });
-    console.log(response, "response");
     if (!response?.success) {
       return toast.error(response.message);
     }
