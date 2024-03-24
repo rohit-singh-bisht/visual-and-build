@@ -59,6 +59,7 @@ const CategoryCardStyle = styled.div`
     }
   }
   @media (max-width: 768px) {
+    flex: 1;
     .title {
       font-size: 12px;
     }

@@ -4,7 +4,6 @@ import { ReactComponent as ReviewStars } from "../../assets/reviewStars.svg";
 import ImageGallery from "react-image-gallery";
 import { useNavigate } from "react-router-dom";
 import { getProductImages } from "../../utils/helper";
-import { Link } from "react-router-dom";
 import AddToCartModal from "../modals/AddToCartModal";
 import CreateInstaCartModal from "../modals/CreateInstaCartModal";
 
@@ -31,6 +30,12 @@ export const GroupBuyStyle = styled.div`
       &:hover {
         text-decoration: underline;
       }
+    }
+    .product__description {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .product__ratings {
       color: #303030;

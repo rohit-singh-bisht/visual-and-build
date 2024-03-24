@@ -82,6 +82,9 @@ const HeaderStyle = styled.header`
 const Blank = styled.div`
   height: 74px;
   width: 100%;
+  @media (max-width: 768px) {
+    height: 60px;
+  }
 `;
 
 const Header = ({ setIsAuthForm }) => {

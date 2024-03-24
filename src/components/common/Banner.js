@@ -47,6 +47,7 @@ export const BannerStyle = styled.div`
     }
     .content {
       top: 60%;
+      width: 80%;
       .title {
         font-size: 18px;
         line-height: normal;

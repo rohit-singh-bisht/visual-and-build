@@ -47,9 +47,8 @@ const CategoryListStyle = styled.div`
       }
     }
     .list_wrapper {
-      display: flex;
-      justify-content: space-between;
       gap: 20px;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 `;

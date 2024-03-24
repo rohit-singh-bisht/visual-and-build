@@ -32,6 +32,21 @@ const GroupBuyListStyle = styled.div`
       gap: 100px;
     }
   }
+  @media (max-width: 768px) {
+    .group_buy {
+      margin: 40px auto;
+      .group__buy__title__wrapper {
+        margin-bottom: 30px;
+        .group__buy__title {
+          font-size: 20px;
+          line-height: 28px;
+        }
+      }
+      .group__buy__products {
+        gap: 52px;
+      }
+    }
+  }
 `;
 
 const GroupBuyList = ({ groupBuyList, isLoading }) => {
