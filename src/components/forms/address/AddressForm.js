@@ -106,6 +106,8 @@ const AddressForm = ({ title = "Add Address", state, setState, onClick }) => {
     }));
   };
 
+  console.log("addressData", addressData);
+
   return (
     <AddressFormStyle>
       <div className="add__address__modal">
@@ -117,8 +119,8 @@ const AddressForm = ({ title = "Add Address", state, setState, onClick }) => {
               <label>Full name</label>
               <input
                 type="text"
-                name="fullName"
-                value={addressData?.fullName}
+                name="name"
+                value={addressData?.name}
                 placeholder="Full Name"
                 onChange={handleChange}
               />

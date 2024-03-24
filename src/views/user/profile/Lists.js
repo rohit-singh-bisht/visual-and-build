@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { ReactComponent as PlusIcon } from "../../../assets/plus.svg";
 import CreateWishlistModal from "../../../components/modals/CreateWishlistModal";
 import { useRequest } from "../../../hooks/useRequest";
+import ListItems from "./ListItems";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ListsStyle = styled.div`
   display: grid;
@@ -40,31 +42,53 @@ const Lists = () => {
     `/wishlist?limit=10&page=1`
   );
   const [isRefetchWishlist, setIsRefetchWishlist] = useState(false);
+  const [activeListItems, setActiveListItems] = useState();
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const idParam = params.get("id");
 
   useEffect(() => {
     getWishlist();
   }, [isRefetchWishlist]);
 
   return (
-    <ListsStyle>
-      {wishlistData?.data?.map((item) => (
-        <ListCard key={item?._id} title={item?.name} />
-      ))}
-      <AddProjectWishlistStyle onClick={() => setIsAddWishlistActive(true)}>
-        <PlusIcon className="icon" />
-        <div className="add__project__wishlist__title">
-          Add project wishlist
-        </div>
-      </AddProjectWishlistStyle>
-      {isAddWishlistActive && (
-        <CreateWishlistModal
-          onMaskClick={() => {
-            setIsRefetchWishlist(true);
-            setIsAddWishlistActive(false);
-          }}
+    <>
+      {activeListItems && Object.keys(activeListItems)?.length && idParam ? (
+        <ListItems
+          listItems={activeListItems}
+          setListItems={setActiveListItems}
+          setIsRefetchWishlist={setIsRefetchWishlist}
         />
+      ) : (
+        <ListsStyle>
+          {wishlistData?.data?.map((item) => (
+            <ListCard
+              key={item?._id}
+              title={item?.name}
+              onClick={() => {
+                setActiveListItems(item);
+                navigate(`/account/lists?id=${item?._id}`);
+              }}
+            />
+          ))}
+          <AddProjectWishlistStyle onClick={() => setIsAddWishlistActive(true)}>
+            <PlusIcon className="icon" />
+            <div className="add__project__wishlist__title">
+              Add project wishlist
+            </div>
+          </AddProjectWishlistStyle>
+          {isAddWishlistActive && (
+            <CreateWishlistModal
+              onMaskClick={() => {
+                setIsRefetchWishlist(true);
+                setIsAddWishlistActive(false);
+              }}
+            />
+          )}
+        </ListsStyle>
       )}
-    </ListsStyle>
+    </>
   );
 };
 

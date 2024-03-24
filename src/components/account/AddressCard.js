@@ -93,7 +93,7 @@ const AddressCard = ({ addressItem, setGetAddressUpdates }) => {
   const [dropdownAction, setDropdownAction] = useState("");
   const [handleAddress, { isLoading }] = useRequest();
   const [addressData, setAddressData] = useState({
-    fullName: "",
+    name: "",
     phoneNumber,
     pincode,
     locality,
@@ -159,7 +159,7 @@ const AddressCard = ({ addressItem, setGetAddressUpdates }) => {
       ) : (
         <AddressCardStyle>
           <div className="user__address__type">{addressItem?.label}</div>
-          {/* <div className="user__address__name">Nishant Choudhary</div> */}
+          <div className="user__address__name">{addressItem?.name}</div>
           <div className="user__address__details">{addressItem?.format}</div>
           {addressItem?.phoneNumber && (
             <div className="user__phone__number">

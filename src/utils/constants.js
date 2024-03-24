@@ -69,7 +69,7 @@ export const contactFormStateObj = {
 };
 
 export const addressFormObj = {
-  fullName: "",
+  name: "",
   phoneNumber: "",
   pincode: "",
   locality: "",
