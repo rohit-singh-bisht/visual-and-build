@@ -133,6 +133,7 @@ const ProductReviews = () => {
   const productId = params.get("id");
   const [reviewData, setReviewData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [ratingData, setRatingData] = useState();
 
   const getReviews = async (productId, pageNumber) => {
     const path = `/review/${productId}?limit=6&page=${pageNumber}`;
@@ -143,8 +144,17 @@ const ProductReviews = () => {
     }
   };
 
+  const getRatings = async (productId) => {
+    const path = `/review/${productId}/stats`;
+    const response = await fetchReviews({ path });
+    if (response?.success) {
+      setRatingData(response?.data);
+    }
+  };
+
   useEffect(() => {
     productId && pageNumber && getReviews(productId, pageNumber);
+    productId && getRatings(productId);
   }, [productId, pageNumber]);
 
   const handlePaginationChange = (e, value) => {
@@ -158,23 +168,25 @@ const ProductReviews = () => {
           {isDesktop && (
             <p className="average__ratings__subtitle">What Users say</p>
           )}
-          <div className="average__ratings__number">4.7</div>
+          <div className="average__ratings__number">
+            {ratingData?.averageRating.toFixed(1)}
+          </div>
           <ReviewStarsIcons />
           <div className="average__ratings__subtitle total__number__ratings">
-            Based on 767 Ratings
+            Based on {ratingData?.totalRating} Ratings
           </div>
         </div>
         <div className="product__ratings__bars__wrapper">
-          {Array.from({ length: 5 }, (_, index) => index + 1).map((item) => (
-            <div className="product__ratings__bar" key={item}>
-              <div className="product__ratings__number">{item} Star</div>
+          {ratingData?.progress?.map((item) => (
+            <div className="product__ratings__bar" key={item?.rating}>
+              <div className="product__ratings__number">{item?.star} Star</div>
               <div className="product__ratings__line">
                 <div
                   className="product__ratings__line__filled"
-                  style={{ width: item * 10 + "%" }}
+                  style={{ width: item?.percentage + "%" }}
                 />
               </div>
-              <div className="product__ratings__number">(5)</div>
+              <div className="product__ratings__number">({item?.count})</div>
             </div>
           ))}
         </div>
