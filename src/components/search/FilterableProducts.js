@@ -4,6 +4,7 @@ import ProductCard from "../product/ProductCard";
 import Pagination from "@mui/material/Pagination";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../context/useAppContext";
 
 const FilterableProductsStyle = styled.div`
   .products__wrapper {
@@ -47,6 +48,12 @@ const FilterableProductsStyle = styled.div`
       }
     }
   }
+  @media (max-width: 768px) {
+    .products__wrapper {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  }
 `;
 
 const ProductsNotFound = styled.div`
@@ -71,6 +78,7 @@ const FilterableProducts = ({
 }) => {
   const [searchInput, setSearchInput] = useState({ type: "", value: "" });
   const navigate = useNavigate();
+  const { isDesktop } = useAppContext();
 
   const handleProductClick = (item) => {
     let slug = item?.slug;
@@ -83,16 +91,18 @@ const FilterableProducts = ({
   return (
     <FilterableProductsStyle>
       <section className="products__wrapper">
-        <aside>
-          <div className="products__filters">
-            <Filters
-              categoriesData={categoriesData}
-              brandsData={brandsData}
-              searchInput={searchInput}
-              setSearchInput={setSearchInput}
-            />
-          </div>
-        </aside>
+        {isDesktop && (
+          <aside>
+            <div className="products__filters">
+              <Filters
+                categoriesData={categoriesData}
+                brandsData={brandsData}
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+              />
+            </div>
+          </aside>
+        )}
         <div className="products">
           <h2 className="title">{title}</h2>
           <p className="subtitle">

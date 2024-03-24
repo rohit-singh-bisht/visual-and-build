@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../assets/logo.svg";
 import Search from "../components/forms/search/Search";
@@ -8,6 +8,7 @@ import { ReactComponent as Cart } from "../assets/cart.svg";
 import { useAppContext } from "../context/useAppContext";
 import { ReactComponent as HamburgerIcon } from "../assets/hamburger.svg";
 import { useAuth } from "../hooks/useAuth";
+import StyledMask from "../components/common/StyledMask";
 
 const HeaderStyle = styled.header`
   position: fixed;
@@ -73,7 +74,7 @@ const HeaderStyle = styled.header`
     }
     .logo {
       svg {
-        width: 100px;
+        width: 140px;
       }
     }
   }
@@ -87,10 +88,40 @@ const Blank = styled.div`
   }
 `;
 
+const MobileNavStyle = styled.div`
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  padding: 12px 0px;
+  background-color: #fff;
+  z-index: 5;
+  box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.3);
+  .link {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    display: block;
+    padding: 10px 20px;
+    color: #303030;
+  }
+`;
+
 const Header = ({ setIsAuthForm }) => {
   const { isDesktop } = useAppContext();
   const isLoggedIn = useAuth();
   const navigate = useNavigate();
+  const [isNavActive, setIsNavActive] = useState(false);
+
+  useEffect(() => {
+    if (isNavActive) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "inherit";
+    }
+    return () => (document.body.style.overflow = "inherit");
+  }, [isNavActive]);
 
   return (
     <>
@@ -131,10 +162,58 @@ const Header = ({ setIsAuthForm }) => {
               </div>
             </>
           ) : (
-            <HamburgerIcon />
+            <HamburgerIcon onClick={() => setIsNavActive((prev) => !prev)} />
           )}
         </div>
       </HeaderStyle>
+      {isNavActive && (
+        <>
+          <StyledMask
+            onClick={() => setIsNavActive(false)}
+            background={"rgba(0, 0, 0, 0.3)"}
+          />
+          <MobileNavStyle className="mobile__navigation">
+            <nav>
+              {navLinks?.map((link) => (
+                <Link
+                  onClick={() => setIsNavActive(false)}
+                  className="link"
+                  key={link?.id}
+                  to={link?.link}
+                >
+                  {link?.title}
+                </Link>
+              ))}
+            </nav>
+            <div className="other__links">
+              <div
+                onClick={() => {
+                  !isLoggedIn ? setIsAuthForm(true) : navigate("/account/");
+                  setIsNavActive(false);
+                }}
+                className="link"
+              >
+                Account & Lists
+              </div>
+              <Link
+                onClick={() => setIsNavActive(false)}
+                to={"/account/purchase-history"}
+                className="link"
+              >
+                Returns
+                <span>& Orders</span>
+              </Link>
+              <Link
+                onClick={() => setIsNavActive(false)}
+                to={"/cart"}
+                className="link"
+              >
+                Cart
+              </Link>
+            </div>
+          </MobileNavStyle>
+        </>
+      )}
     </>
   );
 };

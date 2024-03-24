@@ -6,6 +6,7 @@ import { Skeleton } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import GroupBuyGrid from "../../components/common/GroupBuyGrid";
 import FilterableProducts from "../../components/search/FilterableProducts";
+import { useAppContext } from "../../context/useAppContext";
 
 const CategoryStyle = styled.div`
   .categories {
@@ -16,6 +17,16 @@ const CategoryStyle = styled.div`
   }
   .products__related {
     padding: 50px 0;
+  }
+  @media (max-width: 768px) {
+    .categories {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 40px 0;
+    }
+    .products__related {
+      padding: 30px 0 50px;
+    }
   }
 `;
 

@@ -9,7 +9,6 @@ import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
 import SlidingBanner from "../../components/common/SlidingBanner";
 import GroupBuyList from "../../components/common/GroupBuyList";
-import { Skeleton } from "@mui/material";
 
 const HompageStyle = styled.div`
   .category_list {
@@ -39,7 +38,7 @@ const HompageStyle = styled.div`
 
   @media (max-width: 768px) {
     .category_list {
-      padding: 35px 20px 40px;
+      padding: 60px 20px 30px;
     }
     .product_list {
       padding: 30px 0;

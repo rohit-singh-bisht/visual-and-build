@@ -30,7 +30,7 @@ const UserAccountRoutesStyle = styled.div`
     line-height: 33.75px;
     margin-bottom: 35px;
   }
-  @media (max-width: 786px) {
+  @media (max-width: 768px) {
     padding: 45px 0;
   }
 `;
