@@ -132,14 +132,20 @@ const Footer = () => {
             <PaypalIcon />
             <ApplePayIcon />
           </div>
-          <FooterLinks title={"Follow Us"} links={socialLinks} />
+          <FooterLinks
+            title={"Follow Us"}
+            links={socialLinks}
+            linksType={"social"}
+          />
         </div>
       </div>
       <div className="container bottom__footer">
         <p>Copyright © 2023 V&B visual and Build All Rights Reserved.</p>
         <div className="other__links">
-          <Link className="links">Privacy Policy</Link> |
-          <Link className="links">Terms & Condition</Link> |
+          <Link to={"/privacy-policy"} className="links">
+            Privacy Policy
+          </Link>{" "}
+          |<Link className="links">Terms & Condition</Link> |
           <Link className="links">Sitemap</Link>
         </div>
       </div>

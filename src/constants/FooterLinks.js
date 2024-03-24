@@ -75,17 +75,17 @@ export const supportLinks = [
   {
     id: 3,
     title: "Privacy Policy",
-    link: "",
+    link: "/privacy-policy",
   },
   {
     id: 4,
     title: "Return Policy",
-    link: "",
+    link: "/return-policy",
   },
   {
     id: 5,
     title: "Help Centre",
-    link: "",
+    link: "/help",
   },
   {
     id: 6,
@@ -103,7 +103,7 @@ export const links = [
   {
     id: 1,
     title: "Products List",
-    link: "",
+    link: "/search",
   },
   {
     id: 2,
@@ -118,12 +118,12 @@ export const links = [
   {
     id: 4,
     title: "Shopping Cart",
-    link: "",
+    link: "/cart",
   },
   {
     id: 5,
     title: "Blog",
-    link: "",
+    link: "/blogs",
   },
 ];
 

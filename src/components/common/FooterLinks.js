@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const FooterLinksStyle = styled.div`
   .links__wrapper {
@@ -18,17 +19,24 @@ const FooterLinksStyle = styled.div`
   }
 `;
 
-const FooterLinks = ({ title, links }) => {
+const FooterLinks = ({ title, links, linksType }) => {
   return (
     <FooterLinksStyle>
       <h2 className="title">{title}</h2>
       <div className="links__wrapper">
         {links?.map((item) => (
           <div key={item?.id}>
-            <a href={item?.link} target="_self" className="footer__link">
-              {item?.icon}
-              {item?.title}
-            </a>
+            {linksType === "social" ? (
+              <a href={item?.link} target="_self" className="footer__link">
+                {item?.icon}
+                {item?.title}
+              </a>
+            ) : (
+              <Link to={item?.link} className="footer__link">
+                {item?.icon}
+                {item?.title}
+              </Link>
+            )}
           </div>
         ))}
       </div>

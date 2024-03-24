@@ -20,6 +20,9 @@ import Thankyou from "../views/user/Thankyou";
 import { useEffect } from "react";
 import BlogDetails from "../views/user/BlogDetails";
 import GroupBuy from "../views/user/GroupBuy";
+import PrivacyPolicy from "../views/user/PrivacyPolicy";
+import ReturnPolicy from "../views/user/ReturnPolicy";
+import HelpCenter from "../views/user/HelpCenter";
 
 const AuthPopupStyle = styled.div`
   position: fixed;
@@ -74,6 +77,9 @@ const UserRoutes = () => {
           <Route path="/checkout" element={<Checkout />} />
         </Route>
         <Route path="/thankyou" element={<Thankyou />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/return-policy" element={<ReturnPolicy />} />
+        <Route path="/help" element={<HelpCenter />} />
         <Route path="*" element={<Navigate to={"/"} />} />
         <Route path="/account/*" element={<UserAccountRoutes />} />
       </Routes>
