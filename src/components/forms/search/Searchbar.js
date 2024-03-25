@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import { useRequest } from "../../../hooks/useRequest";
 import { useNavigate } from "react-router-dom";
+import StyledMask from "../../common/StyledMask";
 
-const SearchStyle = styled.form`
+const SearchbarStyle = styled.form`
   height: 39px;
   display: flex;
   position: relative;
@@ -34,10 +35,11 @@ const SearchStyle = styled.form`
   }
 `;
 
-const SearchStyleWrapper = styled.div`
+const SearchbarStyleWrapper = styled.div`
   position: relative;
   max-width: 400px;
   width: 100%;
+  z-index: 9;
   .search__results {
     max-height: 200px;
     overflow: scroll;
@@ -48,6 +50,7 @@ const SearchStyleWrapper = styled.div`
     background-color: #fff;
     border: 0.75px solid #d2d1d1;
     border-radius: 4px;
+    z-index: 5;
     .search__item {
       border: 0.75px solid #d2d1d1;
       padding: 12px;
@@ -64,7 +67,7 @@ const SearchStyleWrapper = styled.div`
   }
 `;
 
-const Search = () => {
+const Searchbar = () => {
   const [searchValue, setSearchValue] = useState("");
   const [fetchSearchResult] = useRequest();
   const [searchResults, setSearchResults] = useState([]);
@@ -81,8 +84,8 @@ const Search = () => {
   };
 
   return (
-    <SearchStyleWrapper>
-      <SearchStyle>
+    <SearchbarStyleWrapper>
+      <SearchbarStyle>
         {/* category dropdown here */}
         <input
           type="search"
@@ -93,25 +96,33 @@ const Search = () => {
         <button type="submit" className="search__button" onClick={handleSubmit}>
           <FiSearch className="icon" />
         </button>
-      </SearchStyle>
-      {searchResults?.length > 0 && (
-        <div className="search__results">
-          {searchResults?.map((item) => (
-            <div
-              className="search__item"
-              onClick={() => {
-                setSearchValue("");
-                setSearchResults([]);
-                navigate(`/product/${item?.slug}?id=${item?._id}`);
-              }}
-            >
-              {item?.name}
-            </div>
-          ))}
-        </div>
+      </SearchbarStyle>
+      {searchValue && searchResults?.length > 0 && (
+        <>
+          <div className="search__results">
+            {searchResults?.map((item) => (
+              <div
+                className="search__item"
+                onClick={() => {
+                  setSearchValue("");
+                  setSearchResults([]);
+                  navigate(`/product/${item?.slug}?id=${item?._id}`);
+                }}
+              >
+                {item?.name}
+              </div>
+            ))}
+          </div>
+          <StyledMask
+            onClick={() => {
+              setSearchValue("");
+              setSearchResults([]);
+            }}
+          />
+        </>
       )}
-    </SearchStyleWrapper>
+    </SearchbarStyleWrapper>
   );
 };
 
-export default Search;
+export default Searchbar;

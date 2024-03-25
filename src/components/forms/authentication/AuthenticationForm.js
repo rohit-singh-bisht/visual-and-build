@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Login from "./Login";
 import Register from "./Register";
@@ -104,6 +104,19 @@ const AuthenticationFormStyle = styled.div`
       text-decoration-line: underline;
     }
   }
+  .other__login__options {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+    margin-top: 30px;
+    span {
+      color: #00579f;
+      text-decoration: underline;
+      margin-left: 4px;
+      cursor: pointer;
+    }
+  }
 `;
 
 const WrapStyle = styled.div`
@@ -112,7 +125,9 @@ const WrapStyle = styled.div`
   height: 100%;
 `;
 
-const AuthenticationForm = ({ formType = "login", setIsAuthForm }) => {
+const AuthenticationForm = ({ setIsAuthForm }) => {
+  const [formType, setFormType] = useState("login");
+
   useEffect(() => {
     document.body.classList.add("bodyfixed");
     return () => document.body.classList.remove("bodyfixed");
@@ -127,6 +142,25 @@ const AuthenticationForm = ({ formType = "login", setIsAuthForm }) => {
             <Login setIsAuthForm={setIsAuthForm} />
           ) : (
             <Register />
+          )}
+        </div>
+        <div className="other__login__options">
+          {formType === "login" ? (
+            <div
+              className="other__account"
+              onClick={() => setFormType("signup")}
+            >
+              Don’t have any account?
+              <span>Signup</span>
+            </div>
+          ) : (
+            <div
+              className="other__account"
+              onClick={() => setFormType("login")}
+            >
+              Already have any account?
+              <span>Signin</span>
+            </div>
           )}
         </div>
         <p className="auth__form__consent">

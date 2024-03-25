@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../assets/logo.svg";
-import Search from "../components/forms/search/Search";
+import Searchbar from "../components/forms/search/Searchbar";
 import { navLinks } from "../constants/HeaderLinks";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as Cart } from "../assets/cart.svg";
@@ -140,7 +140,7 @@ const Header = ({ setIsAuthForm }) => {
                   </Link>
                 ))}
               </nav>
-              <Search />
+              <Searchbar />
               <div className="other__links">
                 <div
                   onClick={() => {
