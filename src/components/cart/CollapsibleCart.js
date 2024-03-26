@@ -5,7 +5,7 @@ import { IoChevronDown } from "react-icons/io5";
 import CartOrderSummary from "./CartOrderSummary";
 
 const CollapsibleCartStyle = styled.div`
-  margin-top: 100px;
+  margin-top: 50px;
   .cart__main__title {
     color: #000;
     font-size: 22.5px;

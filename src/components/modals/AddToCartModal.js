@@ -4,6 +4,7 @@ import { ReactComponent as CheckIcon } from "../../assets/check.svg";
 import GenericModal from "./GenericModal";
 import { useRequest } from "../../hooks/useRequest";
 import { toast } from "react-toastify";
+import Progress from "../common/Progress";
 
 const AddToCartModalStyle = styled.div`
   .modal__body {
@@ -38,29 +39,14 @@ const AddToCartModal = ({
     fetchInstaCarts,
     { ioLoading: isFetchingInstacarts, state: instacarts },
   ] = useRequest(`/instacart?limit=10&page=1`);
-  const [addInstabuildIds, setAddInstabuildIds] = useState([]);
+  const [addInstabuildId, setAddInstabuildId] = useState("");
 
   useEffect(() => {
     !isInstaCartActive && fetchInstaCarts();
   }, [isInstaCartActive]);
 
-  const addInstaBuilds = async (paths) => {
-    const results = await Promise.all(
-      paths?.map((item) =>
-        addCart({
-          path: item?.path,
-          method: "POST",
-          body: JSON.stringify({
-            ...requestPayload,
-          }),
-        })
-      )
-    );
-    console.log("results", results);
-  };
-
   const handlePrimaryClick = async () => {
-    if (!addInstabuildIds?.length && !isNormalCartChecked) {
+    if (!addInstabuildId && !isNormalCartChecked) {
       return toast.error("Please select the cart to add");
     }
     if (isLoading) return;
@@ -71,38 +57,35 @@ const AddToCartModal = ({
         body: JSON.stringify(requestPayload),
       });
       if (!response.success) {
-        return toast.error(response.message, { toastId: "error" });
+        return toast.error(response.message, { toastId: "cart" });
       }
-      toast.success(response.message, { toastId: "success" });
+      toast.success(response.message, { toastId: "cart" });
       onMaskClick();
-    }
-    if (addInstabuildIds?.length) {
-      try {
-        const paths = addInstabuildIds?.map((item) => {
-          return {
-            path: `/instacart/instabuild/${item}`,
-            id: item,
-          };
-        });
-        addInstaBuilds(paths);
-      } catch (err) {
-        return toast.error(
-          "Some items are not added to cart. Please try again"
-        );
+    } else if (addInstabuildId) {
+      const path = `/instacart/instabuild/${addInstabuildId}`;
+      const response = await addCart({
+        path,
+        method: "POST",
+        body: JSON.stringify({
+          ...requestPayload,
+        }),
+      });
+      if (!response.success) {
+        return toast.error(response.message, { toastId: "cart" });
       }
+      toast.success(response.message, { toastId: "cart" });
+      onMaskClick();
     }
   };
 
-  const handleInstacartClick = (e, item) => {
-    if (e.target.checked) {
-      setAddInstabuildIds((prev) => [
-        ...prev?.filter((build) => build !== item?._id),
-        item?._id,
-      ]);
+  const handleRadioChange = (e) => {
+    const { value } = e.target;
+    if (value === "cart") {
+      setAddInstabuildId("");
+      setIsNormalCartChecked(true);
     } else {
-      setAddInstabuildIds((prev) => [
-        ...prev?.filter((build) => build !== item?._id),
-      ]);
+      setIsNormalCartChecked(false);
+      setAddInstabuildId(value);
     }
   };
 
@@ -121,9 +104,11 @@ const AddToCartModal = ({
           <div className="checkbox__group">
             <label htmlFor="cart">
               <input
-                type="checkbox"
+                type="radio"
                 id="cart"
-                onChange={(e) => setIsNormalCartChecked(e?.target?.checked)}
+                name="cart"
+                value="cart"
+                onChange={handleRadioChange}
               />
               <div className="checkbox">
                 <CheckIcon />
@@ -142,10 +127,11 @@ const AddToCartModal = ({
                   <div className="checkbox__group" key={item?.id}>
                     <label htmlFor={item?._id}>
                       <input
-                        type="checkbox"
+                        type="radio"
                         id={item?._id}
-                        checked={addInstabuildIds.includes(item?._id)}
-                        onChange={(e) => handleInstacartClick(e, item)}
+                        value={item?._id}
+                        onChange={handleRadioChange}
+                        name="cart"
                       />
                       <div className="checkbox">
                         <CheckIcon />
@@ -158,6 +144,7 @@ const AddToCartModal = ({
           </div>
         )}
       </GenericModal>
+      {isLoading && <Progress />}
     </AddToCartModalStyle>
   );
 };

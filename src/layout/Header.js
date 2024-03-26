@@ -42,9 +42,9 @@ const HeaderStyle = styled.header`
     align-items: center;
     gap: 5px;
     color: #fff;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
-    line-height: 12px;
+    line-height: 20px;
   }
   .other__links {
     display: flex;
@@ -56,9 +56,9 @@ const HeaderStyle = styled.header`
   }
   .two__liners {
     color: #fff;
-    font-size: 8.25px;
+    font-size: 12px;
     font-weight: 400;
-    line-height: 10.5px;
+    line-height: 20px;
     span {
       font-size: 9.75px;
       font-weight: 700;
