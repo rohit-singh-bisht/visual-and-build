@@ -118,7 +118,9 @@ const CartTable = ({
                           }
                           title={item?.product?.name}
                           isSchedule={isSchedule}
-                          price={item?.product?.price}
+                          price={(
+                            item?.product?.price - item?.product?.discount
+                          ).toFixed(2)}
                           itemQuantity={item?.quantity}
                           total={item?.quantity * item?.product?.price}
                           itemId={item?.product?.id}

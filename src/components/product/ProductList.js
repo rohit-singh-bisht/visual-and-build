@@ -143,7 +143,10 @@ const ProductList = ({
                 key={product?.id}
                 productImage={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${product.image}`}
                 productTitle={product?.name}
-                productDiscountedPrice={product?.price}
+                productDiscountedPrice={(
+                  product?.price - product?.discount
+                ).toFixed(2)}
+                productPrice={product?.price?.toFixed(2)}
                 ratingCount={product?.numReviews}
                 avgRating={product?.avgRating}
                 onClick={() => handleProductClick(product)}
