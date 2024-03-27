@@ -123,18 +123,20 @@ const ProductDetailsStyle = styled.div`
     .product__options {
       display: flex;
       margin-bottom: 12px;
+      gap: 16px;
       .product__options__title {
         color: #303030;
         font-size: 15px;
         font-weight: 600;
         line-height: 22.5px;
-        width: 125px;
+        flex: 0 0 150px;
       }
       .product__options__value {
         color: #303030;
         font-size: 15px;
         font-weight: 400;
         line-height: 22.5px;
+        flex: 1;
       }
     }
   }

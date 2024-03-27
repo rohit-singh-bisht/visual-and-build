@@ -55,13 +55,13 @@ const AddToWishlist = ({
       );
       const allTrue = results.every((obj) => obj.success === true);
       if (allTrue) {
-        return toast.success("Products added to wishlist");
+        toast.success("Products added to wishlist");
       } else {
         results.forEach((element) => {
           if (element?.success) {
             toast.success(`Product added to ${element?.data?.name}.`);
           } else {
-            toast.error(`${element?.message}`);
+            return toast.error(`${element?.message}`);
           }
         });
       }

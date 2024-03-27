@@ -127,7 +127,7 @@ const Cart = () => {
             setIsCheckoutButtonDisabled={setIsCheckoutButtonDisabled}
             cartId={cartData?._id}
           />
-          {cartData?.items?.length && (
+          {cartData?.items?.length > 0 && (
             <div className="cart__order__summary__hodler">
               <CartOrderSummary
                 isCheckoutButtonDisabled={isCheckoutButtonDisabled}

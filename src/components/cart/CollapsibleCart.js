@@ -16,7 +16,6 @@ const CollapsibleCartStyle = styled.div`
     display: flex;
     cursor: pointer;
     justify-content: space-between;
-    margin-bottom: 35px;
     &.active {
       .icon {
         transform: rotate(0deg);

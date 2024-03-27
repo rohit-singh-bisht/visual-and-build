@@ -11,6 +11,7 @@ const CartTableStyle = styled.div`
     border-radius: 12px;
     border: 0.75px solid #ccc2c2;
     background: #fff;
+    margin-top: 35px;
     .cart__items__title {
       color: #000;
       font-size: 22.5px;
