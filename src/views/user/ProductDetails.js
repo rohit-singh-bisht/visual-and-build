@@ -308,7 +308,7 @@ const ProductDetails = () => {
                     <StarRating
                       showAvgRating={false}
                       showRatingCount={false}
-                      avgRating={productDetails?.averageRating}
+                      avgRating={productDetails?.avgRating}
                     />
                     ({productDetails?.numReviews})
                   </div>
