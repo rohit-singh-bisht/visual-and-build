@@ -8,8 +8,7 @@ const ProductDetailsSkeleton = () => {
       <div className="vendor__details__reviews">
         <Skeleton variant="rounded" width={74} height={22} />
         <div className="product__reviews">
-          <ReviewStars />
-          (0)
+          <Skeleton variant="rounded" width={84} height={22} />
         </div>
       </div>
       <Skeleton

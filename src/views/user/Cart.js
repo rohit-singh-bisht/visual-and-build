@@ -125,6 +125,7 @@ const Cart = () => {
             cartData={cartData?.items}
             setIsQtyChanged={setIsQtyChanged}
             setIsCheckoutButtonDisabled={setIsCheckoutButtonDisabled}
+            cartId={cartData?._id}
           />
           {cartData?.items?.length && (
             <div className="cart__order__summary__hodler">

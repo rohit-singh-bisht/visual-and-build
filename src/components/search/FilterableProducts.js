@@ -115,11 +115,14 @@ const FilterableProducts = ({
                 key={product?.id}
                 isLoading={isFetchingProducts}
                 productTitle={product?.name}
-                productDiscountedPrice={product?.price}
                 productImage={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${product.image}`}
                 onClick={() => handleProductClick(product)}
                 ratingCount={product?.numReviews}
                 avgRating={product?.avgRating}
+                productDiscountedPrice={(
+                  product?.price - product?.discount
+                ).toFixed(2)}
+                productPrice={product?.price?.toFixed(2)}
               />
             ))}
             {isFetchingProducts &&

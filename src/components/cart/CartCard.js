@@ -4,6 +4,8 @@ import QuantityInput from "../common/QuantityInput";
 import { useRequest } from "../../hooks/useRequest";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { MdOutlineDelete } from "react-icons/md";
+import Progress from "../common/Progress";
 
 const CartProductCardStyle = styled.div`
   display: flex;
@@ -77,15 +79,29 @@ const CartProductCardStyle = styled.div`
     flex: 0 0 90px;
     text-align: right;
   }
-  .cart__product__wishlist {
-    color: #ae0000;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 18px;
+  .cart__product__card__actions {
+    display: flex;
+    gap: 40px;
     position: absolute;
     right: 25px;
     bottom: 18px;
-    background-color: #fff;
+    .cart__product__wishlist,
+    .cart__product__remove {
+      color: #ae0000;
+      background-color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 20px;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .cart__product__remove {
+      color: #000000;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
   }
   @media (max-width: 768px) {
     flex-wrap: wrap;
@@ -113,7 +129,7 @@ const CartProductCardStyle = styled.div`
     .cart__product__price {
       margin-left: 84px;
     }
-    .cart__product__wishlist {
+    .cart__product__card__actions {
       bottom: 12px;
       right: auto;
       left: 98px;
@@ -141,10 +157,12 @@ const CartProductCard = ({
   setIsQtyChanged,
   setIsCheckoutButtonDisabled,
   product,
+  cartId,
   instabuildId = "",
 }) => {
   const [handleIncDec, { isLoading }] = useRequest();
   const navigate = useNavigate();
+  const [handleReq, { isReqloading }] = useRequest();
 
   if (loading) {
     return <CartProductCardStyle></CartProductCardStyle>;
@@ -184,50 +202,72 @@ const CartProductCard = ({
     navigate(path);
   };
 
+  const handleRemoveClick = async (cartId, productId) => {
+    const path = `/cart/${cartId}/clear-product/${productId}`;
+    const response = await handleReq({ path, method: "DELETE" });
+    if (!response.success) {
+      return toast.error(response.message);
+    }
+    toast.success(response.message);
+    setIsQtyChanged && setIsQtyChanged((prev) => !prev);
+  };
+
   return (
-    <CartProductCardStyle>
-      <div className="cart__product__wrapper">
-        <div className="cart__product__image">
-          <img src={src} alt={title} />
+    <>
+      <CartProductCardStyle>
+        <div className="cart__product__wrapper">
+          <div className="cart__product__image">
+            <img src={src} alt={title} />
+          </div>
+          <div className="cart__product__details">
+            {category && <p className="cart__product__category">{category}</p>}
+            {title && (
+              <p
+                className="cart__product__title"
+                onClick={() => handleTitleClick(product)}
+                title={title}
+              >
+                {title}
+              </p>
+            )}
+            {variant && (
+              <p className="cart__product__variant">
+                Variant: <span>{variant}</span>
+              </p>
+            )}
+          </div>
         </div>
-        <div className="cart__product__details">
-          {category && <p className="cart__product__category">{category}</p>}
-          {title && (
-            <p
-              className="cart__product__title"
-              onClick={() => handleTitleClick(product)}
-              title={title}
-            >
-              {title}
-            </p>
-          )}
-          {variant && (
-            <p className="cart__product__variant">
-              Variant: <span>{variant}</span>
-            </p>
-          )}
+        <h2 className="cart__cell cart__product__price">
+          {process.env.REACT_APP_PRICE_SYMBOL}
+          {price}
+        </h2>
+        <div className="cart__cell cart__product__qty">
+          <QuantityInput
+            handleIncrement={handleInc}
+            handleDecrement={handleDec}
+            itemQuantity={itemQuantity}
+            isDisabled={isLoading}
+          />
         </div>
-      </div>
-      <h2 className="cart__cell cart__product__price">
-        {process.env.REACT_APP_PRICE_SYMBOL}
-        {price}
-      </h2>
-      <div className="cart__cell cart__product__qty">
-        <QuantityInput
-          handleIncrement={handleInc}
-          handleDecrement={handleDec}
-          itemQuantity={itemQuantity}
-          isDisabled={isLoading}
-        />
-      </div>
-      <h2 className="cart__cell cart__product__total">
-        {process.env.REACT_APP_PRICE_SYMBOL}
-        {total}
-      </h2>
-      <button className="cart__product__wishlist">
-        {isSchedule ? "Schedule" : "Add to wishlist"}
-      </button>
-    </CartProductCardStyle>
+        <h2 className="cart__cell cart__product__total">
+          {process.env.REACT_APP_PRICE_SYMBOL}
+          {total}
+        </h2>
+        <div className="cart__product__card__actions">
+          <button className="cart__product__wishlist">
+            {isSchedule ? "Schedule" : "Add to wishlist"}
+          </button>
+          <button
+            className="cart__product__remove"
+            onClick={() => handleRemoveClick(cartId, itemId)}
+          >
+            <MdOutlineDelete />
+            Remove
+          </button>
+        </div>
+      </CartProductCardStyle>
+      {isReqloading && <Progress />}
+    </>
   );
 };
 

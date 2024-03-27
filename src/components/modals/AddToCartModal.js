@@ -94,7 +94,7 @@ const AddToCartModal = ({
       <GenericModal
         modalTitle={"Add to Cart"}
         primaryButtonTitle={"Save"}
-        secondaryButtonTitle={"Add Instacart"}
+        secondaryButtonTitle={"Add New Instacart"}
         onSecondaryButtonClick={handleSecondaryButtonClick}
         onMaskClick={onMaskClick}
         onPrimaryButtonClick={handlePrimaryClick}

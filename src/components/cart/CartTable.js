@@ -75,6 +75,7 @@ const CartTable = ({
   loading,
   setIsQtyChanged,
   instabuildId = "",
+  cartId,
 }) => {
   const { isDesktop } = useAppContext();
 
@@ -128,6 +129,7 @@ const CartTable = ({
                           setIsCheckoutButtonDisabled={
                             setIsCheckoutButtonDisabled
                           }
+                          cartId={cartId}
                           product={item?.product}
                           instabuildId={instabuildId}
                         />

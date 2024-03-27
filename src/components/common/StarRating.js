@@ -21,7 +21,12 @@ const StarRatingStyled = styled.div`
   }
 `;
 
-const StarRating = ({ avgRating = 0, ratingCount = 0 }) => {
+const StarRating = ({
+  avgRating = 0,
+  ratingCount = 0,
+  showAvgRating = true,
+  showRatingCount = true,
+}) => {
   const stars = [];
   const integerPart = Math.floor(avgRating);
   const decimalPart = avgRating - integerPart;
@@ -128,9 +133,14 @@ const StarRating = ({ avgRating = 0, ratingCount = 0 }) => {
   }
 
   return (
-    <StarRatingStyled>
-      <span className="avgRating">{avgRating}</span>
-      {stars} <span className="rating_count">({ratingCount})</span>
+    <StarRatingStyled className="stars__wrapper">
+      {showAvgRating && <span className="avgRating">{avgRating}</span>}
+      {stars}
+      {showRatingCount && (
+        <>
+          <span className="rating_count">({ratingCount})</span>
+        </>
+      )}
     </StarRatingStyled>
   );
 };

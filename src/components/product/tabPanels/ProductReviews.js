@@ -8,6 +8,7 @@ import { useRequest } from "../../../hooks/useRequest";
 import { useLocation } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { getDate } from "../../../utils/helper";
+import StarRating from "../../common/StarRating";
 
 const ProductReviewsStyle = styled.div`
   .avg__ratings__bars__wrapper {
@@ -35,6 +36,12 @@ const ProductReviewsStyle = styled.div`
     }
     .total__number__ratings {
       margin-top: 15px;
+    }
+    .stars__wrapper {
+      .star {
+        width: 13px;
+        height: 13px;
+      }
     }
   }
   .product__ratings__bars__wrapper {
@@ -171,7 +178,11 @@ const ProductReviews = () => {
           <div className="average__ratings__number">
             {ratingData?.averageRating.toFixed(1)}
           </div>
-          <ReviewStarsIcons />
+          <StarRating
+            showAvgRating={false}
+            showRatingCount={false}
+            avgRating={ratingData?.averageRating.toFixed(1)}
+          />
           <div className="average__ratings__subtitle total__number__ratings">
             Based on {ratingData?.totalRating} Ratings
           </div>
@@ -179,7 +190,9 @@ const ProductReviews = () => {
         <div className="product__ratings__bars__wrapper">
           {ratingData?.progress?.map((item) => (
             <div className="product__ratings__bar" key={item?.rating}>
-              <div className="product__ratings__number">{item?.star} Star</div>
+              <div className="product__ratings__number">
+                {item?.rating} Star
+              </div>
               <div className="product__ratings__line">
                 <div
                   className="product__ratings__line__filled"

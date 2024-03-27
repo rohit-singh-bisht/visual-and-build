@@ -21,6 +21,7 @@ import { useAuth } from "../../hooks/useAuth";
 import AddToWishlist from "../../components/modals/AddToWishlist";
 import CreateWishlistModal from "../../components/modals/CreateWishlistModal";
 import { toast } from "react-toastify";
+import StarRating from "../../components/common/StarRating";
 
 const ProductDetailsStyle = styled.div`
   padding: 70px 0;
@@ -79,6 +80,12 @@ const ProductDetailsStyle = styled.div`
         display: flex;
         align-items: center;
         gap: 6px;
+        .stars__wrapper {
+          .star {
+            width: 14px;
+            height: 14px;
+          }
+        }
       }
     }
     .product__title {
@@ -296,7 +303,12 @@ const ProductDetails = () => {
                     {productDetails?.seller?.name}
                   </div>
                   <div className="product__reviews">
-                    <ReviewStars />({productDetails?.numReviews})
+                    <StarRating
+                      showAvgRating={false}
+                      showRatingCount={false}
+                      avgRating={productDetails?.averageRating}
+                    />
+                    ({productDetails?.numReviews})
                   </div>
                 </div>
                 <h2 className="product__title">{productDetails?.name}</h2>
