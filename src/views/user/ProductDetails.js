@@ -331,14 +331,18 @@ const ProductDetails = () => {
                   )}
                 </div>
                 <div className="product__details__options">
-                  {productDetails?.brand && (
-                    <div className="product__options">
-                      <h2 className="product__options__title">Brand</h2>
-                      <p className="product__options__value">
-                        {productDetails?.brand}
-                      </p>
-                    </div>
-                  )}
+                  {productDetails?.brand &&
+                    Object.keys(productDetails?.brand)?.length && (
+                      <div className="product__options">
+                        <h2 className="product__options__title">Brand</h2>
+                        <p
+                          className="product__options__value"
+                          style={{ textTransform: "capitalize" }}
+                        >
+                          {productDetails?.brand?.name}
+                        </p>
+                      </div>
+                    )}
                   {productDetails?.specs?.slice(0, 4)?.map((item) => (
                     <div className="product__options">
                       <h2 className="product__options__title">{item?.label}</h2>
