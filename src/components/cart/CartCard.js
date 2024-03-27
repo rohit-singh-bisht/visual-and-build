@@ -4,7 +4,6 @@ import QuantityInput from "../common/QuantityInput";
 import { useRequest } from "../../hooks/useRequest";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { MdOutlineDelete } from "react-icons/md";
 import Progress from "../common/Progress";
 
 const CartProductCardStyle = styled.div`
@@ -81,7 +80,7 @@ const CartProductCardStyle = styled.div`
   }
   .cart__product__card__actions {
     display: flex;
-    gap: 40px;
+    gap: 32px;
     position: absolute;
     right: 25px;
     bottom: 18px;
@@ -261,7 +260,6 @@ const CartProductCard = ({
             className="cart__product__remove"
             onClick={() => handleRemoveClick(cartId, itemId)}
           >
-            <MdOutlineDelete />
             Remove
           </button>
         </div>

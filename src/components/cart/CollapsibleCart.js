@@ -74,6 +74,7 @@ const CollapsibleCart = ({
           setIsQtyChanged={setIsQtyChanged}
           setIsCheckoutButtonDisabled={setIsCheckoutButtonDisabled}
           instabuildId={instabuildId}
+          cartId={instabuildId}
         />
         {cartData?.items?.length > 0 && (
           <div className="cart__order__summary__hodler">

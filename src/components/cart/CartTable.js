@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CartCard from "./CartCard";
 import { useAppContext } from "../../context/useAppContext";
 import { Skeleton } from "@mui/material";
+import ClearCartButton from "./ClearCartButton";
 
 const CartTableStyle = styled.div`
   flex: 1;
@@ -17,6 +18,8 @@ const CartTableStyle = styled.div`
       font-size: 22.5px;
       font-weight: 600;
       padding: 24px;
+      display: flex;
+      justify-content: space-between;
     }
     .cart__items__table__head {
       background-color: #ae0000;
@@ -83,7 +86,12 @@ const CartTable = ({
   return (
     <CartTableStyle>
       <div className="cart__items">
-        <div className="cart__items__title">Cart Items</div>
+        <div className="cart__items__title">
+          Cart Items
+          {cartData && cartData?.length > 0 && (
+            <ClearCartButton cartId={cartId} setIsCleared={setIsQtyChanged} />
+          )}
+        </div>
         {isDesktop && (
           <div className="cart__items__table__head">
             <div className="table__heading">Product Details</div>
