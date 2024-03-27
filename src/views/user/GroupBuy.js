@@ -10,11 +10,8 @@ const GroupBuyStyle = styled.div`
 const GroupBuy = () => {
   const [fetchCategories] = useRequest();
   const [fetchBrands] = useRequest();
-  const [fetchProducts, { isLoading: isFetchingProducts, state: products }] =
-    useRequest();
   const [categoriesData, setCategoriesData] = useState([]);
   const [brandsData, setBrandsData] = useState([]);
-  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     (async function () {
@@ -30,24 +27,14 @@ const GroupBuy = () => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    fetchProducts({ path: `/product/groupby?limit=16&page=${pageNumber}` });
-  }, [pageNumber]);
-
-  const handlePaginationChange = (e, value) => {
-    setPageNumber(value);
-  };
-
   return (
     <GroupBuyStyle>
       <div className="container">
         <FilterableProducts
-          products={products}
-          isFetchingProducts={isFetchingProducts}
           categoriesData={categoriesData}
           brandsData={brandsData}
+          apiPath="/product/groupby"
           title="Group Buy Products"
-          handlePaginationChange={handlePaginationChange}
         />
       </div>
     </GroupBuyStyle>

@@ -6,7 +6,6 @@ import { Skeleton } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import GroupBuyGrid from "../../components/common/GroupBuyGrid";
 import FilterableProducts from "../../components/search/FilterableProducts";
-import { useAppContext } from "../../context/useAppContext";
 
 const CategoryStyle = styled.div`
   .categories {
@@ -35,17 +34,13 @@ const Search = ({
   showProducts = true,
   showRelated = true,
 }) => {
-  const [pageNumber, setPageNumber] = useState(1);
   const [categoriesData, setCategoriesData] = useState([]);
   const [brandsData, setBrandsData] = useState([]);
   const [fetchCategories, { isLoading: isFetchingCategories }] = useRequest();
   const [fetchBrands] = useRequest();
-  const [fetchProducts, { isLoading: isFetchingProducts, state: products }] =
-    useRequest();
   const { search } = useLocation();
   const navigate = useNavigate();
   const [categoriesIdList, setCategoriesIdList] = useState();
-  const [brandsIdList, setBrandsIdList] = useState();
   const searchParams = new URLSearchParams(search);
 
   useEffect(() => {
@@ -62,43 +57,12 @@ const Search = ({
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    const params = new URLSearchParams(search);
-    const categoryNames = params.getAll("categories[]");
-    const brandNames = params.getAll("brands[]");
-    setCategoriesIdList(categoryNames);
-    setBrandsIdList(brandNames);
-  }, [search, categoriesData, brandsData]);
-
-  const generateURL = (pageNumber, categories, brands) => {
-    let url = `/product?limit=16&page=${pageNumber}`;
-    categories.forEach((category) => {
-      url += `&categories[]=${category}`;
-    });
-    brands?.forEach((brand) => {
-      url += `&brands[]=${brand}`;
-    });
-    return url;
-  };
-
-  useEffect(() => {
-    if (categoriesIdList) {
-      const path = generateURL(pageNumber, categoriesIdList, brandsIdList);
-      fetchProducts({ path });
-    }
-    // eslint-disable-next-line
-  }, [pageNumber, categoriesIdList, brandsIdList]);
-
   const handleCategoryClick = (item) => {
     if (!categoriesIdList?.includes(item?._id)) {
       searchParams.append("categories[]", item?._id);
       const newUrl = `/search/?${searchParams.toString()}`;
       navigate(newUrl);
     }
-  };
-
-  const handlePaginationChange = (e, value) => {
-    setPageNumber(value);
   };
 
   return (
@@ -135,11 +99,9 @@ const Search = ({
       )}
       {showProducts && (
         <FilterableProducts
-          products={products}
-          isFetchingProducts={isFetchingProducts}
           categoriesData={categoriesData}
           brandsData={brandsData}
-          handlePaginationChange={handlePaginationChange}
+          setCategoriesList={setCategoriesIdList}
         />
       )}
       {showRelated && (

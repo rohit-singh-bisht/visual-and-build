@@ -85,6 +85,9 @@ const ProductCard = ({
             <p className="product__title" title={productTitle}>
               {productTitle}
             </p>
+            <div className="product__reviews">
+              <StarRating avgRating={avgRating} ratingCount={ratingCount} />
+            </div>
             <div className="product__price__wrapper">
               <div className="product__discounted__price">
                 {priceSymbol + productDiscountedPrice}
@@ -94,9 +97,6 @@ const ProductCard = ({
                   {priceSymbol + productPrice}
                 </div>
               )}
-            </div>
-            <div className="product__reviews">
-              <StarRating avgRating={avgRating} ratingCount={ratingCount} />
             </div>
           </div>
         </ProductCardStyle>

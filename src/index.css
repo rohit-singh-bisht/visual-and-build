@@ -103,8 +103,15 @@ input[type="number"] {
   color: #ae0000 !important;
 }
 
+.slick-dots li button:before {
+  font-size: 12px !important;
+}
+
 @media only screen and (max-width: 768px) {
   .container {
     padding: 0 15px;
+  }
+  .slick-dots li button:before {
+    font-size: 8px !important;
   }
 }

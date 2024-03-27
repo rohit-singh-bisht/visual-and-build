@@ -159,6 +159,16 @@ const TransactionDetailsStyle = styled.div`
     .css-1vyamtt-MuiStepLabel-labelContainer {
       color: #898989;
     }
+    .Mui-active,
+    .Mui-completed {
+      color: #3f8e00;
+      .MuiStepConnector-line {
+        border-color: #3f8e00;
+      }
+    }
+    .MuiStepConnector-line {
+      border-top-width: 2px;
+    }
     .transaction__order__action {
       padding: 0 20px;
       margin-top: 32px;
@@ -186,7 +196,7 @@ const TransactionDetailsStyle = styled.div`
   }
 `;
 
-const steps = ["Order Confirmed", "Shipped", "Out For Delivery", "Delivered"];
+const steps = ["Order Confirmed", "Order processing", "Shipped", "Delivered"];
 
 const TransactionDetails = ({ setPageTitle }) => {
   const { transactionId } = useParams();
@@ -195,6 +205,7 @@ const TransactionDetails = ({ setPageTitle }) => {
   const { isDesktop } = useAppContext();
   const navigate = useNavigate();
   const [isProductReturnActive, setIsProductReturnActive] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     setPageTitle &&
@@ -207,6 +218,27 @@ const TransactionDetails = ({ setPageTitle }) => {
     transactionId &&
       fetchTransactions({ path: `/order/${transactionId}/show` });
   }, [transactionId]);
+
+  useEffect(() => {
+    if (transactionData?.data && Object.keys(transactionData?.data)?.length) {
+      switch (transactionData?.data?.orderStatus) {
+        case "pending":
+          setActiveStep(0);
+          break;
+        case "processing":
+          setActiveStep(1);
+          break;
+        case "shipped":
+          setActiveStep(2);
+          break;
+        case "delivered":
+          setActiveStep(3);
+          break;
+        default:
+          setActiveStep(0);
+      }
+    }
+  }, [transactionData]);
 
   return (
     <>
@@ -300,7 +332,7 @@ const TransactionDetails = ({ setPageTitle }) => {
           </div>
         </div>
         <div className="transaction__order__status">
-          <Stepper activeStep={-1} alternativeLabel>
+          <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>

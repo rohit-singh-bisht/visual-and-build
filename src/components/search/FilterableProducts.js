@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Filters from "../sortAndFilter/Filters";
 import ProductCard from "../product/ProductCard";
 import Pagination from "@mui/material/Pagination";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAppContext } from "../../context/useAppContext";
+import { useRequest } from "../../hooks/useRequest";
+import Dropdown from "../common/Dropdown";
 
 const FilterableProductsStyle = styled.div`
   .products__wrapper {
@@ -17,7 +19,7 @@ const FilterableProductsStyle = styled.div`
         border-radius: 11.25px;
         border: 0.75px solid #d9d9d9;
         background: #fcfcfc;
-        height: 600px;
+        min-height: 600px;
       }
     }
     .products {
@@ -28,6 +30,10 @@ const FilterableProductsStyle = styled.div`
         font-weight: 600;
         line-height: 34.5px;
         margin-bottom: 15px;
+      }
+      .products__sorting__wrapper {
+        display: flex;
+        justify-content: space-between;
       }
       .subtitle {
         color: #303030;
@@ -68,17 +74,87 @@ const ProductsNotFound = styled.div`
   }
 `;
 
+const sortingOptions = [
+  {
+    label: "Newest first",
+    value: "newestFirst",
+  },
+  {
+    label: "Price (low to high)",
+    value: "price",
+    sortOrder: "asc",
+  },
+  {
+    label: "Price (high to low)",
+    value: "price",
+    sortOrder: "desc",
+  },
+  {
+    label: "Name (Ascending)",
+    value: "name",
+    sortOrder: "asc",
+  },
+  {
+    label: "Name (Descending)",
+    value: "name",
+    sortOrder: "desc",
+  },
+  {
+    label: "Date (Ascending)",
+    value: "date",
+    sortOrder: "asc",
+  },
+  {
+    label: "Date (Descending)",
+    value: "date",
+    sortOrder: "desc",
+  },
+];
+
 const FilterableProducts = ({
-  products,
-  isFetchingProducts,
   categoriesData,
   brandsData,
   title = "Products",
-  handlePaginationChange,
+  apiPath = "/product",
+  setCategoriesList,
 }) => {
   const [searchInput, setSearchInput] = useState({ type: "", value: "" });
+  const [fetchProducts, { isLoading: isFetchingProducts, state: products }] =
+    useRequest();
   const navigate = useNavigate();
   const { isDesktop } = useAppContext();
+  const [categoriesIdList, setCategoriesIdList] = useState();
+  const [brandsIdList, setBrandsIdList] = useState();
+  const { search } = useLocation();
+  const [pageNumber, setPageNumber] = useState(1);
+
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const categoryNames = params.getAll("categories[]");
+    const brandNames = params.getAll("brands[]");
+    setCategoriesIdList(categoryNames);
+    setBrandsIdList(brandNames);
+    setCategoriesList && setCategoriesList(categoryNames);
+  }, [search, categoriesData, brandsData]);
+
+  const generateURL = (pageNumber, categories, brands) => {
+    let url = `${apiPath}?limit=16&page=${pageNumber}`;
+    categories.forEach((category) => {
+      url += `&categories[]=${category}`;
+    });
+    brands?.forEach((brand) => {
+      url += `&brands[]=${brand}`;
+    });
+    return url;
+  };
+
+  useEffect(() => {
+    if (categoriesIdList) {
+      const path = generateURL(pageNumber, categoriesIdList, brandsIdList);
+      fetchProducts({ path });
+    }
+    // eslint-disable-next-line
+  }, [pageNumber, categoriesIdList, brandsIdList]);
 
   const handleProductClick = (item) => {
     let slug = item?.slug;
@@ -86,6 +162,10 @@ const FilterableProducts = ({
       slug = slug.slice(0, -1);
     }
     navigate(`/product/${slug}?id=${item?._id}`);
+  };
+
+  const handlePaginationChange = (e, value) => {
+    setPageNumber(value);
   };
 
   return (
@@ -105,10 +185,13 @@ const FilterableProducts = ({
         )}
         <div className="products">
           <h2 className="title">{title}</h2>
-          <p className="subtitle">
-            Showing 1 - {products?.data?.docs?.length || 0} of{" "}
-            {products?.data?.totalDocs || 0} results.
-          </p>
+          <div className="products__sorting__wrapper">
+            <p className="subtitle">
+              Showing 1 - {products?.data?.docs?.length || 0} of{" "}
+              {products?.data?.totalDocs || 0} results.
+            </p>
+            <div className="products__sorting subtitle">Sort by</div>
+          </div>
           <div className="products__grid">
             {products?.data?.docs?.map((product) => (
               <ProductCard
