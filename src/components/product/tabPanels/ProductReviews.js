@@ -204,27 +204,29 @@ const ProductReviews = () => {
           ))}
         </div>
       </div>
-      <div className="product__reviews__wrapper">
-        {reviewData?.map((item) => (
-          <ProductReviewCard
-            key={item?._id}
-            customerName={item?.user?.name}
-            customerRatingCount={item?.rating}
-            customerReview={item?.comment}
-            reviewDate={getDate(item?.updatedAt)}
-          />
-        ))}
-        {isDesktop && (
-          <div className="product__reviews__pagination">
-            <Pagination
-              className="pagination"
-              count={totalPages}
-              shape="rounded"
-              onChange={handlePaginationChange}
+      {reviewData?.length > 0 && (
+        <div className="product__reviews__wrapper">
+          {reviewData?.map((item) => (
+            <ProductReviewCard
+              key={item?._id}
+              customerName={item?.user?.name}
+              customerRatingCount={item?.rating}
+              customerReview={item?.comment}
+              reviewDate={getDate(item?.updatedAt)}
             />
-          </div>
-        )}
-      </div>
+          ))}
+          {isDesktop && (
+            <div className="product__reviews__pagination">
+              <Pagination
+                className="pagination"
+                count={totalPages}
+                shape="rounded"
+                onChange={handlePaginationChange}
+              />
+            </div>
+          )}
+        </div>
+      )}
       <ProductReviewForm productId={productId} />
     </ProductReviewsStyle>
   );
