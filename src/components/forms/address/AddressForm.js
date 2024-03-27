@@ -237,6 +237,17 @@ const AddressForm = ({ title = "Add Address", state, setState, onClick }) => {
               />
               <label htmlFor="work">Work</label>
             </div>
+            <div className="radio__group">
+              <input
+                id="other"
+                onChange={handleChange}
+                name="label"
+                type="radio"
+                value={"other"}
+                checked={addressData?.label === "other"}
+              />
+              <label htmlFor="work">Other</label>
+            </div>
           </div>
           <div className="submit__button">
             <Button title={"Save Address"} onClick={onClick} />

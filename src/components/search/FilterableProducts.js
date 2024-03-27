@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
-import Dropdown from "../common/Dropdown";
 
 const FilterableProductsStyle = styled.div`
   .products__wrapper {
@@ -34,6 +33,39 @@ const FilterableProductsStyle = styled.div`
       .products__sorting__wrapper {
         display: flex;
         justify-content: space-between;
+        .products__sorting {
+          display: flex;
+          gap: 16px;
+        }
+        .products__sorting__dropdown__wrapper {
+          width: 200px;
+          position: relative;
+        }
+        .product__current__sorting {
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 18px;
+          text-align: left;
+          color: #ae0000;
+        }
+        .products__sorting__dropdown {
+          position: absolute;
+          left: 0;
+          width: 100%;
+          top: calc(100% + 20px);
+          border: 1px solid #9a9a9a;
+          z-index: 9;
+          border-radius: 8px;
+          overflow: clip;
+          .products__sorting__dropdown__option {
+            padding: 8px 12px;
+            background-color: #fff;
+            border-bottom: 1px solid #9a9a9a;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 18px;
+          }
+        }
       }
       .subtitle {
         color: #303030;
@@ -127,6 +159,7 @@ const FilterableProducts = ({
   const [brandsIdList, setBrandsIdList] = useState();
   const { search } = useLocation();
   const [pageNumber, setPageNumber] = useState(1);
+  const [sortBy, setSortBy] = useState("Newest first");
 
   useEffect(() => {
     const params = new URLSearchParams(search);
@@ -190,7 +223,19 @@ const FilterableProducts = ({
               Showing 1 - {products?.data?.docs?.length || 0} of{" "}
               {products?.data?.totalDocs || 0} results.
             </p>
-            <div className="products__sorting subtitle">Sort by</div>
+            <div className="products__sorting subtitle">
+              Sort by
+              <div className="products__sorting__dropdown__wrapper">
+                <div className="product__current__sorting">{sortBy}</div>
+                <div className="products__sorting__dropdown">
+                  {sortingOptions?.map((item) => (
+                    <div className="products__sorting__dropdown__option">
+                      {item?.label}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
           <div className="products__grid">
             {products?.data?.docs?.map((product) => (
