@@ -23,6 +23,12 @@ const VendorStyle = styled.div`
       object-fit: cover;
     }
   }
+  .vendor__cover {
+    height: 350px;
+    img {
+      object-fit: cover;
+    }
+  }
   .seller__categories {
     padding: 0 0 80px;
     .list_wrapper {

@@ -265,12 +265,14 @@ const TransactionDetails = ({ setPageTitle }) => {
                 </div>
                 <div className="transaction__order__td">
                   {process.env.REACT_APP_PRICE_SYMBOL}
-                  {item?.price}
+                  {(item?.productId?.price - item?.productId?.discount).toFixed(
+                    2
+                  )}
                 </div>
                 <div className="transaction__order__td">{item?.qty}</div>
                 <div className="transaction__order__td">
                   {process.env.REACT_APP_PRICE_SYMBOL}
-                  {item?.price * item?.qty}
+                  {item?.price}
                 </div>
               </>
             ))}
