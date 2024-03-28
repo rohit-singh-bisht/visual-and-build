@@ -4,6 +4,7 @@ import Button from "../../../components/common/Button";
 import { useRequest } from "../../../hooks/useRequest";
 import { toast } from "react-toastify";
 import Progress from "../../../components/common/Progress";
+import { useAppContext } from "../../../context/useAppContext";
 
 const ProfileInformationStyle = styled.div`
   .text {
@@ -52,9 +53,11 @@ const ProfileInformationStyle = styled.div`
 
 const ProfileInformation = () => {
   const [updateProfileInformation, { isLoading }] = useRequest();
+  const { user } = useAppContext();
+  const { user: userInfo } = user;
   const [profileInformation, setProfileInformation] = useState({
-    name: "",
-    email: "",
+    name: userInfo?.name,
+    email: userInfo?.email,
     password: "",
   });
 
@@ -175,6 +178,7 @@ const ProfileInformation = () => {
               <label className="required">Email</label>
               <input
                 type="email"
+                name="email"
                 value={profileInformation?.email}
                 onChange={handleChange}
               />
@@ -192,11 +196,32 @@ const ProfileInformation = () => {
               <label className="required">New Password</label>
               <input
                 type="password"
+                name="password"
                 value={profileInformation?.password}
                 onChange={handleChange}
               />
             </div>
           </div>
+
+          <Button type={"save"} onClick={handleSave} title={"Save Changes"} />
+
+          <div className="page__subtitle">Update Phone Number</div>
+          <div className="input__wrapper">
+            {/* <div className="input_group">
+            <label className="required">Current Password</label>
+            <input type="password" />
+          </div> */}
+            <div className="input_group">
+              <label className="required">Phone Number</label>
+              <input
+                type="password"
+                name="password"
+                value={profileInformation?.password}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
           <Button type={"save"} onClick={handleSave} title={"Save Changes"} />
         </div>
       </ProfileInformationStyle>

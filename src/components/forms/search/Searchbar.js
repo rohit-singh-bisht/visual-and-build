@@ -4,6 +4,7 @@ import { FiSearch } from "react-icons/fi";
 import { useRequest } from "../../../hooks/useRequest";
 import { useNavigate } from "react-router-dom";
 import StyledMask from "../../common/StyledMask";
+import useDebounce from "../../../hooks/useDebounce";
 
 const SearchbarStyle = styled.form`
   height: 39px;
@@ -72,28 +73,27 @@ const Searchbar = () => {
   const [fetchSearchResult] = useRequest();
   const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!searchValue) {
-      return "";
-    }
-    const path = `/product/search?limit=20&page=1&search=${searchValue}`;
-    const response = await fetchSearchResult({ path });
-    setSearchResults(response?.data?.docs);
-  };
+  useDebounce(
+    async () => {
+      if (!searchValue?.length) return;
+      const path = `/product/search?limit=20&page=1&search=${searchValue}`;
+      const response = await fetchSearchResult({ path });
+      setSearchResults(response?.data?.docs);
+    },
+    [searchValue],
+    500
+  );
 
   return (
     <SearchbarStyleWrapper>
       <SearchbarStyle>
-        {/* category dropdown here */}
         <input
           type="search"
           placeholder="Search Products"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
-        <button type="submit" className="search__button" onClick={handleSubmit}>
+        <button type="submit" className="search__button">
           <FiSearch className="icon" />
         </button>
       </SearchbarStyle>

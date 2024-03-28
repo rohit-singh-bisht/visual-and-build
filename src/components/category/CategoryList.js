@@ -20,7 +20,8 @@ const CategoryListStyle = styled.div`
   .list_wrapper {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
+    column-gap: 10px;
+    row-gap: 20px;
     .view__all {
       .view__all__button {
         border-radius: 7.5px;
