@@ -106,8 +106,6 @@ const AddressForm = ({ title = "Add Address", state, setState, onClick }) => {
     }));
   };
 
-  console.log("addressData", addressData);
-
   return (
     <AddressFormStyle>
       <div className="add__address__modal">

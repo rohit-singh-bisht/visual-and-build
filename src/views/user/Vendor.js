@@ -94,7 +94,6 @@ const Vendor = () => {
       const results = await Promise.all(
         paths?.map((path) => fetchSellerDetails({ path }))
       );
-      console.log("results", results);
       setSellerData(results[0]?.data);
     };
     fetchSellerInfo(sellerId);

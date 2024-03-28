@@ -168,7 +168,6 @@ const CartOrderSummary = ({
   const navigate = useNavigate();
   const { setCheckoutCartData, setAppliedCoupon } = useAppContext();
   const cartId = cartData?._id;
-  console.log("CartOrderSummary", cartId);
 
   useDebounce(
     () => {

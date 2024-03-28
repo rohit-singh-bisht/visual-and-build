@@ -284,7 +284,6 @@ const FilterableProducts = ({
                   <>
                     <StyledMask
                       onClick={() => {
-                        console.log("settings dropdown active to false");
                         setIsDropdownActive(false);
                       }}
                       zIndex={2}
