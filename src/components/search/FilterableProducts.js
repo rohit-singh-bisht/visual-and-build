@@ -243,6 +243,8 @@ const FilterableProducts = ({
     setSortLabel(item?.label);
   };
 
+  console.log("isDropdownActive", isDropdownActive);
+
   return (
     <FilterableProductsStyle>
       <section className="products__wrapper">
@@ -265,13 +267,13 @@ const FilterableProducts = ({
               Showing 1 - {products?.data?.docs?.length || 0} of{" "}
               {products?.data?.totalDocs || 0} results.
             </p>
-            <div
-              className="products__sorting subtitle"
-              onClick={() => setIsDropdownActive((prev) => !prev)}
-            >
+            <div className="products__sorting subtitle">
               Sort by
               <div className="products__sorting__dropdown__wrapper">
-                <div className="product__current__sorting">
+                <div
+                  className="product__current__sorting"
+                  onClick={() => setIsDropdownActive((prev) => !prev)}
+                >
                   {sortLabel}
                   <IoChevronDownOutline
                     className={`icon ${isDropdownActive ? "reverse" : ""}`}
@@ -280,7 +282,10 @@ const FilterableProducts = ({
                 {isDropdownActive && (
                   <>
                     <StyledMask
-                      onClick={() => setIsDropdownActive(false)}
+                      onClick={() => {
+                        console.log("settings dropdown active to false");
+                        setIsDropdownActive(false);
+                      }}
                       zIndex={2}
                     />
                     <div className="products__sorting__dropdown">
