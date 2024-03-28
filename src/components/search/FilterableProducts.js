@@ -101,6 +101,15 @@ const FilterableProductsStyle = styled.div`
     .products__wrapper {
       padding-top: 20px;
       padding-bottom: 20px;
+      .products {
+        .title {
+          margin-bottom: 20px;
+        }
+        .products__sorting__wrapper {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+      }
     }
   }
 `;
@@ -256,13 +265,13 @@ const FilterableProducts = ({
               Showing 1 - {products?.data?.docs?.length || 0} of{" "}
               {products?.data?.totalDocs || 0} results.
             </p>
-            <div className="products__sorting subtitle">
+            <div
+              className="products__sorting subtitle"
+              onClick={() => setIsDropdownActive((prev) => !prev)}
+            >
               Sort by
               <div className="products__sorting__dropdown__wrapper">
-                <div
-                  className="product__current__sorting"
-                  onClick={() => setIsDropdownActive((prev) => !prev)}
-                >
+                <div className="product__current__sorting">
                   {sortLabel}
                   <IoChevronDownOutline
                     className={`icon ${isDropdownActive ? "reverse" : ""}`}
