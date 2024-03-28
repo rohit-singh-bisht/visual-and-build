@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
+import { IoChevronDownOutline } from "react-icons/io5";
+import StyledMask from "../common/StyledMask";
 
 const FilterableProductsStyle = styled.div`
   .products__wrapper {
@@ -36,6 +38,7 @@ const FilterableProductsStyle = styled.div`
         .products__sorting {
           display: flex;
           gap: 16px;
+          align-items: center;
         }
         .products__sorting__dropdown__wrapper {
           width: 200px;
@@ -47,20 +50,28 @@ const FilterableProductsStyle = styled.div`
           line-height: 18px;
           text-align: left;
           color: #ae0000;
+          display: flex;
+          justify-content: space-between;
+          padding: 4px;
+          .icon {
+            &.reverse {
+              transform: rotateX(180deg);
+            }
+          }
         }
         .products__sorting__dropdown {
           position: absolute;
           left: 0;
           width: 100%;
-          top: calc(100% + 20px);
-          border: 1px solid #9a9a9a;
-          z-index: 9;
+          top: calc(100% + 10px);
+          border: 1px solid #d0d0d0;
+          z-index: 7;
           border-radius: 8px;
           overflow: clip;
           .products__sorting__dropdown__option {
             padding: 8px 12px;
             background-color: #fff;
-            border-bottom: 1px solid #9a9a9a;
+            border-bottom: 1px solid #d0d0d0;
             font-size: 12px;
             font-weight: 500;
             line-height: 18px;
@@ -122,12 +133,12 @@ const sortingOptions = [
     sortOrder: "desc",
   },
   {
-    label: "Name (Ascending)",
+    label: "Name (A - Z)",
     value: "name",
     sortOrder: "asc",
   },
   {
-    label: "Name (Descending)",
+    label: "Name (Z - A)",
     value: "name",
     sortOrder: "desc",
   },
@@ -159,7 +170,10 @@ const FilterableProducts = ({
   const [brandsIdList, setBrandsIdList] = useState();
   const { search } = useLocation();
   const [pageNumber, setPageNumber] = useState(1);
-  const [sortBy, setSortBy] = useState("Newest first");
+  const [sortBy, setSortBy] = useState(sortingOptions[0]?.value);
+  const [sortOrder, setSortOrder] = useState("");
+  const [isDropdownActive, setIsDropdownActive] = useState(false);
+  const [sortLabel, setSortLabel] = useState(sortingOptions[0]?.label);
 
   useEffect(() => {
     const params = new URLSearchParams(search);
@@ -170,7 +184,7 @@ const FilterableProducts = ({
     setCategoriesList && setCategoriesList(categoryNames);
   }, [search, categoriesData, brandsData]);
 
-  const generateURL = (pageNumber, categories, brands) => {
+  const generateURL = (pageNumber, categories, brands, sortBy, sortOrder) => {
     let url = `${apiPath}?limit=16&page=${pageNumber}`;
     categories.forEach((category) => {
       url += `&categories[]=${category}`;
@@ -178,16 +192,25 @@ const FilterableProducts = ({
     brands?.forEach((brand) => {
       url += `&brands[]=${brand}`;
     });
+    if (sortBy && sortOrder && sortBy !== "newestFirst") {
+      url += `&sortBy=${sortBy}&sortOrder=${sortOrder}`;
+    }
     return url;
   };
 
   useEffect(() => {
     if (categoriesIdList) {
-      const path = generateURL(pageNumber, categoriesIdList, brandsIdList);
+      const path = generateURL(
+        pageNumber,
+        categoriesIdList,
+        brandsIdList,
+        sortBy,
+        sortOrder
+      );
       fetchProducts({ path });
     }
     // eslint-disable-next-line
-  }, [pageNumber, categoriesIdList, brandsIdList]);
+  }, [pageNumber, categoriesIdList, brandsIdList, sortBy, sortOrder]);
 
   const handleProductClick = (item) => {
     let slug = item?.slug;
@@ -199,6 +222,16 @@ const FilterableProducts = ({
 
   const handlePaginationChange = (e, value) => {
     setPageNumber(value);
+  };
+
+  const handleSortClick = (item) => {
+    setIsDropdownActive(false);
+    if (item?.value === sortBy) {
+      return;
+    }
+    setSortBy(item?.value);
+    setSortOrder(item?.sortOrder);
+    setSortLabel(item?.label);
   };
 
   return (
@@ -226,14 +259,33 @@ const FilterableProducts = ({
             <div className="products__sorting subtitle">
               Sort by
               <div className="products__sorting__dropdown__wrapper">
-                <div className="product__current__sorting">{sortBy}</div>
-                <div className="products__sorting__dropdown">
-                  {sortingOptions?.map((item) => (
-                    <div className="products__sorting__dropdown__option">
-                      {item?.label}
-                    </div>
-                  ))}
+                <div
+                  className="product__current__sorting"
+                  onClick={() => setIsDropdownActive((prev) => !prev)}
+                >
+                  {sortLabel}
+                  <IoChevronDownOutline
+                    className={`icon ${isDropdownActive ? "reverse" : ""}`}
+                  />
                 </div>
+                {isDropdownActive && (
+                  <>
+                    <StyledMask
+                      onClick={() => setIsDropdownActive(false)}
+                      zIndex={2}
+                    />
+                    <div className="products__sorting__dropdown">
+                      {sortingOptions?.map((item) => (
+                        <div
+                          className="products__sorting__dropdown__option"
+                          onClick={() => handleSortClick(item)}
+                        >
+                          {item?.label}
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
