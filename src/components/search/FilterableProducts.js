@@ -235,15 +235,13 @@ const FilterableProducts = ({
 
   const handleSortClick = (item) => {
     setIsDropdownActive(false);
-    if (item?.value === sortBy) {
+    if (item?.value === sortBy && item?.sortOrder === sortOrder) {
       return;
     }
     setSortBy(item?.value);
     setSortOrder(item?.sortOrder);
     setSortLabel(item?.label);
   };
-
-  console.log("isDropdownActive", isDropdownActive);
 
   return (
     <FilterableProductsStyle>
