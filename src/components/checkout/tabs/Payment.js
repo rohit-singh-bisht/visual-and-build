@@ -76,7 +76,7 @@ const PaymentStyle = styled.div`
   .coupon__and__subtotal {
     margin-top: 52px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     .coupon__wrapper {
       position: relative;
       flex: 0 0 450px;
@@ -102,15 +102,18 @@ const PaymentStyle = styled.div`
         cursor: pointer;
       }
     }
-    .subtotal__amount {
+    .payment__summary {
+      flex: 0 0 450px;
+      border-radius: 7.5px;
       border: 0.75px solid #d9d9d9;
       background: #fcfcfc;
+      padding: 14px 20px;
+    }
+    .subtotal__amount {
       display: flex;
+      padding: 6px 0;
       align-items: center;
-      border-radius: 7.5px;
-      padding: 20px;
       justify-content: space-between;
-      flex: 0 0 450px;
       .title {
         font-size: 14px;
         font-weight: 700;
@@ -134,10 +137,10 @@ const PaymentStyle = styled.div`
   }
 `;
 
-const Payment = ({ createOrderData }) => {
+const Payment = ({ createOrderData, orderSummaryData }) => {
   const [handleRequest] = useRequest();
   const [Razorpay] = useRazorpay();
-  const { user, checkoutCartData } = useAppContext();
+  const { user, checkoutCartData, appliedCoupon } = useAppContext();
   const [selectedMethod, setSelectedMethod] = useState();
   const navigate = useNavigate();
 
@@ -234,21 +237,60 @@ const Payment = ({ createOrderData }) => {
           </div>
         </div>
         <div className="coupon__and__subtotal">
-          <div className="coupon__wrapper">
-            <input
-              type="text"
-              placeholder="Enter coupon code (ex: FIRSTPAY)"
-              value={createOrderData?.coupon}
-            />
-            <h2 className="apply__code">Apply Code</h2>
-          </div>
-          <div className="subtotal__amount">
-            <h3 className="title">SUB TOTAL</h3>
-            <h2 className="amount">
-              {process.env.REACT_APP_PRICE_SYMBOL}
-              {createOrderData?.subtotal}
-              {/* <span>( excl. shipping fee )</span> */}
-            </h2>
+          {/* <div className="coupon__wrapper">
+            <div style={{ position: "relative" }}>
+              <input
+                type="text"
+                placeholder="Enter coupon code (ex: FIRSTPAY)"
+                value={createOrderData?.coupon}
+              />
+              <h2 className="apply__code" onClick={}>Apply Code</h2>
+            </div>
+          </div> */}
+          <div className="payment__summary">
+            <div className="subtotal__amount">
+              <h3 className="title">SHIPPING</h3>
+              <h2 className="amount">
+                {process.env.REACT_APP_PRICE_SYMBOL}
+                {orderSummaryData?.shippingCharges}
+              </h2>
+            </div>
+            <div className="subtotal__amount">
+              <h3 className="title">TAX</h3>
+              <h2 className="amount">
+                {process.env.REACT_APP_PRICE_SYMBOL}
+                {orderSummaryData?.taxAmount}
+              </h2>
+            </div>
+            <div className="subtotal__amount">
+              <h3 className="title">
+                DISCOUNT
+                {appliedCoupon && (
+                  <span style={{ fontSize: "10px", color: "#4caf50" }}>
+                    ( {appliedCoupon} )
+                  </span>
+                )}
+              </h3>
+              <h2 className="amount" style={{ color: "rgb(76, 175, 80)" }}>
+                {process.env.REACT_APP_PRICE_SYMBOL}
+                {orderSummaryData?.discountAmount}
+              </h2>
+            </div>
+            <div className="subtotal__amount">
+              <h3 className="title">SUB TOTAL</h3>
+              <h2 className="amount">
+                {process.env.REACT_APP_PRICE_SYMBOL}
+                {orderSummaryData?.subtotal}
+              </h2>
+            </div>
+            <div className="subtotal__amount">
+              <h3 className="title">TOTAL</h3>
+              <h2 className="amount">
+                {process.env.REACT_APP_PRICE_SYMBOL}
+                {orderSummaryData?.totalAmount}
+                <span>( incl. taxes & shipping )</span>
+              </h2>
+            </div>
           </div>
         </div>
       </PaymentStyle>

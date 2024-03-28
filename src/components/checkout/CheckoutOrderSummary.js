@@ -49,27 +49,30 @@ const CheckoutOrderSummaryStyle = styled.div`
     line-height: 22.5px;
   }
   .checkout__order__summary__handler {
-    padding: 18px;
-    margin-top: 35px;
+    margin-top: 10px;
     .checkout__order__summary__subtotals {
       display: flex;
       justify-content: space-between;
+      margin-bottom: 10px;
       .checkout__items__total__title {
         color: #303030;
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 18px;
+        font-size: 15px;
+        line-height: 22px;
+        font-weight: 400;
+        &.bold {
+          font-weight: 700;
+        }
       }
     }
     .checkout__now__button {
       color: #fff;
       text-align: center;
-      font-size: 10px;
+      font-size: 15px;
       font-weight: 700;
-      line-height: 14px;
+      line-height: 23px;
       border-radius: 5px;
-      width: 250px;
-      height: 38px;
+      width: 100%;
+      height: 50px;
       background: #ae0000;
       margin-top: 20px;
       &:disabled {
@@ -110,7 +113,7 @@ const CheckoutOrderSummary = ({
   handleOrderNow,
   isCheckoutDisabled,
 }) => {
-  const { checkoutCartData } = useAppContext();
+  const { checkoutCartData, appliedCoupon } = useAppContext();
 
   return (
     <CheckoutOrderSummaryStyle>
@@ -151,7 +154,38 @@ const CheckoutOrderSummary = ({
       </div>
       <div className="checkout__order__summary__handler">
         <div className="checkout__order__summary__subtotals">
-          <div className="checkout__items__total__title">Total</div>
+          <div className="checkout__items__total__title">Tax Amount</div>
+          <div className="checkout__order__summary__item__totals">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.taxAmount}
+          </div>
+        </div>
+        {orderSummaryData?.discountAmount > 0 && appliedCoupon && (
+          <div className="checkout__order__summary__subtotals">
+            <div className="checkout__items__total__title">
+              Discount
+              <span style={{ fontSize: "10px", color: "#4caf50" }}>
+                ( {appliedCoupon} )
+              </span>
+            </div>
+            <div
+              className="checkout__order__summary__item__totals"
+              style={{ color: "rgb(76, 175, 80)" }}
+            >
+              {process.env.REACT_APP_PRICE_SYMBOL}
+              {orderSummaryData?.discountAmount}
+            </div>
+          </div>
+        )}
+        <div className="checkout__order__summary__subtotals">
+          <div className="checkout__items__total__title">Subtotal</div>
+          <div className="checkout__order__summary__item__totals">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.subtotal}
+          </div>
+        </div>
+        <div className="checkout__order__summary__subtotals">
+          <div className="checkout__items__total__title bold">Total</div>
           <div className="checkout__order__summary__item__totals">
             {process.env.REACT_APP_PRICE_SYMBOL}
             {orderSummaryData?.totalAmount}

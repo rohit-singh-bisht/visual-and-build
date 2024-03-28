@@ -54,8 +54,11 @@ const tabsList = [
   {
     id: 2,
     title: "Description",
-    component: ({ createOrderData }) => (
-      <Payment createOrderData={createOrderData} />
+    component: ({ createOrderData, orderSummaryData }) => (
+      <Payment
+        createOrderData={createOrderData}
+        orderSummaryData={orderSummaryData}
+      />
     ),
   },
 ];
