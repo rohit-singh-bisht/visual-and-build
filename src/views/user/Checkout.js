@@ -124,7 +124,6 @@ const Checkout = () => {
       paymentRefNumber: "",
       billingAddress: checkoutAddress?.billing,
       shippingAddress: checkoutAddress?.shipping,
-      paymentMethod: "razorpay",
     };
 
     setCreateOrderData(newObject);

@@ -151,7 +151,11 @@ const Payment = ({ createOrderData }) => {
     const response = await handleRequest({
       path,
       method: "POST",
-      body: JSON.stringify({ ...orderData, paymentRefNumber: paymentId }),
+      body: JSON.stringify({
+        ...orderData,
+        paymentRefNumber: paymentId,
+        paymentMethod: selectedMethod,
+      }),
     });
     if (!response.success) {
       return toast.error(response.message);
@@ -208,7 +212,7 @@ const Payment = ({ createOrderData }) => {
               Pay Now
             </button>
           </div>
-          {/* <div className="payment__method__wrapper">
+          <div className="payment__method__wrapper">
             <input
               id="method2"
               type="radio"
@@ -220,10 +224,14 @@ const Payment = ({ createOrderData }) => {
             <label htmlFor="method2" className="payment__method">
               Cash on delivery
             </label>
-            <button className="pay__now" disabled={selectedMethod !== "cod"}>
-              Pay Now
+            <button
+              className="pay__now"
+              onClick={() => handleCreateOrder("", createOrderData)}
+              disabled={selectedMethod !== "cod"}
+            >
+              Order Now
             </button>
-          </div> */}
+          </div>
         </div>
         <div className="coupon__and__subtotal">
           <div className="coupon__wrapper">

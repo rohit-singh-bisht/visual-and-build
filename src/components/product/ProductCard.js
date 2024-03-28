@@ -41,6 +41,7 @@ export const ProductCardStyle = styled.div`
       display: flex;
       align-items: baseline;
       gap: 6px;
+      flex-wrap: wrap;
       .product__discounted__price {
         color: #303030;
         font-size: 18px;
@@ -58,6 +59,12 @@ export const ProductCardStyle = styled.div`
   }
   @media (max-width: 768px) {
     padding: 10px;
+    .content {
+      .product__price__wrapper {
+        row-gap: 0px;
+        column-gap: 6px;
+      }
+    }
   }
 `;
 

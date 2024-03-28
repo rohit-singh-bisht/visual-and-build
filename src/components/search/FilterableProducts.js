@@ -106,8 +106,11 @@ const FilterableProductsStyle = styled.div`
           margin-bottom: 20px;
         }
         .products__sorting__wrapper {
-          flex-wrap: wrap;
+          flex-direction: column;
           gap: 8px;
+        }
+        .products__grid {
+          grid-template-columns: repeat(2, 1fr);
         }
       }
     }
