@@ -5,10 +5,13 @@ import { Skeleton } from "@mui/material";
 import { getDate } from "../../../utils/helper";
 import TablePagination from "@mui/material/TablePagination";
 import { useNavigate } from "react-router-dom";
+import { FiSearch } from "react-icons/fi";
+import useDebounce from "../../../hooks/useDebounce";
+import Sort from "../../../components/common/Sort";
 
 const PurchaseHistoryStyle = styled.div`
   flex: 1;
-  .subtitle {
+  > .subtitle {
     font-size: 12px;
     font-weight: 400;
     line-height: 18px;
@@ -69,24 +72,90 @@ const PurchaseHistoryStyle = styled.div`
   }
 `;
 
+const PurchaseHistorySort = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  background-color: #f2f2f2;
+  padding: 12px;
+  border: 0.77px solid #cccccc;
+  .purchase__history__date__range,
+  .purchase__history__search {
+    flex: 1;
+  }
+  .filter__title {
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: left;
+    margin-bottom: 2px;
+  }
+  .purchase__history__clear {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+    color: #286fad;
+    text-decoration: underline;
+    text-underline-offset: 1px;
+    cursor: pointer;
+    padding-right: 30px;
+  }
+`;
+
+const SearchbarStyle = styled.form`
+  height: 32px;
+  display: flex;
+  position: relative;
+  border-radius: 3px;
+  overflow: clip;
+  width: 100%;
+  input {
+    height: 32px;
+    width: 100%;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+  .search__button {
+    width: 39px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ae0000;
+    .icon {
+      display: block;
+      color: #fff;
+      font-size: 18px;
+    }
+  }
+`;
+
 const PurchaseHistory = () => {
   const [getOrderHistory, { isLoading }] = useRequest();
   const [pageNumber, setPageNumber] = useState(1);
   const [limitNumber, setLimitNumber] = useState(10);
   const [orderHistory, setOrderHistory] = useState([]);
   const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState("");
 
-  const fetchOrderSummary = async (pageNumber, limitNumber) => {
-    const path = `/order?limit=${limitNumber}&page=${pageNumber}&seach=&date=&orderStatus=&sort=`;
+  useDebounce(
+    () => {
+      pageNumber &&
+        limitNumber &&
+        fetchOrderSummary(pageNumber, limitNumber, searchValue);
+    },
+    [pageNumber, limitNumber, searchValue],
+    500
+  );
+
+  const fetchOrderSummary = async (pageNumber, limitNumber, searchValue) => {
+    const path = `/order?limit=${limitNumber}&page=${pageNumber}&seach=${searchValue}&date=&orderStatus=&sort=`;
     const response = await getOrderHistory({ path });
     if (response.success) {
       setOrderHistory(response?.data);
     }
   };
-
-  useEffect(() => {
-    fetchOrderSummary(pageNumber, limitNumber);
-  }, [pageNumber, limitNumber]);
 
   const handlePageChange = (event, newPage) => {
     setPageNumber(newPage + 1);
@@ -100,6 +169,30 @@ const PurchaseHistory = () => {
   return (
     <PurchaseHistoryStyle>
       <p className="subtitle">Here is a history of all your purchases made.</p>
+      <PurchaseHistorySort className="purchase__history__sort__filters">
+        <div className="purchase__history__date__range">
+          <p className="filter__title">Date Range</p>
+          <input type="date" id="fromDate" />
+        </div>
+        <div className="purchase__history__filter">
+          <p className="filter__title">Filter By</p>
+          <Sort sortTitle="" />
+        </div>
+        <div className="purchase__history__search">
+          <SearchbarStyle>
+            <input
+              type="search"
+              placeholder="Search"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+            <button type="submit" className="search__button">
+              <FiSearch className="icon" />
+            </button>
+          </SearchbarStyle>
+        </div>
+        <div className="purchase__history__clear">Clear All</div>
+      </PurchaseHistorySort>
       {!isLoading && (
         <div className="purchases__found">
           {orderHistory?.totalDocs ? (
@@ -115,8 +208,9 @@ const PurchaseHistory = () => {
           <tr>
             <th>Date</th>
             <th>Order Id</th>
-            <th style={{ width: "350px" }}>Address</th>
+            <th width={200}>Address</th>
             <th>Order Status</th>
+            <th>Payment Ref Number</th>
             <th>Payment Status</th>
             <th>Total</th>
           </tr>
@@ -124,10 +218,10 @@ const PurchaseHistory = () => {
         <tbody>
           {isLoading ? (
             <>
-              {Array.from({ length: 10 }, (_, index) => index + 1).map(
+              {Array.from({ length: limitNumber }, (_, index) => index + 1).map(
                 (item) => (
                   <tr key={item}>
-                    {Array.from({ length: 6 }, (_, index) => index + 1).map(
+                    {Array.from({ length: 7 }, (_, index) => index + 1).map(
                       (item2) => (
                         <td key={item2}>
                           <Skeleton height={24} variant="rectangular" />
@@ -148,8 +242,9 @@ const PurchaseHistory = () => {
                 >
                   <td>{getDate(item?.date)}</td>
                   <td>{item?.orderId}</td>
-                  <td>{item?.shippingAddress}</td>
+                  <td width={200}>{item?.shippingAddress}</td>
                   <td>{item?.orderStatus}</td>
+                  <td>{item?.paymentRefNumber || "N/A"}</td>
                   <td>{item?.paidStatus}</td>
                   <td>
                     {process.env.REACT_APP_PRICE_SYMBOL +

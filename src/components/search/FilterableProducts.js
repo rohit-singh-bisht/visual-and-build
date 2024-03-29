@@ -8,6 +8,7 @@ import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
 import { IoChevronDownOutline } from "react-icons/io5";
 import StyledMask from "../common/StyledMask";
+import Sort from "../common/Sort";
 
 const FilterableProductsStyle = styled.div`
   .products__wrapper {
@@ -35,48 +36,6 @@ const FilterableProductsStyle = styled.div`
       .products__sorting__wrapper {
         display: flex;
         justify-content: space-between;
-        .products__sorting {
-          display: flex;
-          gap: 16px;
-          align-items: center;
-        }
-        .products__sorting__dropdown__wrapper {
-          width: 200px;
-          position: relative;
-        }
-        .product__current__sorting {
-          font-size: 12px;
-          font-weight: 700;
-          line-height: 18px;
-          text-align: left;
-          color: #ae0000;
-          display: flex;
-          justify-content: space-between;
-          padding: 4px;
-          .icon {
-            &.reverse {
-              transform: rotateX(180deg);
-            }
-          }
-        }
-        .products__sorting__dropdown {
-          position: absolute;
-          left: 0;
-          width: 100%;
-          top: calc(100% + 10px);
-          border: 1px solid #d0d0d0;
-          z-index: 7;
-          border-radius: 8px;
-          overflow: clip;
-          .products__sorting__dropdown__option {
-            padding: 8px 12px;
-            background-color: #fff;
-            border-bottom: 1px solid #d0d0d0;
-            font-size: 12px;
-            font-weight: 500;
-            line-height: 18px;
-          }
-        }
       }
       .subtitle {
         color: #303030;
@@ -184,7 +143,6 @@ const FilterableProducts = ({
   const [pageNumber, setPageNumber] = useState(1);
   const [sortBy, setSortBy] = useState(sortingOptions[0]?.value);
   const [sortOrder, setSortOrder] = useState("");
-  const [isDropdownActive, setIsDropdownActive] = useState(false);
   const [sortLabel, setSortLabel] = useState(sortingOptions[0]?.label);
 
   useEffect(() => {
@@ -268,40 +226,11 @@ const FilterableProducts = ({
               Showing 1 - {products?.data?.docs?.length || 0} of{" "}
               {products?.data?.totalDocs || 0} results.
             </p>
-            <div className="products__sorting subtitle">
-              Sort by
-              <div className="products__sorting__dropdown__wrapper">
-                <div
-                  className="product__current__sorting"
-                  onClick={() => setIsDropdownActive((prev) => !prev)}
-                >
-                  {sortLabel}
-                  <IoChevronDownOutline
-                    className={`icon ${isDropdownActive ? "reverse" : ""}`}
-                  />
-                </div>
-                {isDropdownActive && (
-                  <>
-                    <StyledMask
-                      onClick={() => {
-                        setIsDropdownActive(false);
-                      }}
-                      zIndex={2}
-                    />
-                    <div className="products__sorting__dropdown">
-                      {sortingOptions?.map((item) => (
-                        <div
-                          className="products__sorting__dropdown__option"
-                          onClick={() => handleSortClick(item)}
-                        >
-                          {item?.label}
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
+            <Sort
+              onSortClick={handleSortClick}
+              label={sortLabel}
+              sortingOptions={sortingOptions}
+            />
           </div>
           <div className="products__grid">
             {products?.data?.docs?.map((product) => (
