@@ -102,6 +102,10 @@ const TransactionDetailsStyle = styled.div`
           color: #000;
           margin: 4px 0;
           text-transform: capitalize;
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
         }
         .product__description {
           display: -webkit-box;
@@ -282,7 +286,14 @@ const TransactionDetails = ({ setPageTitle }) => {
                       />
                     </div>
                     <div className="transaction__item__info">
-                      <div className="product__name">
+                      <div
+                        className="product__name"
+                        onClick={() => {
+                          navigate(
+                            `/product/${item?.productId?.slug}?id=${item?.productId?.id}`
+                          );
+                        }}
+                      >
                         {item?.productId?.name}
                       </div>
                       <div className="product__description">
@@ -322,7 +333,7 @@ const TransactionDetails = ({ setPageTitle }) => {
               {transactionData?.data?.paymentMethod}
               <br />
               <span>Payment Ref Number: </span>
-              {transactionData?.data?.paymentRefNumber}
+              {transactionData?.data?.paymentRefNumber || "N/A"}
             </div>
             <div className="transaction__order__total">
               <span>Order Total:</span>

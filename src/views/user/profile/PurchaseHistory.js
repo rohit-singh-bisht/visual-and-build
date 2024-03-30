@@ -43,6 +43,7 @@ const PurchaseHistoryStyle = styled.div`
         text-align: left;
         border: 1px solid #d2d1d1;
         width: 10%;
+        text-transform: capitalize;
         &:nth-child(2) {
           width: 8%;
         }
@@ -120,10 +121,12 @@ const PurchaseHistorySort = styled.div`
     line-height: 20px;
     text-align: left;
     color: #286fad;
-    text-decoration: underline;
     text-underline-offset: 1px;
     cursor: pointer;
     padding-right: 30px;
+    &:hover {
+      text-decoration: underline;
+    }
   }
   .purchase__history__sorting__styled {
     background-color: #fff;
