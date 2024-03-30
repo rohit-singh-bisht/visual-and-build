@@ -32,6 +32,7 @@ const PurchaseHistoryStyle = styled.div`
   .order__history__table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
     tr {
       th,
       td {
@@ -41,6 +42,10 @@ const PurchaseHistoryStyle = styled.div`
         line-height: 22px;
         text-align: left;
         border: 1px solid #d2d1d1;
+        width: 10%;
+        &:nth-child(2) {
+          width: 8%;
+        }
         &:nth-last-child(2),
         &:nth-last-child(3) {
           text-align: center;
@@ -48,6 +53,13 @@ const PurchaseHistoryStyle = styled.div`
         }
         &:last-child {
           text-align: end;
+        }
+        &:nth-child(3) {
+          width: 25%;
+          word-break: break-word;
+        }
+        &.payment__ref {
+          width: 18%;
         }
       }
       .MuiTablePagination-root {
@@ -90,6 +102,18 @@ const PurchaseHistorySort = styled.div`
     text-align: left;
     margin-bottom: 2px;
   }
+  .date__filter {
+    display: flex;
+    gap: 4px;
+    .date {
+      height: 32px;
+      padding: 4px 10px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: #303030;
+      cursor: pointer;
+    }
+  }
   .purchase__history__clear {
     font-size: 12px;
     font-weight: 400;
@@ -100,6 +124,19 @@ const PurchaseHistorySort = styled.div`
     text-underline-offset: 1px;
     cursor: pointer;
     padding-right: 30px;
+  }
+  .purchase__history__sorting__styled {
+    background-color: #fff;
+    border-radius: 3px;
+    .product__current__sorting {
+      height: 32px;
+      padding: 4px 10px;
+      font-weight: 400;
+      color: #303030;
+    }
+    .products__sorting__dropdown__wrapper {
+      width: 180px;
+    }
   }
 `;
 
@@ -131,6 +168,58 @@ const SearchbarStyle = styled.form`
   }
 `;
 
+const sortingOptions = [
+  {
+    label: "Select Option",
+    value: "",
+  },
+  {
+    label: "Order Id (Ascending)",
+    value: "orderId",
+    sortOrder: "asc",
+  },
+  {
+    label: "Order Id (Descending)",
+    value: "orderId",
+    sortOrder: "desc",
+  },
+  {
+    label: "Subtotal",
+    value: "subtotal",
+  },
+  {
+    label: "Total",
+    value: "total",
+  },
+];
+
+const orderStatusOptions = [
+  {
+    label: "Select Option",
+    value: "",
+  },
+  {
+    label: "Pending",
+    value: "pending",
+  },
+  {
+    label: "Processing",
+    value: "processing",
+  },
+  {
+    label: "Delivered",
+    value: "delivered",
+  },
+  {
+    label: "Cancelled",
+    value: "cancelled",
+  },
+  {
+    label: "Return",
+    value: "return",
+  },
+];
+
 const PurchaseHistory = () => {
   const [getOrderHistory, { isLoading }] = useRequest();
   const [pageNumber, setPageNumber] = useState(1);
@@ -138,19 +227,61 @@ const PurchaseHistory = () => {
   const [orderHistory, setOrderHistory] = useState([]);
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
+  const [sortBy, setSortBy] = useState(sortingOptions[0]?.value);
+  const [sortOrder, setSortOrder] = useState("");
+  const [sortLabel, setSortLabel] = useState(sortingOptions[0]?.label);
+  const [orderStatus, setOrderStatus] = useState("");
+  const [date, setDate] = useState({
+    startDate: "",
+    endDate: "",
+  });
 
   useDebounce(
     () => {
       pageNumber &&
         limitNumber &&
-        fetchOrderSummary(pageNumber, limitNumber, searchValue);
+        fetchOrderSummary(
+          pageNumber,
+          limitNumber,
+          searchValue,
+          orderStatus,
+          sortOrder,
+          sortBy,
+          date
+        );
     },
-    [pageNumber, limitNumber, searchValue],
+    [
+      pageNumber,
+      limitNumber,
+      searchValue,
+      orderStatus,
+      sortOrder,
+      sortBy,
+      date,
+    ],
     500
   );
 
-  const fetchOrderSummary = async (pageNumber, limitNumber, searchValue) => {
-    const path = `/order?limit=${limitNumber}&page=${pageNumber}&seach=${searchValue}&date=&orderStatus=&sort=`;
+  const fetchOrderSummary = async (
+    pageNumber,
+    limitNumber,
+    searchValue,
+    orderStatus,
+    sortOrder,
+    sortBy,
+    date
+  ) => {
+    const path = `/order?${limitNumber ? `limit=${limitNumber}` : ""}${
+      pageNumber ? `&page=${pageNumber}` : ""
+    }${searchValue ? `&search=${searchValue}&` : ""}${
+      orderStatus ? `&orderStatus=${orderStatus}&` : ""
+    }${sortBy ? `&sortBy=${sortBy}` : ""}${
+      sortOrder ? `&sortOrder=${sortOrder}` : ""
+    }${
+      date?.startDate && date?.endDate
+        ? `&startDate=${date?.startDate}&endDate=${date?.endDate}`
+        : ""
+    }`;
     const response = await getOrderHistory({ path });
     if (response.success) {
       setOrderHistory(response?.data);
@@ -166,17 +297,87 @@ const PurchaseHistory = () => {
     setPageNumber(1);
   };
 
+  const handleSortClick = (item) => {
+    if (
+      (item?.value === sortBy && item?.sortOrder === sortOrder) ||
+      (!item?.value && !sortBy)
+    ) {
+      return;
+    }
+    setSortBy(item?.value);
+    setSortOrder(item?.sortOrder);
+    setSortLabel(item?.label);
+  };
+
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    setDate((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleClearAll = () => {
+    setSortBy(sortingOptions[0]?.value);
+    setSortOrder("");
+    setSortLabel(sortingOptions[0]?.label);
+    setOrderStatus("");
+    setDate({
+      startDate: "",
+      endDate: "",
+    });
+    setSearchValue("");
+  };
+
   return (
     <PurchaseHistoryStyle>
       <p className="subtitle">Here is a history of all your purchases made.</p>
       <PurchaseHistorySort className="purchase__history__sort__filters">
         <div className="purchase__history__date__range">
           <p className="filter__title">Date Range</p>
-          <input type="date" id="fromDate" />
+          <div className="date__filter">
+            <input
+              type="date"
+              className="date"
+              name="startDate"
+              value={date?.startDate}
+              onChange={(e) => handleDateChange(e)}
+              max={date?.endDate}
+              onKeyDown={(e) => e.preventDefault()}
+            />
+            <input
+              type="date"
+              className="date"
+              name="endDate"
+              value={date?.endDate}
+              min={date?.startDate}
+              onChange={(e) => handleDateChange(e)}
+              onKeyDown={(e) => e.preventDefault()}
+            />
+          </div>
         </div>
         <div className="purchase__history__filter">
-          <p className="filter__title">Filter By</p>
-          <Sort sortTitle="" />
+          <p className="filter__title">Order Status</p>
+          <Sort
+            sortTitle=""
+            sortingOptions={orderStatusOptions}
+            label={
+              orderStatusOptions?.find((item) => item?.value === orderStatus)
+                ?.label
+            }
+            className={"purchase__history__sorting__styled"}
+            onSortClick={(item) => setOrderStatus(item?.value)}
+          />
+        </div>
+        <div className="purchase__history__filter">
+          <p className="filter__title">Sort By</p>
+          <Sort
+            sortTitle=""
+            sortingOptions={sortingOptions}
+            label={sortLabel}
+            className={"purchase__history__sorting__styled"}
+            onSortClick={handleSortClick}
+          />
         </div>
         <div className="purchase__history__search">
           <SearchbarStyle>
@@ -191,7 +392,9 @@ const PurchaseHistory = () => {
             </button>
           </SearchbarStyle>
         </div>
-        <div className="purchase__history__clear">Clear All</div>
+        <div className="purchase__history__clear" onClick={handleClearAll}>
+          Clear All
+        </div>
       </PurchaseHistorySort>
       {!isLoading && (
         <div className="purchases__found">
@@ -208,10 +411,11 @@ const PurchaseHistory = () => {
           <tr>
             <th>Date</th>
             <th>Order Id</th>
-            <th width={200}>Address</th>
+            <th>Address</th>
             <th>Order Status</th>
-            <th>Payment Ref Number</th>
+            <th className="payment__ref">Payment Ref Number</th>
             <th>Payment Status</th>
+            <th>Subtotal</th>
             <th>Total</th>
           </tr>
         </thead>
@@ -221,7 +425,7 @@ const PurchaseHistory = () => {
               {Array.from({ length: limitNumber }, (_, index) => index + 1).map(
                 (item) => (
                   <tr key={item}>
-                    {Array.from({ length: 7 }, (_, index) => index + 1).map(
+                    {Array.from({ length: 8 }, (_, index) => index + 1).map(
                       (item2) => (
                         <td key={item2}>
                           <Skeleton height={24} variant="rectangular" />
@@ -242,10 +446,16 @@ const PurchaseHistory = () => {
                 >
                   <td>{getDate(item?.date)}</td>
                   <td>{item?.orderId}</td>
-                  <td width={200}>{item?.shippingAddress}</td>
+                  <td>{item?.shippingAddress}</td>
                   <td>{item?.orderStatus}</td>
-                  <td>{item?.paymentRefNumber || "N/A"}</td>
+                  <td className="payment__ref">
+                    {item?.paymentRefNumber || "N/A"}
+                  </td>
                   <td>{item?.paidStatus}</td>
+                  <td>
+                    {process.env.REACT_APP_PRICE_SYMBOL +
+                      item?.subtotal.toFixed(2)}
+                  </td>
                   <td>
                     {process.env.REACT_APP_PRICE_SYMBOL +
                       item?.total.toFixed(2)}

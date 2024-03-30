@@ -21,7 +21,9 @@ const SortStyle = styled.div`
     color: #ae0000;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 4px;
+    cursor: pointer;
     .icon {
       &.reverse {
         transform: rotateX(180deg);
@@ -44,6 +46,10 @@ const SortStyle = styled.div`
       font-size: 12px;
       font-weight: 500;
       line-height: 18px;
+      cursor: pointer;
+      &:hover {
+        background-color: #ffeeee;
+      }
     }
   }
   .subtitle {
@@ -59,11 +65,12 @@ const Sort = ({
   onSortClick,
   label,
   sortTitle = "Sort By",
+  className,
 }) => {
   const [isDropdownActive, setIsDropdownActive] = useState(false);
 
   return (
-    <SortStyle>
+    <SortStyle className={className}>
       <div className="products__sorting subtitle">
         {sortTitle && sortTitle}
         <div className="products__sorting__dropdown__wrapper">
@@ -89,7 +96,10 @@ const Sort = ({
                   sortingOptions?.map((item) => (
                     <div
                       className="products__sorting__dropdown__option"
-                      onClick={() => onSortClick(item)}
+                      onClick={() => {
+                        onSortClick(item);
+                        setIsDropdownActive(false);
+                      }}
                     >
                       {item?.label}
                     </div>
