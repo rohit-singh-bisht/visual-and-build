@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useRequest } from "../../../hooks/useRequest";
@@ -8,6 +8,11 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { useAppContext } from "../../../context/useAppContext";
 import ReturnProductModal from "../../../components/modals/ReturnProductModal";
+import { IoPrintSharp } from "react-icons/io5";
+import TransactionDetailsPdf from "../../../components/pdf/TransactionDetailsPdf";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const TransactionDetailsStyle = styled.div`
   flex: 1;
@@ -67,6 +72,10 @@ const TransactionDetailsStyle = styled.div`
     .transaction__order__summary__body {
       display: flex;
       padding: 12px;
+      flex-direction: column;
+    }
+    .transaction__order__summary__row {
+      display: flex;
       .transaction__order__td {
         flex: 1;
         &:last-child {
@@ -200,6 +209,27 @@ const TransactionDetailsStyle = styled.div`
   }
 `;
 
+const PrintStyle = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  .print {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #303030;
+    cursor: pointer;
+    &:hover {
+      color: #ae0000;
+      text-decoration: underline;
+    }
+    .icon {
+      font-size: 14px;
+    }
+  }
+`;
+
 const steps = ["Order Confirmed", "Order processing", "Shipped", "Delivered"];
 
 const TransactionDetails = ({ setPageTitle }) => {
@@ -210,6 +240,7 @@ const TransactionDetails = ({ setPageTitle }) => {
   const navigate = useNavigate();
   const [isProductReturnActive, setIsProductReturnActive] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
+  const pdfRef = useRef(null);
 
   useEffect(() => {
     setPageTitle &&
@@ -244,101 +275,141 @@ const TransactionDetails = ({ setPageTitle }) => {
     }
   }, [transactionData]);
 
+  const downloadPDF = () => {
+    const capture = document.querySelector("#transaction__data__wrapper");
+    html2canvas(capture).then((canvas) => {
+      const imgData = canvas.toDataURL("img/png");
+      const doc = new jsPDF("p", "mm", "a4");
+      const componentWidth = doc.internal.pageSize.getWidth();
+      const componentHeight = doc.internal.pageSize.getHeight();
+      console.log(componentWidth, componentHeight);
+      doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentWidth / 2);
+      doc.save("transaction.pdf");
+    });
+  };
+
   return (
     <>
       <TransactionDetailsStyle>
-        <div className="transaction__header">
-          <div className="bold__title">Purchase Location:</div>
-          {transactionData?.data?.customerId?.name && (
-            <div className="data customer__name">
-              {transactionData?.data?.customerId?.name}
-            </div>
-          )}
-          {transactionData?.data?.shippingAddress && (
-            <div className="data">{transactionData?.data?.shippingAddress}</div>
-          )}
-          {transactionData?.data?.date && (
-            <div className="sales__info">
-              <span>Sales Date:</span> {getDate(transactionData?.data?.date)}
-            </div>
-          )}
-        </div>
-        <div className="transaction__order__summary">
-          <div className="transaction__order__summary__header">
-            <div className="transaction__order__th">Order Summary</div>
-            <div className="transaction__order__th">Price</div>
-            <div className="transaction__order__th">Qty</div>
-            <div className="transaction__order__th">Subtotal</div>
+        {/* <PDFDownloadLink
+          document={<TransactionDetailsPdf transactionData={transactionData} />}
+          fileName="transactionHistory"
+        >
+          {({ loading }) =>
+            loading ? (
+              <PrintStyle>
+                <div className="print">Loading Document...</div>
+              </PrintStyle>
+            ) : (
+              <PrintStyle>
+                <div className="print">
+                  Print <IoPrintSharp className="icon" />
+                </div>
+              </PrintStyle>
+            )
+          }
+        </PDFDownloadLink> */}
+        <PrintStyle>
+          <div className="print" onClick={downloadPDF}>
+            Print <IoPrintSharp className="icon" />
           </div>
-          <div className="transaction__order__summary__body">
-            {transactionData?.data?.items?.map((item) => (
-              <>
-                <div className="transaction__order__td">
-                  <div className="transaction__item__details">
-                    <div className="transaction__item__image">
-                      <img
-                        src={
-                          process.env.REACT_APP_MEDIA_ASSETS_URL +
-                          "/" +
-                          item?.productId?.image
-                        }
-                        alt={item?.productId?.name}
-                      />
-                    </div>
-                    <div className="transaction__item__info">
-                      <div
-                        className="product__name"
-                        onClick={() => {
-                          navigate(
-                            `/product/${item?.productId?.slug}?id=${item?.productId?.id}`
-                          );
-                        }}
-                      >
-                        {item?.productId?.name}
+        </PrintStyle>
+        <div id="transaction__data__wrapper">
+          <div className="transaction__header">
+            <div className="bold__title">Purchase Location:</div>
+            {transactionData?.data?.customerId?.name && (
+              <div className="data customer__name">
+                {transactionData?.data?.customerId?.name}
+              </div>
+            )}
+            {transactionData?.data?.shippingAddress && (
+              <div className="data">
+                {transactionData?.data?.shippingAddress}
+              </div>
+            )}
+            {transactionData?.data?.date && (
+              <div className="sales__info">
+                <span>Sales Date:</span> {getDate(transactionData?.data?.date)}
+              </div>
+            )}
+          </div>
+          <div className="transaction__order__summary">
+            <div className="transaction__order__summary__header">
+              <div className="transaction__order__th">Order Summary</div>
+              <div className="transaction__order__th">Price</div>
+              <div className="transaction__order__th">Qty</div>
+              <div className="transaction__order__th">Subtotal</div>
+            </div>
+            <div className="transaction__order__summary__body">
+              {transactionData?.data?.items?.map((item) => (
+                <div className="transaction__order__summary__row">
+                  <div className="transaction__order__td">
+                    <div className="transaction__item__details">
+                      <div className="transaction__item__image">
+                        <img
+                          src={
+                            process.env.REACT_APP_MEDIA_ASSETS_URL +
+                            "/" +
+                            item?.productId?.image
+                          }
+                          alt={item?.productId?.name}
+                        />
                       </div>
-                      <div className="product__description">
-                        {item?.productId?.description}
-                      </div>
-                      <div className="product__description sku">
-                        <span>SKU: </span>
-                        {item?.productId?.sku}
+                      <div className="transaction__item__info">
+                        <div
+                          className="product__name"
+                          onClick={() => {
+                            navigate(
+                              `/product/${item?.productId?.slug}?id=${item?.productId?.id}`
+                            );
+                          }}
+                        >
+                          {item?.productId?.name}
+                        </div>
+                        <div className="product__description">
+                          {item?.productId?.description}
+                        </div>
+                        <div className="product__description sku">
+                          <span>SKU: </span>
+                          {item?.productId?.sku}
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div className="transaction__order__td">
+                    {process.env.REACT_APP_PRICE_SYMBOL}
+                    {(
+                      item?.productId?.price - item?.productId?.discount
+                    ).toFixed(2)}
+                  </div>
+                  <div className="transaction__order__td">{item?.qty}</div>
+                  <div className="transaction__order__td">
+                    {process.env.REACT_APP_PRICE_SYMBOL}
+                    {item?.price}
+                  </div>
                 </div>
-                <div className="transaction__order__td">
-                  {process.env.REACT_APP_PRICE_SYMBOL}
-                  {(item?.productId?.price - item?.productId?.discount).toFixed(
-                    2
-                  )}
-                </div>
-                <div className="transaction__order__td">{item?.qty}</div>
-                <div className="transaction__order__td">
-                  {process.env.REACT_APP_PRICE_SYMBOL}
-                  {item?.price}
-                </div>
-              </>
-            ))}
-          </div>
-          <div className="transaction__order__summary__footer">
-            Subtotal:{" "}
-            <span>
-              {process.env.REACT_APP_PRICE_SYMBOL}
-              {transactionData?.data?.subtotal}
-            </span>
-          </div>
-          <div className="transaction__payment__info">
-            <div className="transaction__payment__method">
-              <span>Payment Method: </span>
-              {transactionData?.data?.paymentMethod}
-              <br />
-              <span>Payment Ref Number: </span>
-              {transactionData?.data?.paymentRefNumber || "N/A"}
+              ))}
             </div>
-            <div className="transaction__order__total">
-              <span>Order Total:</span>
-              {process.env.REACT_APP_PRICE_SYMBOL}
-              {transactionData?.data?.total}
+            <div className="transaction__order__summary__footer">
+              Subtotal:{" "}
+              <span>
+                {process.env.REACT_APP_PRICE_SYMBOL}
+                {transactionData?.data?.subtotal}
+              </span>
+            </div>
+            <div className="transaction__payment__info">
+              <div className="transaction__payment__method">
+                <span>Payment Method: </span>
+                {transactionData?.data?.paymentMethod}
+                <br />
+                <span>Payment Ref Number: </span>
+                {transactionData?.data?.paymentRefNumber || "N/A"}
+              </div>
+              <div className="transaction__order__total">
+                <span>Order Total:</span>
+                {process.env.REACT_APP_PRICE_SYMBOL}
+                {transactionData?.data?.total}
+              </div>
             </div>
           </div>
         </div>
