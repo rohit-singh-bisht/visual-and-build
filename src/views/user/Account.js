@@ -16,7 +16,7 @@ const AccountStyle = styled.div`
   }
   .account__info__grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     column-gap: 24px;
     row-gap: 32px;
   }
@@ -78,11 +78,14 @@ const Account = () => {
         navigate("/account/address");
       },
     },
-    // {
-    //   title: `Payment Methods`,
-    //   sub1: `Add a Payment method for Faster Checkout.`,
-    //   buttonText: `Add Payment Method`,
-    // },
+    {
+      title: `Help And Support`,
+      sub1: `Need help related to orders`,
+      buttonText: `Contact Support`,
+      onClick: () => {
+        navigate("/account/help-support");
+      },
+    },
   ];
 
   useEffect(() => {
@@ -107,7 +110,7 @@ const Account = () => {
               ))}
             </>
           ) : (
-            Array.from({ length: 4 }, (_, index) => (
+            Array.from({ length: 5 }, (_, index) => (
               <Skeleton
                 variant="rectangle"
                 key={index + 1}

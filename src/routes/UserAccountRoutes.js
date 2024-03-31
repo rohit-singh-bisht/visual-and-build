@@ -16,6 +16,8 @@ import Lists from "../views/user/profile/Lists";
 import PrivateRoute from "./PrivateRoute";
 import PurchaseHistory from "../views/user/profile/PurchaseHistory";
 import TransactionDetails from "../views/user/profile/TransactionDetails";
+import HelpAndSupport from "../views/user/profile/HelpAndSupport";
+import SupportChat from "../components/supportChat/SupportChat";
 
 const UserAccountRoutesStyle = styled.div`
   padding: 60px 0;
@@ -79,6 +81,13 @@ const routesInformation = [
     ),
     path: "/transaction/:transactionId",
     pathname: "/account/transaction/",
+  },
+  {
+    id: 6,
+    title: "Which item are you facing an issue with?",
+    component: () => <SupportChat />,
+    path: "/help-support",
+    pathname: "/account/help-support",
   },
 ];
 
