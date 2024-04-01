@@ -36,6 +36,9 @@ const HeaderStyle = styled.header`
     font-size: 12px;
     font-weight: 400;
     line-height: 100%;
+    &:last-child {
+      margin-bottom: 4px;
+    }
   }
   .cart {
     display: flex;
@@ -159,6 +162,11 @@ const Header = ({ setIsAuthForm }) => {
                   <Cart />
                   Cart
                 </Link>
+                {isLoggedIn && (
+                  <Link to={"/logout"} className="link">
+                    Logout
+                  </Link>
+                )}
               </div>
             </>
           ) : (
@@ -210,6 +218,15 @@ const Header = ({ setIsAuthForm }) => {
               >
                 Cart
               </Link>
+              {isLoggedIn && (
+                <Link
+                  onClick={() => setIsNavActive(false)}
+                  to={"/logout"}
+                  className="link"
+                >
+                  Logout
+                </Link>
+              )}
             </div>
           </MobileNavStyle>
         </>

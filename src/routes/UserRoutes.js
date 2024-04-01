@@ -24,6 +24,7 @@ import PrivacyPolicy from "../views/user/PrivacyPolicy";
 import ReturnPolicy from "../views/user/ReturnPolicy";
 import HelpCenter from "../views/user/HelpCenter";
 import SupportChat from "../components/supportChat/SupportChat";
+import Logout from "../views/user/Logout";
 
 const AuthPopupStyle = styled.div`
   position: fixed;
@@ -82,6 +83,7 @@ const UserRoutes = () => {
         <Route path="/return-policy" element={<ReturnPolicy />} />
         <Route path="/help" element={<HelpCenter />} />
         <Route path="/chat-support" element={<SupportChat />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<Navigate to={"/"} />} />
         <Route path="/account/*" element={<UserAccountRoutes />} />
       </Routes>
