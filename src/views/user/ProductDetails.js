@@ -22,6 +22,7 @@ import AddToWishlist from "../../components/modals/AddToWishlist";
 import CreateWishlistModal from "../../components/modals/CreateWishlistModal";
 import { toast } from "react-toastify";
 import StarRating from "../../components/common/StarRating";
+import SEO from "../../components/seo/SEO";
 
 const ProductDetailsStyle = styled.div`
   padding: 70px 0;
@@ -219,6 +220,8 @@ const ProductDetails = () => {
   ] = useRequest();
   const { search } = useLocation();
   const { data: productDetails } = productDetailsState || {};
+  const { metaKeywords, metaDescription, metaTitle } =
+    productDetails?.seo || {};
   const priceSymbol = process.env.REACT_APP_PRICE_SYMBOL;
   const [productQuantity, setProductQuantity] = useState(1);
   const params = new URLSearchParams(search);
@@ -269,6 +272,11 @@ const ProductDetails = () => {
 
   return (
     <>
+      <SEO
+        title={metaTitle}
+        description={metaDescription}
+        keywords={metaKeywords?.join(", ")}
+      />
       <ProductDetailsStyle>
         <div className="container">
           <div className="product__details__wrapper">
