@@ -110,7 +110,7 @@ const ProductDetailsStyle = styled.div`
       }
       .original__price {
         color: rgba(48, 48, 48, 0.5);
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 400;
         line-height: 22.5px;
         text-decoration: line-through;
