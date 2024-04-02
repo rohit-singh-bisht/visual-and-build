@@ -3,11 +3,20 @@ import styled from "styled-components";
 import Login from "./Login";
 import Register from "./Register";
 import { Link } from "react-router-dom";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { toast } from "react-toastify";
-import { jwtDecode } from "jwt-decode";
 import { useRequest } from "../../../hooks/useRequest";
 import { useAppContext } from "../../../context/useAppContext";
+import {
+  LoginSocialGoogle,
+  LoginSocialFacebook,
+  LoginSocialApple,
+} from "reactjs-social-login";
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+  AppleLoginButton,
+} from "react-social-login-buttons";
+
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const AuthenticationFormStyle = styled.div`
@@ -130,6 +139,7 @@ const AuthenticationFormStyle = styled.div`
       line-height: 24px;
       text-align: center;
       position: relative;
+      margin-bottom: 28px;
       span {
         background-color: #fff;
         display: inline-block;
@@ -148,10 +158,12 @@ const AuthenticationFormStyle = styled.div`
         transform: translateY(-50%);
       }
     }
-    .with__google {
+    .with__google,
+    .with__facebook,
+    .with__apple {
       display: flex;
       justify-content: center;
-      margin: 28px 0;
+      margin: 8px 0;
     }
   }
 `;
@@ -215,20 +227,54 @@ const AuthenticationForm = ({ setIsAuthForm }) => {
             <span>Or continue with</span>
           </div>
           <div className="with__google">
-            <GoogleOAuthProvider clientId={clientId}>
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  const { credential } = credentialResponse;
-                  const decodedToken = jwtDecode(credential);
-                  const { name, email, picture, sub } = decodedToken;
-                  handleLoginWithGoogle(name, email, picture, sub);
-                }}
-                onError={() => {
-                  toast.error("Login Failed");
-                }}
-                logo_alignment={"center"}
+            <LoginSocialGoogle
+              client_id={clientId}
+              onResolve={({ provider, data }) => {
+                console.log({ provider, data });
+                const { name, email, picture, sub } = data;
+                handleLoginWithGoogle(name, email, picture, sub);
+              }}
+              onReject={(err) => {
+                console.log(err);
+              }}
+            >
+              <GoogleLoginButton
+                style={{ fontSize: "14px", height: "38px", padding: "0 18px" }}
+                iconSize={"20px"}
               />
-            </GoogleOAuthProvider>
+            </LoginSocialGoogle>
+          </div>
+          <div className="with__facebook">
+            <LoginSocialFacebook
+              appId={process.env.REACT_APP_FB_APP_ID || ""}
+              onResolve={({ provider, data }) => {
+                console.log({ provider, data });
+              }}
+              onReject={(err) => {
+                console.log(err);
+              }}
+            >
+              <FacebookLoginButton
+                style={{ fontSize: "14px", height: "38px" }}
+                iconSize={"20px"}
+              />
+            </LoginSocialFacebook>
+          </div>
+          <div className="with__apple">
+            <LoginSocialApple
+              client_id={process.env.REACT_APP_APPLE_ID || ""}
+              onResolve={({ provider, data }) => {
+                console.log({ provider, data });
+              }}
+              onReject={(err) => {
+                console.log(err);
+              }}
+            >
+              <AppleLoginButton
+                style={{ fontSize: "14px", height: "38px", padding: "0 22px" }}
+                iconSize={"20px"}
+              />
+            </LoginSocialApple>
           </div>
           {formType === "login" ? (
             <div
