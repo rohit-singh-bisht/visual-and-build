@@ -126,6 +126,7 @@ const AuthenticationFormStyle = styled.div`
     text-align: center;
     margin-top: 40px;
     .other__account {
+      margin-top: 28px;
       span {
         color: #00579f;
         text-decoration: underline;
@@ -192,7 +193,7 @@ const AuthenticationForm = ({ setIsAuthForm }) => {
       const response = await handleRequests({
         path: `/login/google`,
         method: "POST",
-        body: JSON.stringify({ name, email, profile: picture, googleId: sub }),
+        body: JSON.stringify({ email, googleId: sub }),
       });
       if (!response?.success) {
         return toast.error(response?.message);

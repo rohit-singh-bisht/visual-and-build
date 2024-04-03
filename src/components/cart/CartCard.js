@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import QuantityInput from "../common/QuantityInput";
 import { useRequest } from "../../hooks/useRequest";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Progress from "../common/Progress";
+import AddToWishlist from "../modals/AddToWishlist";
+import CreateWishlistModal from "../modals/CreateWishlistModal";
 
 const CartProductCardStyle = styled.div`
   display: flex;
@@ -162,6 +164,8 @@ const CartProductCard = ({
   const [handleIncDec, { isLoading }] = useRequest();
   const navigate = useNavigate();
   const [handleReq, { isReqloading }] = useRequest();
+  const [isAddToWishlistActive, setIsAddToWishlistActive] = useState(false);
+  const [isCreateWishlistActive, setIsCreateWishlistActive] = useState(false);
 
   if (loading) {
     return <CartProductCardStyle></CartProductCardStyle>;
@@ -211,6 +215,13 @@ const CartProductCard = ({
     setIsQtyChanged && setIsQtyChanged((prev) => !prev);
   };
 
+  const handleCartAction = () => {
+    if (!instabuildId?.length) {
+      setIsAddToWishlistActive(true);
+    } else {
+    }
+  };
+
   return (
     <>
       <CartProductCardStyle>
@@ -253,7 +264,10 @@ const CartProductCard = ({
           {total}
         </h2>
         <div className="cart__product__card__actions">
-          <button className="cart__product__wishlist">
+          <button
+            className="cart__product__wishlist"
+            onClick={handleCartAction}
+          >
             {isSchedule ? "Schedule" : "Add to wishlist"}
           </button>
           <button
@@ -265,6 +279,19 @@ const CartProductCard = ({
         </div>
       </CartProductCardStyle>
       {isReqloading && <Progress />}
+      {isAddToWishlistActive && (
+        <AddToWishlist
+          onMaskClick={() => setIsAddToWishlistActive(false)}
+          product={product}
+          handleSecondaryButtonClick={() => setIsCreateWishlistActive(true)}
+          isCreateWishlistActive={isCreateWishlistActive}
+        />
+      )}
+      {isCreateWishlistActive && (
+        <CreateWishlistModal
+          onMaskClick={() => setIsCreateWishlistActive(false)}
+        />
+      )}
     </>
   );
 };

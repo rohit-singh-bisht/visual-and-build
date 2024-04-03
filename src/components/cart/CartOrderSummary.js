@@ -10,6 +10,7 @@ const CartOrderSummaryStyle = styled.div`
   border-radius: 11.25px;
   border: 0.75px solid #ccc2c2;
   background: #fff;
+  margin-top: 35px;
   .cart__summary__header,
   .cart__summary__coupon {
     padding: 22px 22px 24px;
