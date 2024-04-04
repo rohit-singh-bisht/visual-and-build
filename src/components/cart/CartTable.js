@@ -141,6 +141,7 @@ const CartTable = ({
                           cartId={cartId}
                           product={item?.product}
                           instabuildId={instabuildId}
+                          scheduleDate={item?.schedule}
                         />
                         <hr
                           style={{

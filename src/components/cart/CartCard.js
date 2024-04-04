@@ -171,13 +171,14 @@ const CartProductCard = ({
   product,
   cartId,
   instabuildId = "",
+  scheduleDate,
 }) => {
   const [handleIncDec, { isLoading }] = useRequest();
   const navigate = useNavigate();
   const [handleReq, { isReqloading }] = useRequest();
   const [isAddToWishlistActive, setIsAddToWishlistActive] = useState(false);
   const [isCreateWishlistActive, setIsCreateWishlistActive] = useState(false);
-  const [scheduledDate, setScheduledDate] = useState();
+  const [scheduledDate, setScheduledDate] = useState(scheduleDate);
 
   if (loading) {
     return <CartProductCardStyle></CartProductCardStyle>;
@@ -233,18 +234,9 @@ const CartProductCard = ({
     }
   };
 
-  function formatDate(date) {
-    const d = new Date(date);
-    const day = d.getDate().toString().padStart(2, "0");
-    const month = (d.getMonth() + 1).toString().padStart(2, "0");
-    const year = d.getFullYear();
-    return `${day}-${month}-${year}`;
-  }
-
   const handleDateChange = (event) => {
     const selectedDate = event.target.value;
-    const formattedDate = selectedDate ? formatDate(selectedDate) : "null";
-    setScheduledDate(formattedDate);
+    setScheduledDate(selectedDate || "null");
   };
 
   useEffect(() => {
@@ -259,8 +251,10 @@ const CartProductCard = ({
         }),
       });
       if (!response?.success) {
+        setScheduledDate("");
         return toast.error(response?.message, { toastId: "error" });
       }
+      return toast.success(response?.message);
     };
     if (scheduledDate && cartId && itemId) {
       handleSchedule(cartId, itemId, scheduledDate);
