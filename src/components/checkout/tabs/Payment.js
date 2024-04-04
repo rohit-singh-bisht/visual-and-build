@@ -69,6 +69,7 @@ const PaymentStyle = styled.div`
       &:checked {
         + label {
           border: 0.75px solid #ae0000;
+          background-color: #ffecec;
         }
       }
     }

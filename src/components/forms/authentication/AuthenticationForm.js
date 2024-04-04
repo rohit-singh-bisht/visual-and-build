@@ -3,21 +3,9 @@ import styled from "styled-components";
 import Login from "./Login";
 import Register from "./Register";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useRequest } from "../../../hooks/useRequest";
-import { useAppContext } from "../../../context/useAppContext";
-import {
-  LoginSocialGoogle,
-  LoginSocialFacebook,
-  LoginSocialApple,
-} from "reactjs-social-login";
-import {
-  FacebookLoginButton,
-  GoogleLoginButton,
-  AppleLoginButton,
-} from "react-social-login-buttons";
-
-const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+import LoginWithGoogle from "../../socialLogin/LoginWithGoogle";
+import LoginWithFacebook from "../../socialLogin/LoginWithFacebook";
+import LoginWithApple from "../../socialLogin/LoginWithApple";
 
 const AuthenticationFormStyle = styled.div`
   padding: 28px 42px 52px;
@@ -177,35 +165,6 @@ const WrapStyle = styled.div`
 
 const AuthenticationForm = ({ setIsAuthForm }) => {
   const [formType, setFormType] = useState("login");
-  const [handleRequests] = useRequest();
-  const { setUser } = useAppContext();
-
-  const handleLoginWithGoogle = async (name, email, picture, sub) => {
-    const response = await handleRequests({
-      path: `/auth/register/google`,
-      method: "POST",
-      body: JSON.stringify({ name, email, profile: picture, googleId: sub }),
-    });
-    if (response?.success) {
-      return toast.success(response?.message);
-    }
-    if (response?.success === false && response?.code === 500) {
-      const response = await handleRequests({
-        path: `/login/google`,
-        method: "POST",
-        body: JSON.stringify({ email, googleId: sub }),
-      });
-      if (!response?.success) {
-        return toast.error(response?.message);
-      }
-      setUser(response.data);
-      const now = new Date();
-      const expirationDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-      localStorage.setItem("expirationDate", expirationDate.toISOString());
-      navigate("/account");
-      setIsAuthForm(false);
-    }
-  };
 
   useEffect(() => {
     document.body.classList.add("bodyfixed");
@@ -228,55 +187,22 @@ const AuthenticationForm = ({ setIsAuthForm }) => {
             <span>Or continue with</span>
           </div>
           <div className="with__google">
-            <LoginSocialGoogle
-              client_id={clientId}
-              onResolve={({ provider, data }) => {
-                console.log({ provider, data });
-                const { name, email, picture, sub } = data;
-                handleLoginWithGoogle(name, email, picture, sub);
-              }}
-              onReject={(err) => {
-                console.log(err);
-              }}
-            >
-              <GoogleLoginButton
-                style={{ fontSize: "14px", height: "38px", padding: "0 18px" }}
-                iconSize={"20px"}
-              />
-            </LoginSocialGoogle>
+            <LoginWithGoogle
+              formType={formType}
+              setFormType={setFormType}
+              setIsAuthForm={setIsAuthForm}
+            />
           </div>
           <div className="with__facebook">
-            <LoginSocialFacebook
-              appId={process.env.REACT_APP_FB_APP_ID || ""}
-              onResolve={({ provider, data }) => {
-                console.log({ provider, data });
-              }}
-              onReject={(err) => {
-                console.log(err);
-              }}
-            >
-              <FacebookLoginButton
-                style={{ fontSize: "14px", height: "38px" }}
-                iconSize={"20px"}
-              />
-            </LoginSocialFacebook>
+            <LoginWithFacebook
+              formType={formType}
+              setFormType={setFormType}
+              setIsAuthForm={setIsAuthForm}
+            />
           </div>
-          <div className="with__apple">
-            <LoginSocialApple
-              client_id={process.env.REACT_APP_APPLE_ID || ""}
-              onResolve={({ provider, data }) => {
-                console.log({ provider, data });
-              }}
-              onReject={(err) => {
-                console.log(err);
-              }}
-            >
-              <AppleLoginButton
-                style={{ fontSize: "14px", height: "38px", padding: "0 22px" }}
-                iconSize={"20px"}
-              />
-            </LoginSocialApple>
-          </div>
+          {/* <div className="with__apple">
+            <LoginWithApple formType={formType} setFormType={setFormType} />
+          </div> */}
           {formType === "login" ? (
             <div
               className="other__account"
