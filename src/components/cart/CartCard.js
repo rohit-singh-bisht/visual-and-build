@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import QuantityInput from "../common/QuantityInput";
 import { useRequest } from "../../hooks/useRequest";
@@ -97,6 +97,17 @@ const CartProductCardStyle = styled.div`
         text-decoration: underline;
       }
     }
+    .cart__product__wishlist {
+      input {
+        position: absolute;
+        left: 18px;
+        width: 32px;
+        transform: scaleX(6);
+        width: 14px;
+        transform: scaleX(4);
+        opacity: 0;
+      }
+    }
     .cart__product__remove {
       color: #000000;
       display: flex;
@@ -166,6 +177,8 @@ const CartProductCard = ({
   const [handleReq, { isReqloading }] = useRequest();
   const [isAddToWishlistActive, setIsAddToWishlistActive] = useState(false);
   const [isCreateWishlistActive, setIsCreateWishlistActive] = useState(false);
+  const [scheduledDate, setScheduledDate] = useState();
+  console.log("scheduledDate", scheduledDate);
 
   if (loading) {
     return <CartProductCardStyle></CartProductCardStyle>;
@@ -218,9 +231,44 @@ const CartProductCard = ({
   const handleCartAction = () => {
     if (!instabuildId?.length) {
       setIsAddToWishlistActive(true);
-    } else {
     }
   };
+
+  function formatDate(date) {
+    const d = new Date(date);
+    const day = d.getDate().toString().padStart(2, "0");
+    const month = (d.getMonth() + 1).toString().padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  const handleDateChange = (event) => {
+    const selectedDate = event.target.value;
+    const formattedDate = formatDate(selectedDate);
+    setScheduledDate(formattedDate);
+  };
+
+  useEffect(() => {
+    const handleSchedule = async (cartId, itemId, scheduledDate) => {
+      const response = await handleReq({
+        path: `/instacart/instabuild/${cartId}/schedule-product`,
+        method: "POST",
+        body: JSON.stringify({
+          productId: itemId,
+          deliveryDate:
+            scheduledDate && scheduledDate !== "NaN-NaN-NaN"
+              ? scheduledDate
+              : "",
+        }),
+      });
+      if (!response?.success) {
+        return toast.error(response?.message, { toastId: "error" });
+      }
+    };
+    if (scheduledDate && cartId && itemId) {
+      handleSchedule(cartId, itemId, scheduledDate);
+    }
+  }, [cartId, itemId, scheduledDate]);
 
   return (
     <>
@@ -268,7 +316,20 @@ const CartProductCard = ({
             className="cart__product__wishlist"
             onClick={handleCartAction}
           >
-            {isSchedule ? "Schedule" : "Add to wishlist"}
+            {isSchedule
+              ? scheduledDate && scheduledDate !== "NaN-NaN-NaN"
+                ? scheduledDate
+                : "Schedule"
+              : "Add to wishlist"}
+            {isSchedule && (
+              <input
+                type="date"
+                onKeyDown={(e) => e.preventDefault()}
+                className="input"
+                onChange={handleDateChange}
+                min={new Date().toISOString().split("T")[0]}
+              />
+            )}
           </button>
           <button
             className="cart__product__remove"
