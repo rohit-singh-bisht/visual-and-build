@@ -138,7 +138,7 @@ const GroupBuy = ({ product, reverse }) => {
   const [isInstaCartActive, setIsInstaCartActive] = useState(false);
 
   const handleProductClick = (product) => {
-    const path = `/product/${product?.slug}?id=${product?.id}`;
+    const path = `/product/${product?.slug}?id=${product?._id}`;
     navigate(path);
   };
 

@@ -107,7 +107,7 @@ const StarRating = ({
           />
         </svg>
       );
-    } else {
+    } else if (integerPart < 5) {
       stars.push(
         <svg
           xmlns="http://www.w3.org/2000/svg"
