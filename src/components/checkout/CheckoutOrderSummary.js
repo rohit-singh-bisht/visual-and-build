@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as InfoSvg } from "../../assets/info.svg";
 import { useAppContext } from "../../context/useAppContext";
 
 const CheckoutOrderSummaryStyle = styled.div`
@@ -11,11 +10,12 @@ const CheckoutOrderSummaryStyle = styled.div`
   .checkout__order__summary__item {
     display: flex;
     justify-content: space-between;
-    gap: 45px;
-    padding-top: 15px;
+    gap: 15px;
+    padding-top: 20px;
     border-top: 0.75px solid rgba(48, 48, 48, 0.25);
-    margin-top: 35px;
+    margin-top: 20px;
     &:first-child {
+      margin-top: 35px;
       border-top: 0px;
       padding-top: 0px;
     }
@@ -36,6 +36,7 @@ const CheckoutOrderSummaryStyle = styled.div`
     line-height: 22.5px;
     text-transform: capitalize;
     overflow: hidden;
+    flex: 1;
     &.flex {
       display: flex;
       gap: 4px;
@@ -47,9 +48,18 @@ const CheckoutOrderSummaryStyle = styled.div`
     font-size: 15px;
     font-weight: 700;
     line-height: 22.5px;
+    flex: 0 0 80px;
+    text-align: right;
+  }
+  .checkout__order__summary__item__quantity {
+    flex: 0 0 30px;
+    text-align: center;
   }
   .checkout__order__summary__handler {
     margin-top: 10px;
+    padding-top: 15px;
+    border-top: 0.75px solid rgba(48, 48, 48, 0.25);
+    margin-top: 35px;
     .checkout__order__summary__subtotals {
       display: flex;
       justify-content: space-between;
@@ -132,27 +142,30 @@ const CheckoutOrderSummary = ({
                   </h4>
                   <h4 className="checkout__order__summary__item__totals">
                     {process.env.REACT_APP_PRICE_SYMBOL}
-                    {item?.product?.price * item?.quantity}
+                    {(item?.product?.price - item?.product?.discount) *
+                      item?.quantity}
                   </h4>
                 </div>
               );
             }
             return;
           })}
-        <div className="checkout__order__summary__item">
-          <p className="checkout__order__summary__item__title flex">
-            Shipping Fee
-            <sup>
-              <InfoSvg className="shipping__info__icon" />
-            </sup>
-          </p>
-          <h4 className="checkout__order__summary__item__totals">
-            {process.env.REACT_APP_PRICE_SYMBOL}
-            {orderSummaryData?.shippingCharges}
-          </h4>
-        </div>
       </div>
       <div className="checkout__order__summary__handler">
+        <div className="checkout__order__summary__subtotals">
+          <div className="checkout__items__total__title">Subtotal</div>
+          <div className="checkout__order__summary__item__totals">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.subtotal}
+          </div>
+        </div>
+        <div className="checkout__order__summary__subtotals">
+          <div className="checkout__items__total__title">Shipping Fee</div>
+          <div className="checkout__order__summary__item__totals">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.shippingCharges}
+          </div>
+        </div>
         <div className="checkout__order__summary__subtotals">
           <div className="checkout__items__total__title">Tax Amount</div>
           <div className="checkout__order__summary__item__totals">
@@ -177,13 +190,6 @@ const CheckoutOrderSummary = ({
             </div>
           </div>
         )}
-        <div className="checkout__order__summary__subtotals">
-          <div className="checkout__items__total__title">Subtotal</div>
-          <div className="checkout__order__summary__item__totals">
-            {process.env.REACT_APP_PRICE_SYMBOL}
-            {orderSummaryData?.subtotal}
-          </div>
-        </div>
         <div className="checkout__order__summary__subtotals">
           <div className="checkout__items__total__title bold">Total</div>
           <div className="checkout__order__summary__item__totals">

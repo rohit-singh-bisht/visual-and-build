@@ -249,17 +249,10 @@ const Payment = ({ createOrderData, orderSummaryData }) => {
           </div> */}
           <div className="payment__summary">
             <div className="subtotal__amount">
-              <h3 className="title">SHIPPING</h3>
+              <h3 className="title">SUB TOTAL</h3>
               <h2 className="amount">
                 {process.env.REACT_APP_PRICE_SYMBOL}
-                {orderSummaryData?.shippingCharges}
-              </h2>
-            </div>
-            <div className="subtotal__amount">
-              <h3 className="title">TAX</h3>
-              <h2 className="amount">
-                {process.env.REACT_APP_PRICE_SYMBOL}
-                {orderSummaryData?.taxAmount}
+                {orderSummaryData?.subtotal}
               </h2>
             </div>
             <div className="subtotal__amount">
@@ -277,10 +270,17 @@ const Payment = ({ createOrderData, orderSummaryData }) => {
               </h2>
             </div>
             <div className="subtotal__amount">
-              <h3 className="title">SUB TOTAL</h3>
+              <h3 className="title">SHIPPING</h3>
               <h2 className="amount">
                 {process.env.REACT_APP_PRICE_SYMBOL}
-                {orderSummaryData?.subtotal}
+                {orderSummaryData?.shippingCharges}
+              </h2>
+            </div>
+            <div className="subtotal__amount">
+              <h3 className="title">TAX</h3>
+              <h2 className="amount">
+                {process.env.REACT_APP_PRICE_SYMBOL}
+                {orderSummaryData?.taxAmount}
               </h2>
             </div>
             <div className="subtotal__amount">
