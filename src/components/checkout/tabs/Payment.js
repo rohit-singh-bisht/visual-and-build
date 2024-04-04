@@ -26,7 +26,6 @@ const PaymentStyle = styled.div`
         line-height: 23px;
         text-align: center;
         height: 52px;
-        padding: 0 52px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -37,6 +36,7 @@ const PaymentStyle = styled.div`
         top: 50%;
         transform: translateY(-50%);
         right: 26px;
+        width: 180px;
         &:disabled {
           background: #a7a7a7;
         }
