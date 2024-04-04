@@ -179,7 +179,7 @@ const CartProductCard = ({
   const [isAddToWishlistActive, setIsAddToWishlistActive] = useState(false);
   const [isCreateWishlistActive, setIsCreateWishlistActive] = useState(false);
   const [scheduledDate, setScheduledDate] = useState(
-    scheduleDate.split("T")[0]
+    scheduleDate?.split("T")[0]
   );
 
   if (loading) {
@@ -258,7 +258,7 @@ const CartProductCard = ({
       }
       return toast.success(response?.message);
     };
-    if (scheduledDate !== scheduleDate.split("T")[0] && cartId && itemId) {
+    if (scheduledDate !== scheduleDate?.split("T")[0] && cartId && itemId) {
       handleSchedule(cartId, itemId, scheduledDate);
     }
   }, [cartId, itemId, scheduledDate]);
