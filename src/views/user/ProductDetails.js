@@ -351,6 +351,17 @@ const ProductDetails = () => {
                         </p>
                       </div>
                     )}
+                  {productDetails?.categories?.length && (
+                    <div className="product__options">
+                      <h2 className="product__options__title">Category</h2>
+                      <p
+                        className="product__options__value"
+                        style={{ textTransform: "capitalize" }}
+                      >
+                        {productDetails?.categories?.[0]?.name}
+                      </p>
+                    </div>
+                  )}
                   {productDetails?.specs?.slice(0, 4)?.map((item) => (
                     <div className="product__options">
                       <h2 className="product__options__title">{item?.label}</h2>
