@@ -116,8 +116,11 @@ const CartTable = ({
           ) : (
             <>
               {cartData && cartData?.length ? (
-                cartData?.map((item, index) => {
+                cartData?.map((item) => {
                   if (item?.quantity > 0) {
+                    const itemPrice = (
+                      item?.product?.price - item?.product?.discount
+                    ).toFixed(2);
                     return (
                       <div key={item?._id}>
                         <CartCard
@@ -128,11 +131,9 @@ const CartTable = ({
                           }
                           title={item?.product?.name}
                           isSchedule={isSchedule}
-                          price={(
-                            item?.product?.price - item?.product?.discount
-                          ).toFixed(2)}
+                          price={itemPrice}
                           itemQuantity={item?.quantity}
-                          total={item?.quantity * item?.product?.price}
+                          total={item?.quantity * itemPrice}
                           itemId={item?.product?.id}
                           setIsQtyChanged={setIsQtyChanged}
                           setIsCheckoutButtonDisabled={
