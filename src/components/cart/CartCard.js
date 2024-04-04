@@ -178,7 +178,6 @@ const CartProductCard = ({
   const [isAddToWishlistActive, setIsAddToWishlistActive] = useState(false);
   const [isCreateWishlistActive, setIsCreateWishlistActive] = useState(false);
   const [scheduledDate, setScheduledDate] = useState();
-  console.log("scheduledDate", scheduledDate);
 
   if (loading) {
     return <CartProductCardStyle></CartProductCardStyle>;
@@ -244,7 +243,7 @@ const CartProductCard = ({
 
   const handleDateChange = (event) => {
     const selectedDate = event.target.value;
-    const formattedDate = formatDate(selectedDate);
+    const formattedDate = selectedDate ? formatDate(selectedDate) : "null";
     setScheduledDate(formattedDate);
   };
 
@@ -256,9 +255,7 @@ const CartProductCard = ({
         body: JSON.stringify({
           productId: itemId,
           deliveryDate:
-            scheduledDate && scheduledDate !== "NaN-NaN-NaN"
-              ? scheduledDate
-              : "",
+            scheduledDate && scheduledDate !== "null" ? scheduledDate : "",
         }),
       });
       if (!response?.success) {
@@ -317,7 +314,7 @@ const CartProductCard = ({
             onClick={handleCartAction}
           >
             {isSchedule
-              ? scheduledDate && scheduledDate !== "NaN-NaN-NaN"
+              ? scheduledDate && scheduledDate !== "null"
                 ? scheduledDate
                 : "Schedule"
               : "Add to wishlist"}
