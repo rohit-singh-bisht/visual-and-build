@@ -178,7 +178,9 @@ const CartProductCard = ({
   const [handleReq, { isReqloading }] = useRequest();
   const [isAddToWishlistActive, setIsAddToWishlistActive] = useState(false);
   const [isCreateWishlistActive, setIsCreateWishlistActive] = useState(false);
-  const [scheduledDate, setScheduledDate] = useState(scheduleDate);
+  const [scheduledDate, setScheduledDate] = useState(
+    scheduleDate.split("T")[0]
+  );
 
   if (loading) {
     return <CartProductCardStyle></CartProductCardStyle>;
@@ -256,7 +258,7 @@ const CartProductCard = ({
       }
       return toast.success(response?.message);
     };
-    if (scheduledDate && cartId && itemId) {
+    if (scheduledDate !== scheduleDate.split("T")[0] && cartId && itemId) {
       handleSchedule(cartId, itemId, scheduledDate);
     }
   }, [cartId, itemId, scheduledDate]);
