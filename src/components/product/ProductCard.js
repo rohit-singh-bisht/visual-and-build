@@ -93,7 +93,10 @@ const ProductCard = ({
               {productTitle}
             </p>
             <div className="product__reviews">
-              <StarRating avgRating={avgRating} ratingCount={ratingCount} />
+              <StarRating
+                avgRating={avgRating?.toFixed(1)}
+                ratingCount={ratingCount}
+              />
             </div>
             <div className="product__price__wrapper">
               <div className="product__discounted__price">
