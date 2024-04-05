@@ -106,14 +106,16 @@ const CreateTicketModal = ({ handleClose }) => {
     formData.append("priority", data?.priority);
     formData.append("message", data?.subject);
 
-    const repsonse = await handleRequest({
+    const response = await handleRequest({
       path,
       method: "POST",
       body: formData,
     });
-    if (!repsonse.success) {
+    if (!response.success) {
       return toast.error(response.message);
     }
+    toast.success(response.message);
+    handleClose();
   };
 
   const handleChange = (e) => {
