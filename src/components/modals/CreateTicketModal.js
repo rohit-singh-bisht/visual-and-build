@@ -4,6 +4,7 @@ import { RxCross1 } from "react-icons/rx";
 import StyledMask from "../common/StyledMask";
 import Button from "../common/Button";
 import { useRequest } from "../../hooks/useRequest";
+import { toast } from "react-toastify";
 
 const CreateTicketModalStyle = styled.div`
   display: flex;
@@ -96,6 +97,9 @@ const CreateTicketModal = ({ handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!data?.subject || !data?.priority || !data?.message) {
+      return toast.error("All fields are required.");
+    }
     const path = `/ticket`;
     const formData = new FormData();
     formData.append("subject", data?.subject);
