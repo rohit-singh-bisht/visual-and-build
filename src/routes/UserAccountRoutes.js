@@ -17,7 +17,7 @@ import PrivateRoute from "./PrivateRoute";
 import PurchaseHistory from "../views/user/profile/PurchaseHistory";
 import TransactionDetails from "../views/user/profile/TransactionDetails";
 import HelpAndSupport from "../views/user/profile/HelpAndSupport";
-import SupportChat from "../components/supportChat/SupportChat";
+import SupportTickets from "../views/user/profile/SupportTickets";
 
 const UserAccountRoutesStyle = styled.div`
   padding: 60px 0;
@@ -84,8 +84,15 @@ const routesInformation = [
   },
   {
     id: 6,
+    title: "Support Tickets",
+    component: () => <SupportTickets />,
+    path: "/tickets",
+    pathname: "/account/tickets",
+  },
+  {
+    id: 7,
     title: "Which item are you facing an issue with?",
-    component: () => <SupportChat />,
+    component: () => <HelpAndSupport />,
     path: "/help-support",
     pathname: "/account/help-support",
   },

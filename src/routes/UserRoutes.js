@@ -23,7 +23,7 @@ import GroupBuy from "../views/user/GroupBuy";
 import PrivacyPolicy from "../views/user/PrivacyPolicy";
 import ReturnPolicy from "../views/user/ReturnPolicy";
 import HelpCenter from "../views/user/HelpCenter";
-import SupportChat from "../components/supportChat/SupportChat";
+import SupportChat from "../components/helpAndSupport/SupportChat";
 import Logout from "../views/user/Logout";
 
 const AuthPopupStyle = styled.div`

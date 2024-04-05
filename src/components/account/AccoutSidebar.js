@@ -60,6 +60,12 @@ const AccountSidebar = () => {
       isActive: location?.pathname === "/account/profile-information",
       show: false,
     },
+    {
+      title: "Support Tickets",
+      to: "/account/tickets",
+      isActive: location?.pathname === "/account/tickets",
+      show: true,
+    },
   ];
 
   return (

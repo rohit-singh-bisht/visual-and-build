@@ -65,11 +65,6 @@ const Account = () => {
         navigate("/account/lists");
       },
     },
-    // {
-    //   title: `My Wallet`,
-    //   sub1: `Add a Payment method for Faster Checkout.`,
-    //   buttonText: `View Wallet`,
-    // },
     {
       title: `My Addresses`,
       sub1: `Add and manage your addresses like shipping`,
@@ -84,6 +79,14 @@ const Account = () => {
       buttonText: `Contact Support`,
       onClick: () => {
         navigate("/account/help-support");
+      },
+    },
+    {
+      title: `Tickets`,
+      sub1: `View all of your raised tickets here`,
+      buttonText: `View Tickets`,
+      onClick: () => {
+        navigate("/account/tickets");
       },
     },
   ];
