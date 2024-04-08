@@ -113,7 +113,7 @@ const Account = () => {
               ))}
             </>
           ) : (
-            Array.from({ length: 5 }, (_, index) => (
+            Array.from({ length: 6 }, (_, index) => (
               <Skeleton
                 variant="rectangle"
                 key={index + 1}

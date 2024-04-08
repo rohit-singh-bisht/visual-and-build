@@ -31,10 +31,6 @@ const HompageStyle = styled.div`
   .blogs {
     padding: 60px 0;
   }
-  .icon_with_text {
-    padding: 60px 0;
-    border-top: 1px solid rgba(48, 48, 48, 0.25);
-  }
 
   @media (max-width: 768px) {
     .category_list {
@@ -42,9 +38,6 @@ const HompageStyle = styled.div`
     }
     .product_list {
       padding: 30px 0;
-    }
-    .icon_with_text {
-      padding: 30px 0 40px;
     }
     .blogs {
       padding: 30px 0 40px;
@@ -156,11 +149,7 @@ const Homepage = () => {
       <div className="container blogs">
         <HomeBlogs />
       </div>
-      <div className="icon_with_text">
-        <div className="container">
-          <IconWithTextList />
-        </div>
-      </div>
+      <IconWithTextList />
     </HompageStyle>
   );
 };

@@ -295,11 +295,7 @@ const Payment = ({ createOrderData, orderSummaryData }) => {
           </div>
         </div>
       </PaymentStyle>
-      <div className="icon_with_text">
-        <div className="container">
-          <IconWithTextList />
-        </div>
-      </div>
+      <IconWithTextList />
     </>
   );
 };

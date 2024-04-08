@@ -23,9 +23,7 @@ const CartStyle = styled.div`
     gap: 15px;
   }
   .icon__with__text {
-    padding: 60px 0;
     margin-top: 60px;
-    border-top: 1px solid rgba(48, 48, 48, 0.25);
   }
   @media (max-width: 768px) {
     padding-top: 30px;
@@ -152,9 +150,7 @@ const Cart = () => {
         ))}
       </div>
       <div className="icon__with__text">
-        <div className="container">
-          <IconWithTextList />
-        </div>
+        <IconWithTextList />
       </div>
     </CartStyle>
   );

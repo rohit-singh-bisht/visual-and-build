@@ -4,6 +4,10 @@ import { useRequest } from "../../../hooks/useRequest";
 import TablePagination from "@mui/material/TablePagination";
 import { Skeleton } from "@mui/material";
 import CreateTicketModal from "../../../components/modals/CreateTicketModal";
+import { FaRegEye } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const SupportTicketsStyle = styled.div`
   flex: 1;
@@ -34,6 +38,11 @@ const SupportTicketsStyle = styled.div`
       border: 1px solid #d2d1d1;
       width: 10%;
       text-transform: capitalize;
+      p {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 22px;
+      }
       span {
         display: inline-block;
         padding: 0px 10px;
@@ -53,7 +62,7 @@ const SupportTicketsStyle = styled.div`
         color: #c3a400;
       }
       .high,
-      .close {
+      .closed {
         background-color: #ffe4e1;
         border: 1px solid #ff6347;
         color: #fe0000;
@@ -68,6 +77,21 @@ const SupportTicketsStyle = styled.div`
       font-weight: 600;
       font-size: 14px;
     }
+    .action__icons__wrapper {
+      display: flex;
+      gap: 20px;
+      .icon {
+        font-size: 16px;
+        cursor: pointer;
+        &.view {
+          color: #5d99ff;
+        }
+        &.close {
+          border: 0px;
+          background: #fff;
+        }
+      }
+    }
   }
 `;
 
@@ -78,6 +102,7 @@ const SupportTickets = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [limitNumber, setLimitNumber] = useState(10);
   const [isCreateModal, setIsCreateModal] = useState(false);
+  const navigate = useNavigate();
 
   const fetchTickets = async (pageNumber, limitNumber) => {
     setIsFetchingTickets(true);
@@ -91,8 +116,8 @@ const SupportTickets = () => {
   };
 
   useEffect(() => {
-    fetchTickets(pageNumber, limitNumber);
-  }, [pageNumber, limitNumber]);
+    !isCreateModal && fetchTickets(pageNumber, limitNumber);
+  }, [pageNumber, limitNumber, isCreateModal]);
 
   const handlePageChange = (event, newPage) => {
     setPageNumber(newPage + 1);
@@ -106,6 +131,20 @@ const SupportTickets = () => {
   const handleCreate = (e) => {
     e.preventDefault();
     setIsCreateModal(true);
+  };
+
+  const handleCloseClick = async (ticketId) => {
+    const path = `/ticket/${ticketId}/close`;
+    const response = await handleRequest({ path, method: "PUT" });
+    if (!response.success) {
+      return toast.error(response.message);
+    }
+    toast.success(response.message);
+    fetchTickets(pageNumber, limitNumber);
+  };
+
+  const handleViewClick = (ticketId) => {
+    navigate(`/chat-support/${ticketId}`);
   };
 
   return (
@@ -158,7 +197,22 @@ const SupportTickets = () => {
                   <td>
                     <span className={item?.status}>{item?.status}</span>
                   </td>
-                  <td></td>
+                  <td>
+                    <div className="action__icons__wrapper">
+                      <FaRegEye
+                        className="icon view"
+                        title="View"
+                        onClick={() => handleViewClick(item?._id)}
+                      />
+                      {item?.status === "open" && (
+                        <RxCross2
+                          className="icon close"
+                          title="Close Ticket"
+                          onClick={() => handleCloseClick(item?._id)}
+                        />
+                      )}
+                    </div>
+                  </td>
                 </tr>
               ))}
               {!ticketData?.docs?.length && (

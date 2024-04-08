@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useRequest } from "../../hooks/useRequest";
 import { VscSend } from "react-icons/vsc";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getDate } from "../../utils/helper";
 
 const SupportChatStyle = styled.div`
   padding: 40px;
@@ -9,6 +12,9 @@ const SupportChatStyle = styled.div`
     display: flex;
     gap: 40px;
     flex-wrap: wrap;
+  }
+  .chat__wrapper {
+    flex: 1;
   }
   .page__title {
     font-size: 20px;
@@ -40,9 +46,10 @@ const SupportChatStyle = styled.div`
     .chat__item__wrapper {
       display: flex;
       flex-wrap: wrap;
+      flex-direction: column;
     }
     .chat__item {
-      width: 80%;
+      max-width: 80%;
       margin: 8px 0;
       .chat,
       .chat__date {
@@ -107,8 +114,35 @@ const SupportChatStyle = styled.div`
 `;
 
 const SupportChat = () => {
-  const [activeChatId, setActiveChatId] = useState();
+  const [getResponse] = useRequest();
+  const { ticketId } = useParams();
+  const [chatData, setChatData] = useState();
   const [chatText, setChatText] = useState();
+
+  const fetchResponse = async (id) => {
+    const path = `/ticket/${id}/show`;
+    const response = await getResponse({ path });
+    if (!response?.success) {
+      return toast.error(response.message);
+    }
+    setChatData(response?.data);
+  };
+
+  useEffect(() => {
+    fetchResponse(ticketId);
+  }, [ticketId]);
+
+  const handleReplyToTicket = async (ticketId, chatText) => {
+    const path = `/ticket/${ticketId}/respond`;
+    const formData = new FormData();
+    formData.append("message", chatText);
+    setChatText("");
+    const response = await getResponse({ path, method: "PUT", body: formData });
+    if (!response?.success) {
+      return toast.error(response.message);
+    }
+    setChatData(response?.data);
+  };
 
   return (
     <SupportChatStyle>
@@ -123,24 +157,18 @@ const SupportChat = () => {
               onMouseOut={() => (document.body.style.overflow = "inherit")}
             >
               <div className="chat__item__wrapper">
-                <div className="chat__item">
-                  <div className="chat">
-                    Gorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nunc vulputate libero et velit interdum, ac aliquet odio
-                    mattis. Class aptent taciti sociosqu ad litora torquent per
-                    conubia nostra, per inceptos himenaeos
-                  </div>
-                  <div className="chat__date">20/8/2023</div>
-                </div>
-                <div className="chat__item user">
-                  <div className="chat">
-                    Gorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nunc vulputate libero et velit interdum, ac aliquet odio
-                    mattis. Class aptent taciti sociosqu ad litora torquent per
-                    conubia nostra, per inceptos himenaeos
-                  </div>
-                  <div className="chat__date">20/8/2023</div>
-                </div>
+                {chatData?.responds?.length &&
+                  chatData?.responds?.map((item) => (
+                    <div
+                      key={item?._id}
+                      className={`chat__item ${item?.sender}`}
+                    >
+                      <div className="chat">{item?.message}</div>
+                      <div className="chat__date">
+                        {getDate(item?.createdAt)}
+                      </div>
+                    </div>
+                  ))}
               </div>
             </div>
             <div className="chat__footer">
@@ -152,7 +180,10 @@ const SupportChat = () => {
                   placeholder="Message..."
                 />
               </div>
-              <div className="send__message__btn">
+              <div
+                className="send__message__btn"
+                onClick={() => handleReplyToTicket(ticketId, chatText)}
+              >
                 <VscSend className="icon" />
               </div>
             </div>

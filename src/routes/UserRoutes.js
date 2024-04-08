@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Homepage from "../views/user/Homepage";
 import Header from "../layout/Header";
@@ -82,7 +82,7 @@ const UserRoutes = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/return-policy" element={<ReturnPolicy />} />
         <Route path="/help" element={<HelpCenter />} />
-        <Route path="/chat-support" element={<SupportChat />} />
+        <Route path="/chat-support/:ticketId" element={<SupportChat />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<Navigate to={"/"} />} />
         <Route path="/account/*" element={<UserAccountRoutes />} />
