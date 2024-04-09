@@ -117,10 +117,11 @@ const AddToCartModal = ({
             <label htmlFor="cart">Cart</label>
           </div>
         </div>
-        {instacarts && instacarts?.data?.length && (
-          <div className="modal__body__other__carts">
-            <div className="modal__body__title">InstaBuild</div>
-            {instacarts?.data
+        <div className="modal__body__other__carts">
+          <div className="modal__body__title">InstaBuild</div>
+          {instacarts &&
+            instacarts?.data?.length > 0 &&
+            instacarts?.data
               ?.filter((item) => item?.isInstabuild)
               ?.map((item) => {
                 return (
@@ -141,8 +142,7 @@ const AddToCartModal = ({
                   </div>
                 );
               })}
-          </div>
-        )}
+        </div>
       </GenericModal>
       {isLoading && <Progress />}
     </AddToCartModalStyle>
