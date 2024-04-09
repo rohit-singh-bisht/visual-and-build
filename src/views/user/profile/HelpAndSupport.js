@@ -87,10 +87,9 @@ const HelpAndSupport = () => {
 
   return (
     <>
-      <HelpSupportStyle>
-        {orderHistory &&
-          orderHistory?.docs?.length &&
-          orderHistory?.docs?.map((item) => (
+      {orderHistory && orderHistory?.docs?.length > 0 && (
+        <HelpSupportStyle>
+          {orderHistory?.docs?.map((item) => (
             <ProductCardStyle key={item?._id}>
               <div className="product__image">
                 <img
@@ -111,15 +110,16 @@ const HelpAndSupport = () => {
               </div>
             </ProductCardStyle>
           ))}
-        <ProductListPaginationStyle>
-          <Pagination
-            className="pagination"
-            count={orderHistory?.totalPages}
-            shape="rounded"
-            onChange={handlePaginationChange}
-          />
-        </ProductListPaginationStyle>
-      </HelpSupportStyle>
+          <ProductListPaginationStyle>
+            <Pagination
+              className="pagination"
+              count={orderHistory?.totalPages}
+              shape="rounded"
+              onChange={handlePaginationChange}
+            />
+          </ProductListPaginationStyle>
+        </HelpSupportStyle>
+      )}
       {isCreateModal && (
         <CreateTicketModal handleClose={() => setIsCreateModal(false)} />
       )}

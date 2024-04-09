@@ -429,7 +429,12 @@ const TransactionDetails = ({ setPageTitle }) => {
               Return Product
             </button>
             {isDesktop && <div style={{ flex: 1 }} />}
-            <button className="dark">Need Help?</button>
+            <button
+              className="dark"
+              onClick={() => navigate(`/account/help-support`)}
+            >
+              Need Help?
+            </button>
             <button
               className="accent"
               onClick={() =>

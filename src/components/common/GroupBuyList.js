@@ -73,7 +73,7 @@ const GroupBuyList = ({ groupBuyList, isLoading }) => {
               {groupBuyList?.map((item, index) => {
                 return (
                   <GroupBuy
-                    key={item?.id}
+                    key={item?._id}
                     reverse={index % 2 !== 0 ? "true" : "false"}
                     product={item}
                   />
