@@ -159,20 +159,6 @@ const CheckoutOrderSummary = ({
             {orderSummaryData?.subtotal}
           </div>
         </div>
-        <div className="checkout__order__summary__subtotals">
-          <div className="checkout__items__total__title">Shipping Fee</div>
-          <div className="checkout__order__summary__item__totals">
-            {process.env.REACT_APP_PRICE_SYMBOL}
-            {orderSummaryData?.shippingCharges}
-          </div>
-        </div>
-        <div className="checkout__order__summary__subtotals">
-          <div className="checkout__items__total__title">Tax Amount</div>
-          <div className="checkout__order__summary__item__totals">
-            {process.env.REACT_APP_PRICE_SYMBOL}
-            {orderSummaryData?.taxAmount}
-          </div>
-        </div>
         {orderSummaryData?.discountAmount > 0 && appliedCoupon && (
           <div className="checkout__order__summary__subtotals">
             <div className="checkout__items__total__title">
@@ -190,6 +176,20 @@ const CheckoutOrderSummary = ({
             </div>
           </div>
         )}
+        <div className="checkout__order__summary__subtotals">
+          <div className="checkout__items__total__title">Shipping Fee</div>
+          <div className="checkout__order__summary__item__totals">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.shippingCharges}
+          </div>
+        </div>
+        <div className="checkout__order__summary__subtotals">
+          <div className="checkout__items__total__title">Tax Amount</div>
+          <div className="checkout__order__summary__item__totals">
+            {process.env.REACT_APP_PRICE_SYMBOL}
+            {orderSummaryData?.taxAmount}
+          </div>
+        </div>
         <div className="checkout__order__summary__subtotals">
           <div className="checkout__items__total__title bold">Total</div>
           <div className="checkout__order__summary__item__totals">

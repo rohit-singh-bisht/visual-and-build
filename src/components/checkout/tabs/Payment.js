@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import IconWithTextList from "../../common/IconWithTextList";
 import { useRequest } from "../../../hooks/useRequest";
 import useRazorpay from "react-razorpay";
 import { useAppContext } from "../../../context/useAppContext";
@@ -192,53 +191,52 @@ const Payment = ({ createOrderData, orderSummaryData }) => {
   };
 
   return (
-    <>
-      <PaymentStyle>
-        <h2 className="tittle">Payments</h2>
-        <div className="payment__methods__list">
-          <div className="payment__method__wrapper">
-            <input
-              id="method1"
-              type="radio"
-              name="payment_method"
-              value={"stripe"}
-              onChange={(e) => setSelectedMethod(e.target.value)}
-              checked={selectedMethod === "stripe"}
-            />
-            <label htmlFor="method1" className="payment__method">
-              <img src="/images/stripe.png" alt="stripe" />
-            </label>
-            <button
-              className="pay__now"
-              onClick={() => handlePayment(createOrderData)}
-              disabled={selectedMethod !== "stripe"}
-            >
-              Pay Now
-            </button>
-          </div>
-          <div className="payment__method__wrapper">
-            <input
-              id="method2"
-              type="radio"
-              name="payment_method"
-              value={"cod"}
-              onChange={(e) => setSelectedMethod(e.target.value)}
-              checked={selectedMethod === "cod"}
-            />
-            <label htmlFor="method2" className="payment__method">
-              Cash on delivery
-            </label>
-            <button
-              className="pay__now"
-              onClick={() => handleCreateOrder("", createOrderData)}
-              disabled={selectedMethod !== "cod"}
-            >
-              Order Now
-            </button>
-          </div>
+    <PaymentStyle>
+      <h2 className="tittle">Payments</h2>
+      <div className="payment__methods__list">
+        <div className="payment__method__wrapper">
+          <input
+            id="method1"
+            type="radio"
+            name="payment_method"
+            value={"stripe"}
+            onChange={(e) => setSelectedMethod(e.target.value)}
+            checked={selectedMethod === "stripe"}
+          />
+          <label htmlFor="method1" className="payment__method">
+            <img src="/images/stripe.png" alt="stripe" />
+          </label>
+          <button
+            className="pay__now"
+            onClick={() => handlePayment(createOrderData)}
+            disabled={selectedMethod !== "stripe"}
+          >
+            Pay Now
+          </button>
         </div>
-        <div className="coupon__and__subtotal">
-          {/* <div className="coupon__wrapper">
+        <div className="payment__method__wrapper">
+          <input
+            id="method2"
+            type="radio"
+            name="payment_method"
+            value={"cod"}
+            onChange={(e) => setSelectedMethod(e.target.value)}
+            checked={selectedMethod === "cod"}
+          />
+          <label htmlFor="method2" className="payment__method">
+            Cash on delivery
+          </label>
+          <button
+            className="pay__now"
+            onClick={() => handleCreateOrder("", createOrderData)}
+            disabled={selectedMethod !== "cod"}
+          >
+            Order Now
+          </button>
+        </div>
+      </div>
+      <div className="coupon__and__subtotal">
+        {/* <div className="coupon__wrapper">
             <div style={{ position: "relative" }}>
               <input
                 type="text"
@@ -248,55 +246,53 @@ const Payment = ({ createOrderData, orderSummaryData }) => {
               <h2 className="apply__code" onClick={}>Apply Code</h2>
             </div>
           </div> */}
-          <div className="payment__summary">
-            <div className="subtotal__amount">
-              <h3 className="title">SUB TOTAL</h3>
-              <h2 className="amount">
-                {process.env.REACT_APP_PRICE_SYMBOL}
-                {orderSummaryData?.subtotal}
-              </h2>
-            </div>
-            <div className="subtotal__amount">
-              <h3 className="title">
-                DISCOUNT
-                {appliedCoupon && (
-                  <span style={{ fontSize: "10px", color: "#4caf50" }}>
-                    ( {appliedCoupon} )
-                  </span>
-                )}
-              </h3>
-              <h2 className="amount" style={{ color: "rgb(76, 175, 80)" }}>
-                {process.env.REACT_APP_PRICE_SYMBOL}
-                {orderSummaryData?.discountAmount}
-              </h2>
-            </div>
-            <div className="subtotal__amount">
-              <h3 className="title">SHIPPING</h3>
-              <h2 className="amount">
-                {process.env.REACT_APP_PRICE_SYMBOL}
-                {orderSummaryData?.shippingCharges}
-              </h2>
-            </div>
-            <div className="subtotal__amount">
-              <h3 className="title">TAX</h3>
-              <h2 className="amount">
-                {process.env.REACT_APP_PRICE_SYMBOL}
-                {orderSummaryData?.taxAmount}
-              </h2>
-            </div>
-            <div className="subtotal__amount">
-              <h3 className="title">TOTAL</h3>
-              <h2 className="amount">
-                {process.env.REACT_APP_PRICE_SYMBOL}
-                {orderSummaryData?.totalAmount}
-                <span>( incl. taxes & shipping )</span>
-              </h2>
-            </div>
+        <div className="payment__summary">
+          <div className="subtotal__amount">
+            <h3 className="title">SUB TOTAL</h3>
+            <h2 className="amount">
+              {process.env.REACT_APP_PRICE_SYMBOL}
+              {orderSummaryData?.subtotal}
+            </h2>
+          </div>
+          <div className="subtotal__amount">
+            <h3 className="title">
+              DISCOUNT
+              {appliedCoupon && (
+                <span style={{ fontSize: "10px", color: "#4caf50" }}>
+                  ( {appliedCoupon} )
+                </span>
+              )}
+            </h3>
+            <h2 className="amount" style={{ color: "rgb(76, 175, 80)" }}>
+              {process.env.REACT_APP_PRICE_SYMBOL}
+              {orderSummaryData?.discountAmount}
+            </h2>
+          </div>
+          <div className="subtotal__amount">
+            <h3 className="title">SHIPPING</h3>
+            <h2 className="amount">
+              {process.env.REACT_APP_PRICE_SYMBOL}
+              {orderSummaryData?.shippingCharges}
+            </h2>
+          </div>
+          <div className="subtotal__amount">
+            <h3 className="title">TAX</h3>
+            <h2 className="amount">
+              {process.env.REACT_APP_PRICE_SYMBOL}
+              {orderSummaryData?.taxAmount}
+            </h2>
+          </div>
+          <div className="subtotal__amount">
+            <h3 className="title">TOTAL</h3>
+            <h2 className="amount">
+              {process.env.REACT_APP_PRICE_SYMBOL}
+              {orderSummaryData?.totalAmount}
+              <span>( incl. taxes & shipping )</span>
+            </h2>
           </div>
         </div>
-      </PaymentStyle>
-      <IconWithTextList />
-    </>
+      </div>
+    </PaymentStyle>
   );
 };
 

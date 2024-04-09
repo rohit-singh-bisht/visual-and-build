@@ -6,6 +6,7 @@ import Payment from "../../components/checkout/tabs/Payment";
 import { useAppContext } from "../../context/useAppContext";
 import { useNavigate } from "react-router-dom";
 import { useRequest } from "../../hooks/useRequest";
+import IconWithTextList from "../../components/common/IconWithTextList";
 
 const CheckoutStyle = styled.div`
   padding: 70px 0;
@@ -92,8 +93,8 @@ const Checkout = () => {
         setOrderSummaryData(response?.data);
       }
     }
-    getOrderSummary(checkoutCartId, "");
-  }, [checkoutCartId]);
+    getOrderSummary(checkoutCartId, appliedCoupon);
+  }, [checkoutCartId, appliedCoupon]);
 
   const handleChangeBilling = useCallback((e, address, addressType, method) => {
     setCheckoutAddress((prev) => ({ ...prev, [method]: address }));
@@ -133,23 +134,26 @@ const Checkout = () => {
   }, [checkoutAddress, orderSummaryData, checkoutCartData]);
 
   return (
-    <CheckoutStyle>
-      <div className="container">
-        <div className="page__title">Checkout</div>
-        <div className="checkout__steps">
-          <Steps activeIndex={activeStep} handleStepClick={handleStepClick} />
+    <>
+      <CheckoutStyle>
+        <div className="container">
+          <div className="page__title">Checkout</div>
+          <div className="checkout__steps">
+            <Steps activeIndex={activeStep} handleStepClick={handleStepClick} />
+          </div>
+          {tabsList
+            ?.find((item) => item?.id === activeStep)
+            ?.component({
+              handleChangeBilling,
+              handleOrderNow,
+              orderSummaryData,
+              checkoutAddress,
+              createOrderData,
+            })}
         </div>
-        {tabsList
-          ?.find((item) => item?.id === activeStep)
-          ?.component({
-            handleChangeBilling,
-            handleOrderNow,
-            orderSummaryData,
-            checkoutAddress,
-            createOrderData,
-          })}
-      </div>
-    </CheckoutStyle>
+      </CheckoutStyle>
+      {activeStep === 2 && <IconWithTextList />}
+    </>
   );
 };
 
