@@ -73,17 +73,11 @@ const Vendor = () => {
   const [fetchSellerDetails, { isLoading: isFetchingSellerDetails }] =
     useRequest();
   const [sellerData, setSellerData] = useState();
-  const {
-    vendorCoverSrc = "/images/store-cover.jpg",
-    shopLogo,
-    vendorName,
-    topBanner,
-    sliderBanners,
-  } = sellerData || {};
+  const { shopLogo, vendorName, topBanner, sliderBanners } = sellerData || {};
   const [
     fetchCategories,
     { isLoading: isFetchingCategories, state: category },
-  ] = useRequest(`/category?limit=7&page=1`);
+  ] = useRequest(`/seller/${sellerId}/categories`);
 
   useEffect(() => {
     const fetchSellerInfo = async (sellerId) => {
@@ -127,7 +121,7 @@ const Vendor = () => {
         <div className="seller__categories">
           <CategoryList
             title={"Shop by Categories"}
-            list={category?.data?.docs}
+            list={category?.data}
             loading={isFetchingCategories}
             type={"text-in-image"}
           />

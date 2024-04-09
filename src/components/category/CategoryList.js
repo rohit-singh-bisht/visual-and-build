@@ -93,23 +93,28 @@ const CategoryList = ({ title, allText, allLink, list, loading, type }) => {
         </div>
       ) : (
         <div className="list_wrapper">
-          {list &&
-            list?.length &&
-            list?.map((item) => {
-              return (
-                <CategoryCard
-                  key={item?.id}
-                  {...item}
-                  onClick={() => handleClick(item?._id)}
-                  type={type}
-                />
-              );
-            })}
-          <div className="view__all" onClick={() => navigate(`/categories`)}>
-            <div className="view__all__button">
-              View All <br /> categories
-            </div>
-          </div>
+          {list && list?.length > 0 && (
+            <>
+              {list?.map((item) => {
+                return (
+                  <CategoryCard
+                    key={item?.id}
+                    {...item}
+                    onClick={() => handleClick(item?._id)}
+                    type={type}
+                  />
+                );
+              })}
+              <div
+                className="view__all"
+                onClick={() => navigate(`/categories`)}
+              >
+                <div className="view__all__button">
+                  View All <br /> categories
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </CategoryListStyle>
