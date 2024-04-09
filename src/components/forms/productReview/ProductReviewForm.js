@@ -71,7 +71,7 @@ const ProductReviewFormStyle = styled.div`
   }
 `;
 
-const ProductReviewForm = ({ productId }) => {
+const ProductReviewForm = ({ productId, setRefetchReviews }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [postReview, { isLoading }] = useRequest();
@@ -93,6 +93,9 @@ const ProductReviewForm = ({ productId }) => {
     if (!response.success) {
       return toast.error(response.message || "Can't add review to the product");
     }
+    setRefetchReviews((prev) => !prev);
+    setRating(0);
+    setComment("");
     toast.success(response.message);
   };
 

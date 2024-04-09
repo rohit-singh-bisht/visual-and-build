@@ -141,6 +141,7 @@ const ProductReviews = () => {
   const [reviewData, setReviewData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [ratingData, setRatingData] = useState();
+  const [refetchReviews, setRefetchReviews] = useState(false);
 
   const getReviews = async (productId, pageNumber) => {
     const path = `/review/${productId}?limit=6&page=${pageNumber}`;
@@ -162,7 +163,7 @@ const ProductReviews = () => {
   useEffect(() => {
     productId && pageNumber && getReviews(productId, pageNumber);
     productId && getRatings(productId);
-  }, [productId, pageNumber]);
+  }, [productId, pageNumber, refetchReviews]);
 
   const handlePaginationChange = (e, value) => {
     setPageNumber(value);
@@ -227,7 +228,10 @@ const ProductReviews = () => {
           )}
         </div>
       )}
-      <ProductReviewForm productId={productId} />
+      <ProductReviewForm
+        productId={productId}
+        setRefetchReviews={setRefetchReviews}
+      />
     </ProductReviewsStyle>
   );
 };
