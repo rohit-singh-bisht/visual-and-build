@@ -340,7 +340,7 @@ const ProductDetails = () => {
                 </div>
                 <div className="product__details__options">
                   {productDetails?.brand &&
-                    Object.keys(productDetails?.brand)?.length && (
+                    Object.keys(productDetails?.brand)?.length > 0 && (
                       <div className="product__options">
                         <h2 className="product__options__title">Brand</h2>
                         <p
@@ -351,7 +351,7 @@ const ProductDetails = () => {
                         </p>
                       </div>
                     )}
-                  {productDetails?.categories?.length && (
+                  {productDetails?.categories?.length > 0 && (
                     <div className="product__options">
                       <h2 className="product__options__title">Category</h2>
                       <p
