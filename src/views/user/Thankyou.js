@@ -100,9 +100,9 @@ const Thankyou = () => {
   const isFromCheckout = state && state.fromCheckout;
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!isFromCheckout) return navigate("/");
-  // }, [isFromCheckout]);
+  useEffect(() => {
+    if (!isFromCheckout) return navigate("/");
+  }, [isFromCheckout]);
 
   return (
     <>
@@ -110,8 +110,10 @@ const Thankyou = () => {
         <div className="container">
           <div className="wrapper">
             <div className="icon"></div>
-            <div class="thank_you">Thank you Your Order Placed Successfuly</div>
-            <p class="subtext">
+            <div className="thank_you">
+              Thank you! Your Order Placed Successfuly.
+            </div>
+            <p className="subtext">
               Your Request Has been successfully submitted and will be processed
               soon, Follow your Request status at PURCHASE HISTORY section in
               your profile
