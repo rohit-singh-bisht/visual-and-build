@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useRequest } from "../../../hooks/useRequest";
+import Pagination from "@mui/material/Pagination";
+import CreateTicketModal from "../../../components/modals/CreateTicketModal";
 
 const ProductCardStyle = styled.div`
   display: flex;
-  gap: 16px;
+  gap: 20px;
   border: 0.75px solid #d9d9d9;
   padding: 12px;
   border-radius: 4px;
@@ -51,17 +53,24 @@ const ProductCardStyle = styled.div`
   }
 `;
 
+const ProductListPaginationStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+`;
+
+const HelpSupportStyle = styled.div`
+  flex: 1;
+`;
+
 const HelpAndSupport = () => {
   const [getOrderHistory, { isLoading }] = useRequest();
   const [pageNumber, setPageNumber] = useState(1);
-  const [limitNumber, setLimitNumber] = useState(10);
   const [orderHistory, setOrderHistory] = useState([]);
-  console.log("orderHistory", orderHistory);
+  const [isCreateModal, setIsCreateModal] = useState(false);
 
-  const fetchOrderSummary = async (pageNumber, limitNumber) => {
-    const path = `/order?${limitNumber}${
-      pageNumber ? `&page=${pageNumber}` : ""
-    }`;
+  const fetchOrderSummary = async (pageNumber) => {
+    const path = `/order?limit=5&${pageNumber ? `&page=${pageNumber}` : ""}`;
     const response = await getOrderHistory({ path });
     if (response.success) {
       setOrderHistory(response?.data);
@@ -69,31 +78,51 @@ const HelpAndSupport = () => {
   };
 
   useEffect(() => {
-    fetchOrderSummary(pageNumber, limitNumber);
+    fetchOrderSummary(pageNumber);
   }, [pageNumber]);
+
+  const handlePaginationChange = (e, value) => {
+    setPageNumber(value);
+  };
 
   return (
     <>
-      <div className="product__list__wrapper">
-        {Array.from({ length: 5 }, (_, index) => index + 1)?.map((item) => (
-          <ProductCardStyle key={item}>
-            <div className="product__image">
-              <img src="" />
-            </div>
-            <div className="product__details">
-              <div className="product__title text">
-                Castico 60L x 32W x 84H" Solid Composite Stone Shower Kit- Gr
-                Picket Walls and L/RCastico 60L x 32W x 84H" Solid Composite
-                Stone Shower Kit- Gr Picket Walls and L/R
+      <HelpSupportStyle>
+        {orderHistory &&
+          orderHistory?.docs?.length &&
+          orderHistory?.docs?.map((item) => (
+            <ProductCardStyle key={item?._id}>
+              <div className="product__image">
+                <img
+                  src={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${item?.product?.image}`}
+                />
               </div>
-              <div className="text">
-                <span className="bold">SKU</span> # 1001812254
+              <div className="product__details">
+                <div className="product__title text">{item?.product?.name}</div>
+                <div className="text">
+                  <span className="bold">SKU</span> # {item?.product?.sku}
+                </div>
               </div>
-            </div>
-            <div className="product__need__help__btn">Need Help for this</div>
-          </ProductCardStyle>
-        ))}
-      </div>
+              <div
+                className="product__need__help__btn"
+                onClick={() => setIsCreateModal(true)}
+              >
+                Need Help for this
+              </div>
+            </ProductCardStyle>
+          ))}
+        <ProductListPaginationStyle>
+          <Pagination
+            className="pagination"
+            count={orderHistory?.totalPages}
+            shape="rounded"
+            onChange={handlePaginationChange}
+          />
+        </ProductListPaginationStyle>
+      </HelpSupportStyle>
+      {isCreateModal && (
+        <CreateTicketModal handleClose={() => setIsCreateModal(false)} />
+      )}
     </>
   );
 };
