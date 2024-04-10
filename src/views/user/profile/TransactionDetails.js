@@ -179,6 +179,12 @@ const TransactionDetailsStyle = styled.div`
         border-color: #3f8e00;
       }
     }
+    .cancelled {
+      .Mui-active,
+      .Mui-completed {
+        color: #ff0000;
+      }
+    }
     .MuiStepConnector-line {
       border-top-width: 2px;
     }
@@ -415,19 +421,26 @@ const TransactionDetails = ({ setPageTitle }) => {
         </div>
         <div className="transaction__order__status">
           <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map((label) => (
+            {steps.map((label, index) => (
               <Step key={label}>
-                <StepLabel>{label}</StepLabel>
+                <StepLabel className={transactionData?.data?.orderStatus}>
+                  {transactionData?.data?.orderStatus === "cancelled" &&
+                  index === 0
+                    ? "Order Cancelled"
+                    : label}
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
           <div className="transaction__order__action">
-            <button
-              className="dark"
-              onClick={() => setIsProductReturnActive(true)}
-            >
-              Return Product
-            </button>
+            {transactionData?.data?.orderStatus !== "cancelled" && (
+              <button
+                className="dark"
+                onClick={() => setIsProductReturnActive(true)}
+              >
+                Return Product
+              </button>
+            )}
             {isDesktop && <div style={{ flex: 1 }} />}
             <button
               className="dark"
