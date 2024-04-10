@@ -141,8 +141,13 @@ const PaymentStyle = styled.div`
 const Payment = ({ createOrderData, orderSummaryData }) => {
   const [handleRequest] = useRequest();
   const [Razorpay] = useRazorpay();
-  const { user, checkoutCartData, appliedCoupon, setCheckoutCartData } =
-    useAppContext();
+  const {
+    user,
+    checkoutCartData,
+    appliedCoupon,
+    setCheckoutCartData,
+    setThankyouData,
+  } = useAppContext();
   const [selectedMethod, setSelectedMethod] = useState();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -169,6 +174,14 @@ const Payment = ({ createOrderData, orderSummaryData }) => {
       return toast.error(response.message);
     }
     handleDeleteCart(checkoutCartData?._id);
+    setThankyouData({
+      products: checkoutCartData?.items,
+      subtotal: orderSummaryData,
+      address: createOrderData?.billingAddress,
+      paymentMethod: selectedMethod,
+      orderId: response?.data?.orderId,
+      orderDate: new Date().toLocaleDateString(),
+    });
     setCheckoutCartData();
     navigate("/thankyou", { state: { fromCheckout: true } });
   };

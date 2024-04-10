@@ -13,6 +13,7 @@ const AppContextProvider = ({ children }) => {
   const [checkoutCartData, setCheckoutCartData] = useState();
   const [appliedCoupon, setAppliedCoupon] = useState("");
   const [categoriesData, setCategoriesData] = useState();
+  const [thankyouData, setThankyouData] = useState();
 
   const handleWindowResize = () => {
     const windowWidth = window.innerWidth;
@@ -46,6 +47,8 @@ const AppContextProvider = ({ children }) => {
     setAppliedCoupon,
     categoriesData,
     setCategoriesData,
+    thankyouData,
+    setThankyouData,
   };
 
   return (
