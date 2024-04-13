@@ -394,6 +394,7 @@ const ProductDetails = () => {
               buttonText={"View All"}
               pagination={false}
               buttonArrow={true}
+              handleButtonClick={() => navigate("/search")}
               apiPath={`/product/${productId}/related`}
             />
           </div>
