@@ -24,7 +24,7 @@ const AddressFormStyle = styled.div`
     .add__address__modal__body {
       .row {
         display: flex;
-        gap: 16px;
+        gap: 24px;
       }
       .form__group {
         width: 100%;
@@ -52,6 +52,9 @@ const AddressFormStyle = styled.div`
           line-height: 22.5px;
           &::placeholder {
             color: #898989;
+          }
+          &:focus {
+            outline: 1px solid #898989;
           }
         }
         textarea {
@@ -93,17 +96,43 @@ const AddressFormStyle = styled.div`
 
 const AddressForm = ({ title = "Add Address", state, setState, onClick }) => {
   const [addressData, setAddressData] = useState(state || addressFormObj);
+  const [isOtherActive, setIsOtherActive] = useState(false);
+  const [otherValue, setOtherValue] = useState("");
 
   useEffect(() => {
+    addressData?.label === "other" && setIsOtherActive(true);
     setState && setState(addressData);
   }, [addressData]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    if (type === "radio" && name === "label") {
+      setIsOtherActive(false);
+    }
+    if (name === "phoneNumber") {
+      const input = value.replace(/\D/g, "");
+      const truncatedInput = input.slice(0, 11);
+      return setAddressData((prev) => ({
+        ...prev,
+        [name]: truncatedInput,
+      }));
+    }
     setAddressData((prev) => ({
       ...prev,
       [name]: value,
     }));
+  };
+
+  useEffect(() => {
+    setAddressData((prev) => ({
+      ...prev,
+      label: otherValue ? otherValue : "other",
+    }));
+  }, [otherValue]);
+
+  const handleOtherValue = (e) => {
+    const value = e.target.value;
+    setOtherValue(value);
   };
 
   return (
@@ -126,7 +155,7 @@ const AddressForm = ({ title = "Add Address", state, setState, onClick }) => {
             <div className="form__group">
               <label>Phone Number</label>
               <input
-                type="tel"
+                type="number"
                 name="phoneNumber"
                 value={addressData?.phoneNumber}
                 placeholder="Phone Number"
@@ -242,9 +271,22 @@ const AddressForm = ({ title = "Add Address", state, setState, onClick }) => {
                 name="label"
                 type="radio"
                 value={"other"}
-                checked={addressData?.label === "other"}
+                checked={
+                  addressData?.label !== "work" && addressData?.label !== "home"
+                }
               />
-              <label htmlFor="work">Other</label>
+              <label htmlFor="other">Other</label>
+              {isOtherActive && (
+                <div className="form__group" style={{ marginBottom: 0 }}>
+                  <input
+                    type="text"
+                    name="other"
+                    value={otherValue}
+                    onChange={handleOtherValue}
+                    style={{ padding: "4px 12px", height: "36px" }}
+                  />
+                </div>
+              )}
             </div>
           </div>
           <div className="submit__button">
