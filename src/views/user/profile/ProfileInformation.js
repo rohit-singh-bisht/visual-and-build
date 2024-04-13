@@ -25,7 +25,8 @@ const ProfileInformationStyle = styled.div`
     font-weight: 400;
     line-height: 16px;
   }
-  input {
+  input,
+  .divselect {
     border-radius: 1.5px;
     border: 0.75px solid #666;
     background: #fff;
@@ -36,6 +37,17 @@ const ProfileInformationStyle = styled.div`
     font-size: 12px;
     font-weight: 400;
     line-height: 18px;
+  }
+  select {
+    border: 0px;
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    &:focus {
+      outline: none;
+    }
   }
   .input_group {
     max-width: 370px;
@@ -123,60 +135,63 @@ const ProfileInformation = () => {
           </div> */}
           </div>
           <Button type={"save"} onClick={handleSave} title={"Save Changes"} />
-          {/* <div className="page__subtitle">Business Details</div>
-        <p className="text">
-          Your Home Depot rewards will be sent to your registered business
-          address.
-        </p>
-        <div className="input_group">
-          <label className="required">Business Name</label>
-          <input type="text" />
-        </div>
-        <div className="input__wrapper">
+          <div className="page__subtitle">Business Details</div>
+          <p className="text">
+            Your Home Depot rewards will be sent to your registered business
+            address.
+          </p>
           <div className="input_group">
-            <label className="required">Primary Business Phone</label>
+            <label>Business Name</label>
             <input type="text" />
           </div>
-          <div className="input_group">
-            <label className="required">
-              Secondary Business Phone (Optional)
-            </label>
-            <input type="text" />
+          <div className="input__wrapper">
+            <div className="input_group">
+              <label>Primary Business Phone</label>
+              <input type="text" />
+            </div>
+            <div className="input_group">
+              <label>Secondary Business Phone (Optional)</label>
+              <input type="text" />
+            </div>
           </div>
-        </div>
-        <div className="input__wrapper">
-          <div className="input_group">
-            <label className="required">Business Address</label>
-            <input type="text" />
+          <div className="input__wrapper">
+            <div className="input_group">
+              <label>Business Address</label>
+              <input type="text" />
+            </div>
+            <div className="input_group">
+              <label>City</label>
+              <input type="text" />
+            </div>
           </div>
-          <div className="input_group">
-            <label className="required">City</label>
-            <input type="text" />
+          <div className="input__wrapper">
+            <div className="input_group">
+              <label>Province</label>
+              <div className="divselect">
+                <select>
+                  <option>India</option>
+                  <option>British Columbia </option>
+                </select>
+              </div>
+            </div>
+            <div className="input_group">
+              <label>Postal Code – A0A 0A0</label>
+              <input type="text" />
+            </div>
           </div>
-        </div>
-        <div className="input__wrapper">
-          <div className="input_group">
-            <label className="required">Province</label>
-            <select>
-              <option>India</option>
-              <option>British Columbia </option>
-            </select>
+          <div className="input__wrapper">
+            <div className="input_group">
+              <label>Business or Trade</label>
+              <div className="divselect">
+                <select>
+                  <option>India</option>
+                  <option>British Columbia </option>
+                </select>
+              </div>
+            </div>
+            <div className="input_group"></div>
           </div>
-          <div className="input_group">
-            <label className="required">Postal Code – A0A 0A0</label>
-            <input type="text" />
-          </div>
-        </div>
-        <div className="input__wrapper">
-          <div className="input_group">
-            <label className="required">Business or Trade</label>
-            <select>
-              <option>India</option>
-              <option>British Columbia </option>
-            </select>
-          </div>
-        </div> 
-        <Button type={"save"} title={"Save Changes"} />*/}
+          <Button type={"save"} title={"Save Changes"} />
           <div className="page__subtitle">Update Email</div>
           <p className="text">
             After saving your new email, you will be signed out and prompted to
