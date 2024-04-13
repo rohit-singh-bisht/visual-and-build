@@ -142,6 +142,7 @@ const FilterableProducts = ({
   const [sortBy, setSortBy] = useState(sortingOptions[0]?.value);
   const [sortOrder, setSortOrder] = useState("");
   const [sortLabel, setSortLabel] = useState(sortingOptions[0]?.label);
+  const [priceRange, setPriceRange] = useState();
 
   useEffect(() => {
     const params = new URLSearchParams(search);
@@ -152,7 +153,14 @@ const FilterableProducts = ({
     setCategoriesList && setCategoriesList(categoryNames);
   }, [search, categoriesData, brandsData]);
 
-  const generateURL = (pageNumber, categories, brands, sortBy, sortOrder) => {
+  const generateURL = (
+    pageNumber,
+    categories,
+    brands,
+    sortBy,
+    sortOrder,
+    priceRange
+  ) => {
     let url = `${apiPath}?limit=16&page=${pageNumber}`;
     categories.forEach((category) => {
       url += `&categories[]=${category}`;
@@ -162,6 +170,9 @@ const FilterableProducts = ({
     });
     if (sortBy && sortOrder && sortBy !== "newestFirst") {
       url += `&sortBy=${sortBy}&sortOrder=${sortOrder}`;
+    }
+    if (priceRange && priceRange?.length) {
+      url += `&from_price=${priceRange?.[0]}&to_price=${priceRange?.[1]}`;
     }
     return url;
   };
@@ -173,12 +184,20 @@ const FilterableProducts = ({
         categoriesIdList,
         brandsIdList,
         sortBy,
-        sortOrder
+        sortOrder,
+        priceRange
       );
       fetchProducts({ path });
     }
     // eslint-disable-next-line
-  }, [pageNumber, categoriesIdList, brandsIdList, sortBy, sortOrder]);
+  }, [
+    pageNumber,
+    categoriesIdList,
+    brandsIdList,
+    sortBy,
+    sortOrder,
+    priceRange,
+  ]);
 
   const handleProductClick = (item) => {
     let slug = item?.slug;
@@ -213,6 +232,7 @@ const FilterableProducts = ({
                 brandsData={brandsData}
                 searchInput={searchInput}
                 setSearchInput={setSearchInput}
+                setPriceRange={setPriceRange}
               />
             </div>
           </aside>

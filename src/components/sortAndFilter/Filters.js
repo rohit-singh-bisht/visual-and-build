@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDebounce from "../../hooks/useDebounce";
 import { useRequest } from "../../hooks/useRequest";
+import Slider from "@mui/material/Slider";
 
 const FilterStyle = styled.div`
   .filter__wrapper {
@@ -81,13 +82,41 @@ const FilterStyle = styled.div`
       accent-color: #ae0000;
     }
   }
+  .range__slider {
+    .MuiSlider-rail {
+      background-color: rgba(48, 48, 48, 0.25);
+    }
+    .MuiSlider-thumb,
+    .MuiSlider-track {
+      background-color: #ae0000;
+    }
+    .MuiSlider-track {
+      border: 1px solid #ae0000;
+    }
+  }
+  .slider__input__wrapper {
+    display: flex;
+    justify-content: space-between;
+    .slider__input {
+      border: 1px solid #d9d9d9;
+      max-width: 60px;
+      height: 32px;
+      padding: 6px;
+    }
+  }
 `;
+
+function valuetext(value) {
+  return `Rs. ${value}`;
+}
 
 const Filters = ({
   categoriesData,
   brandsData,
   searchInput,
   setSearchInput,
+  priceRange = [1000, 6500],
+  setPriceRange,
 }) => {
   const { search, pathname } = useLocation();
   const navigate = useNavigate();
@@ -97,6 +126,15 @@ const Filters = ({
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [fetchSearch] = useRequest();
+  const [priceValue, setPriceValue] = useState(priceRange);
+
+  useDebounce(
+    () => {
+      setPriceRange(priceValue);
+    },
+    [priceValue],
+    300
+  );
 
   useDebounce(
     async () => {
@@ -156,6 +194,10 @@ const Filters = ({
     if (value === "category") {
       setCategories([]);
     }
+  };
+
+  const handleSliderChange = (event, newValue) => {
+    setPriceValue(newValue);
   };
 
   return (
@@ -297,6 +339,56 @@ const Filters = ({
             <label htmlFor={`brand${item?._id}`}>{item?.name}</label>
           </div>
         ))}
+      </div>
+      <hr
+        style={{
+          border: 0,
+          borderBottom: "0.75px solid rgb(48 48 48 / 25%)",
+          margin: "0 27px",
+        }}
+      />
+      <div className="filter__wrapper">
+        <h3 className="filter__title">Price Range</h3>
+
+        <Slider
+          getAriaLabel={() => "Price Range"}
+          value={priceValue}
+          onChange={handleSliderChange}
+          valueLabelDisplay="auto"
+          getAriaValueText={valuetext}
+          className="range__slider"
+          min={1000}
+          step={100}
+          max={8000}
+        />
+        <div className="slider__input__wrapper">
+          <input
+            type="number"
+            value={priceValue?.[0]}
+            className="slider__input"
+            max={8000}
+            onChange={(e) => {
+              const newPriceValue = [...priceValue];
+              newPriceValue[0] = Number(e.target.value);
+              if (newPriceValue[0] >= newPriceValue[1]) {
+                newPriceValue[0] = newPriceValue[1];
+              }
+              console.log("newPriceValue", newPriceValue);
+              setPriceValue(newPriceValue);
+            }}
+          />
+          <input
+            type="number"
+            value={priceValue?.[1]}
+            className="slider__input"
+            max={8000}
+            onChange={(e) => {
+              const newPriceValue = [...priceValue];
+              newPriceValue[1] = e.target.value;
+              setPriceValue(newPriceValue);
+            }}
+          />
+        </div>
       </div>
     </FilterStyle>
   );
