@@ -59,10 +59,19 @@ const ProfileInformation = () => {
     name: userInfo?.name,
     email: userInfo?.email,
     password: "",
+    phone: userInfo?.phone,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "phone") {
+      const input = value.replace(/\D/g, "");
+      const truncatedInput = input.slice(0, 11);
+      return setProfileInformation((prev) => ({
+        ...prev,
+        [name]: truncatedInput,
+      }));
+    }
     setProfileInformation((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -214,9 +223,11 @@ const ProfileInformation = () => {
             <div className="input_group">
               <label className="required">Phone Number</label>
               <input
-                type="password"
-                name="password"
-                value={profileInformation?.password}
+                type="number"
+                pattern="\d*"
+                max={11}
+                name="phone"
+                value={profileInformation?.phone}
                 onChange={handleChange}
               />
             </div>
