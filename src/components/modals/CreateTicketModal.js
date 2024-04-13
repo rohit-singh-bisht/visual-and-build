@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { RxCross1 } from "react-icons/rx";
 import StyledMask from "../common/StyledMask";
@@ -87,9 +87,9 @@ const CreateTicketModalStyle = styled.div`
   }
 `;
 
-const CreateTicketModal = ({ handleClose }) => {
+const CreateTicketModal = ({ handleClose, selectedOrderId }) => {
   const [data, setData] = useState({
-    subject: "",
+    subject: `Order Id = ${selectedOrderId}`,
     priority: "",
     message: "",
   });
@@ -120,7 +120,6 @@ const CreateTicketModal = ({ handleClose }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setData((prev) => ({ ...prev, [name]: value }));
   };
 

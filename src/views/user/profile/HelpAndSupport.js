@@ -68,6 +68,7 @@ const HelpAndSupport = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [orderHistory, setOrderHistory] = useState([]);
   const [isCreateModal, setIsCreateModal] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState();
 
   const fetchOrderSummary = async (pageNumber) => {
     const path = `/order?limit=5&${pageNumber ? `&page=${pageNumber}` : ""}`;
@@ -104,7 +105,9 @@ const HelpAndSupport = () => {
               </div>
               <div
                 className="product__need__help__btn"
-                onClick={() => setIsCreateModal(true)}
+                onClick={() => {
+                  setIsCreateModal(true), setSelectedOrderId(item?.orderId);
+                }}
               >
                 Need Help for this
               </div>
@@ -121,7 +124,10 @@ const HelpAndSupport = () => {
         </HelpSupportStyle>
       )}
       {isCreateModal && (
-        <CreateTicketModal handleClose={() => setIsCreateModal(false)} />
+        <CreateTicketModal
+          selectedOrderId={selectedOrderId}
+          handleClose={() => setIsCreateModal(false)}
+        />
       )}
     </>
   );
