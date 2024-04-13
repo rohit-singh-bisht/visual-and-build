@@ -110,7 +110,6 @@ const Homepage = () => {
         <ProductList
           listTitle={"Interior"}
           buttonArrow={false}
-          buttonText={"See all"}
           apiPath={`/featured-category-products/top`}
         />
       </div>
@@ -127,7 +126,6 @@ const Homepage = () => {
         <ProductList
           listTitle={"Exterior"}
           buttonArrow={false}
-          buttonText={"See all"}
           apiPath={`/featured-category-products/middle`}
         />
       </div>
