@@ -140,9 +140,12 @@ const ProfileInformation = () => {
             Your Home Depot rewards will be sent to your registered business
             address.
           </p>
-          <div className="input_group">
-            <label>Business Name</label>
-            <input type="text" />
+          <div className="input__wrapper">
+            <div className="input_group">
+              <label>Business Name</label>
+              <input type="text" />
+            </div>
+            <div className="input_group"></div>
           </div>
           <div className="input__wrapper">
             <div className="input_group">
