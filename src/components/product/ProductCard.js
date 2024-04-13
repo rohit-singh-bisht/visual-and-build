@@ -10,9 +10,12 @@ export const ProductCardStyle = styled.div`
   width: 100%;
   cursor: pointer;
   .image {
+    height: 168px;
     img {
       width: 100%;
       display: block;
+      height: 100%;
+      object-fit: cover;
     }
   }
   .content {

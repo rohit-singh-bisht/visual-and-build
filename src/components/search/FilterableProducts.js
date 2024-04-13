@@ -6,8 +6,6 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppContext } from "../../context/useAppContext";
 import { useRequest } from "../../hooks/useRequest";
-import { IoChevronDownOutline } from "react-icons/io5";
-import StyledMask from "../common/StyledMask";
 import Sort from "../common/Sort";
 
 const FilterableProductsStyle = styled.div`
@@ -195,7 +193,7 @@ const FilterableProducts = ({
   };
 
   const handleSortClick = (item) => {
-    setIsDropdownActive(false);
+    console.log("item", item);
     if (item?.value === sortBy && item?.sortOrder === sortOrder) {
       return;
     }
