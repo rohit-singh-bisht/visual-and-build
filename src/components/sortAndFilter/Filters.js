@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDebounce from "../../hooks/useDebounce";
@@ -149,6 +149,8 @@ const Filters = ({
   priceRange = [1000, 6500],
   setPriceRange,
   locationRange = [5, 15],
+  setLocationRange,
+  setLatLong,
 }) => {
   const { search, pathname } = useLocation();
   const navigate = useNavigate();
@@ -160,12 +162,15 @@ const Filters = ({
   const [fetchSearch] = useRequest();
   const [priceValue, setPriceValue] = useState(priceRange);
   const [locationValue, setLocationValue] = useState(locationRange);
+  const [userLocation, setUserLocation] = useState({});
 
   useDebounce(
     () => {
       setPriceRange(priceValue);
+      setLocationRange(locationValue);
+      setLatLong(userLocation);
     },
-    [priceValue],
+    [priceValue, locationValue, userLocation],
     300
   );
 
@@ -230,7 +235,6 @@ const Filters = ({
   };
 
   const handleSliderChange = (event, newValue) => {
-    console.log(event, "event");
     if (event?.target?.name === "price") {
       setPriceValue(newValue);
     }
@@ -245,6 +249,24 @@ const Filters = ({
       parentElement.classList.toggle("active");
     }
   };
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          setUserLocation({
+            latitude,
+            longitude,
+          });
+        },
+        (error) => {
+          console.log(false);
+        }
+      );
+    }
+  }, []);
 
   return (
     <FilterStyle>
@@ -465,77 +487,80 @@ const Filters = ({
           />
         </div>
       </div>
-      <div className="filter__wrapper">
-        <h3 className="filter__title">Location</h3>
 
-        <Slider
-          getAriaLabel={() => "Location"}
-          value={locationValue}
-          onChange={handleSliderChange}
-          valueLabelDisplay="auto"
-          getAriaValueText={valuetext}
-          className="range__slider"
-          min={5}
-          step={1}
-          max={25}
-          name={"location"}
-        />
-        <div className="slider__input__wrapper">
-          <div style={{ position: "relative" }}>
-            <input
-              type="number"
-              value={locationValue?.[0]}
-              className="slider__input"
-              max={5}
-              onChange={(e) => {
-                const newLocationValue = [...locationValue];
-                newLocationValue[0] = Number(e.target.value);
-                if (newLocationValue[0] >= newLocationValue[1]) {
-                  newLocationValue[0] = newLocationValue[1];
-                }
-                setLocationValue(newLocationValue);
-              }}
-              style={{ paddingRight: "25px" }}
-            />
-            <span
-              style={{
-                position: "absolute",
-                right: "6px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                fontSize: "12px",
-              }}
-            >
-              km
-            </span>
-          </div>
-          <div style={{ position: "relative" }}>
-            <input
-              type="number"
-              value={locationValue?.[1]}
-              className="slider__input"
-              max={25}
-              onChange={(e) => {
-                const newLocationValue = [...locationValue];
-                newLocationValue[1] = e.target.value;
-                setLocationValue(newLocationValue);
-              }}
-              style={{ paddingRight: "25px" }}
-            />
-            <span
-              style={{
-                position: "absolute",
-                right: "6px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                fontSize: "12px",
-              }}
-            >
-              km
-            </span>
+      {userLocation && Object.keys(userLocation)?.length > 0 && (
+        <div className="filter__wrapper">
+          <h3 className="filter__title">Location</h3>
+
+          <Slider
+            getAriaLabel={() => "Location"}
+            value={locationValue}
+            onChange={handleSliderChange}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+            className="range__slider"
+            min={5}
+            step={1}
+            max={25}
+            name={"location"}
+          />
+          <div className="slider__input__wrapper">
+            <div style={{ position: "relative" }}>
+              <input
+                type="number"
+                value={locationValue?.[0]}
+                className="slider__input"
+                max={5}
+                onChange={(e) => {
+                  const newLocationValue = [...locationValue];
+                  newLocationValue[0] = Number(e.target.value);
+                  if (newLocationValue[0] >= newLocationValue[1]) {
+                    newLocationValue[0] = newLocationValue[1];
+                  }
+                  setLocationValue(newLocationValue);
+                }}
+                style={{ paddingRight: "25px" }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  right: "6px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  fontSize: "12px",
+                }}
+              >
+                km
+              </span>
+            </div>
+            <div style={{ position: "relative" }}>
+              <input
+                type="number"
+                value={locationValue?.[1]}
+                className="slider__input"
+                max={25}
+                onChange={(e) => {
+                  const newLocationValue = [...locationValue];
+                  newLocationValue[1] = e.target.value;
+                  setLocationValue(newLocationValue);
+                }}
+                style={{ paddingRight: "25px" }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  right: "6px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  fontSize: "12px",
+                }}
+              >
+                km
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </FilterStyle>
   );
 };

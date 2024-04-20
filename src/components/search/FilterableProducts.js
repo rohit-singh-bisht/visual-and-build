@@ -143,6 +143,8 @@ const FilterableProducts = ({
   const [sortOrder, setSortOrder] = useState("");
   const [sortLabel, setSortLabel] = useState(sortingOptions[0]?.label);
   const [priceRange, setPriceRange] = useState();
+  const [locationRange, setLocationRange] = useState();
+  const [latLong, setLatLong] = useState();
 
   useEffect(() => {
     const params = new URLSearchParams(search);
@@ -159,7 +161,9 @@ const FilterableProducts = ({
     brands,
     sortBy,
     sortOrder,
-    priceRange
+    priceRange,
+    locationRange,
+    latLong
   ) => {
     let url = `${apiPath}?limit=16&page=${pageNumber}`;
     categories.forEach((category) => {
@@ -174,6 +178,15 @@ const FilterableProducts = ({
     if (priceRange && priceRange?.length) {
       url += `&from_price=${priceRange?.[0]}&to_price=${priceRange?.[1]}`;
     }
+    if (
+      locationRange &&
+      locationRange?.length &&
+      latLong &&
+      latLong?.latitude &&
+      latLong?.longitude
+    ) {
+      url += `&start_km=${locationRange?.[0]}&end_km=${locationRange?.[1]}&latitude=${latLong?.latitude}&longitude=${latLong?.longitude}`;
+    }
     return url;
   };
 
@@ -185,7 +198,9 @@ const FilterableProducts = ({
         brandsIdList,
         sortBy,
         sortOrder,
-        priceRange
+        priceRange,
+        locationRange,
+        latLong
       );
       fetchProducts({ path });
     }
@@ -197,6 +212,8 @@ const FilterableProducts = ({
     sortBy,
     sortOrder,
     priceRange,
+    locationRange,
+    latLong,
   ]);
 
   const handleProductClick = (item) => {
@@ -233,6 +250,8 @@ const FilterableProducts = ({
                 searchInput={searchInput}
                 setSearchInput={setSearchInput}
                 setPriceRange={setPriceRange}
+                setLocationRange={setLocationRange}
+                setLatLong={setLatLong}
               />
             </div>
           </aside>
