@@ -40,9 +40,15 @@ export const BannerStyle = styled.div`
       }
     }
   }
+  iframe {
+    width: 100%;
+    height: 375px;
+    border: none;
+  }
   @media (max-width: 768px) {
     min-height: 250px;
-    img {
+    img,
+    iframe {
       height: 250px;
     }
     .content {
@@ -70,6 +76,7 @@ const Banner = ({
   titleSize,
   leftdistance,
   buttonTitle,
+  contentType,
 }) => {
   const navigate = useNavigate();
   const handleClick = () => {
@@ -77,19 +84,29 @@ const Banner = ({
   };
 
   return (
-    <BannerStyle leftdistance={leftdistance}>
-      <img src={imageSrc} alt="Banner" />
+    <BannerStyle leftdistance={leftdistance || 0}>
+      {contentType !== "image" ? (
+        <iframe src={imageSrc}></iframe>
+      ) : (
+        <>
+          <img src={imageSrc} alt="Banner" />
 
-      <div className={`content ${textDark ? "dark" : ""}`}>
-        <h2 className={`title ${titleSize ? titleSize : ""}`}>{title}</h2>
-        <p
-          className="subtitle"
-          dangerouslySetInnerHTML={{ __html: subtitle }}
-        ></p>
-        {buttonTitle && (
-          <Button title={buttonTitle} type={buttonType} onClick={handleClick} />
-        )}
-      </div>
+          <div className={`content ${textDark ? "dark" : ""}`}>
+            <h2 className={`title ${titleSize ? titleSize : ""}`}>{title}</h2>
+            <p
+              className="subtitle"
+              dangerouslySetInnerHTML={{ __html: subtitle }}
+            ></p>
+            {buttonTitle && (
+              <Button
+                title={buttonTitle}
+                type={buttonType}
+                onClick={handleClick}
+              />
+            )}
+          </div>
+        </>
+      )}
     </BannerStyle>
   );
 };

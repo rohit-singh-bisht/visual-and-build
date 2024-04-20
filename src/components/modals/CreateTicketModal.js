@@ -89,7 +89,7 @@ const CreateTicketModalStyle = styled.div`
 
 const CreateTicketModal = ({ handleClose, selectedOrderId }) => {
   const [data, setData] = useState({
-    subject: `Order Id = ${selectedOrderId}`,
+    subject: `Order Id #${selectedOrderId}`,
     priority: "",
     message: "",
   });

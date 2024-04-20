@@ -46,13 +46,18 @@ const SlidingBanner = ({
             <Banner
               title={item?.heading}
               subtitle={item?.tagline}
-              imageSrc={`${process.env.REACT_APP_MEDIA_ASSETS_URL}/${
-                item.name || item?.image || item
-              }`}
+              imageSrc={
+                item?.contentType === "image"
+                  ? `${process.env.REACT_APP_MEDIA_ASSETS_URL}/${
+                      item.name || item.image || item
+                    }`
+                  : item?.image
+              }
               leftdistance={leftdistance}
               textDark={true}
               buttonTitle={item?.ctaUrl ? "Get Started" : ""}
               buttonLink={item?.ctaUrl}
+              contentType={item?.contentType}
             />
           </div>
         ))}
@@ -63,11 +68,16 @@ const SlidingBanner = ({
       <Banner
         title={bannerData?.[0]?.heading}
         subtitle={bannerData?.[0]?.tagline}
-        imageSrc={bannerData?.[0]?.url}
+        imageSrc={
+          bannerData?.[0]?.contentType === "image"
+            ? bannerData?.[0]?.url
+            : bannerData?.[0]?.image
+        }
         leftdistance={leftdistance}
         textDark={true}
         buttonTitle={"Get Started"}
         buttonLink={bannerData?.[0]?.ctaUrl}
+        contentType={bannerData?.[0]?.contentType}
       />
     );
   }

@@ -144,7 +144,6 @@ const TransactionDetailsStyle = styled.div`
       padding: 12px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
       .transaction__payment__method {
         font-size: 12px;
         font-weight: 400;
@@ -157,11 +156,21 @@ const TransactionDetailsStyle = styled.div`
       }
       .transaction__order__total {
         font-size: 12px;
-        font-weight: 700;
         line-height: 12px;
         text-align: left;
         display: flex;
         gap: 100px;
+        margin: 16px 0;
+        &:first-child,
+        &:last-child {
+          margin: 0;
+        }
+        &.bold {
+          font-weight: 700;
+        }
+        span {
+          flex: 1;
+        }
       }
     }
   }
@@ -294,6 +303,8 @@ const TransactionDetails = ({ setPageTitle }) => {
     });
   };
 
+  console.log(transactionData, "transactionData");
+
   return (
     <>
       <TransactionDetailsStyle>
@@ -411,10 +422,22 @@ const TransactionDetails = ({ setPageTitle }) => {
                 <span>Payment Ref Number: </span>
                 {transactionData?.data?.paymentRefNumber || "N/A"}
               </div>
-              <div className="transaction__order__total">
-                <span>Order Total:</span>
-                {process.env.REACT_APP_PRICE_SYMBOL}
-                {transactionData?.data?.total}
+              <div>
+                <div className="transaction__order__total">
+                  <span>Tax:</span>
+                  {process.env.REACT_APP_PRICE_SYMBOL}
+                  {transactionData?.data?.tax}
+                </div>
+                <div className="transaction__order__total">
+                  <span>Shipping Charge:</span>
+                  {process.env.REACT_APP_PRICE_SYMBOL}
+                  {transactionData?.data?.shippingCharge}
+                </div>
+                <div className="transaction__order__total bold">
+                  <span>Order Total:</span>
+                  {process.env.REACT_APP_PRICE_SYMBOL}
+                  {transactionData?.data?.total}
+                </div>
               </div>
             </div>
           </div>
