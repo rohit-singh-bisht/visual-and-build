@@ -76,7 +76,7 @@ const Banner = ({
   titleSize,
   leftdistance,
   buttonTitle,
-  contentType,
+  contentType = "image",
 }) => {
   const navigate = useNavigate();
   const handleClick = () => {

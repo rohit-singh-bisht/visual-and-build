@@ -53,6 +53,13 @@ const BlogDetailsStyle = styled.div`
     color: #303030;
     margin: 36px 0;
   }
+  .blog__details__image {
+    iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+    }
+  }
   @media (min-width: 1024px) {
     .gap-30 {
       height: 30px;
@@ -64,7 +71,8 @@ const BlogDetails = () => {
   const { isDesktop } = useAppContext();
   const { blogId } = useParams();
   const [fetchBlog, { isLoading, state: blogData }] = useRequest();
-  const { title, date, banner, description } = blogData?.data || {};
+  const { title, date, banner, description, contentType, bannerUrl } =
+    blogData?.data || {};
 
   useEffect(() => {
     blogId && fetchBlog({ path: `/blog/${blogId}/show` });
@@ -84,10 +92,14 @@ const BlogDetails = () => {
                 </div>
               </div>
               <div className="blog__details__image">
-                <img
-                  src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + banner}
-                  alt={title}
-                />
+                {contentType === "image" ? (
+                  <img
+                    src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + banner}
+                    alt={title}
+                  />
+                ) : (
+                  <iframe src={bannerUrl}></iframe>
+                )}
               </div>
               <div className="blog__details__description">{description}</div>
             </div>

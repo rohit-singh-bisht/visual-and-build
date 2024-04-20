@@ -157,15 +157,18 @@ const Blogs = () => {
                 : blogsData?.map((item) => (
                     <BlogCard
                       blogSrc={
-                        process.env.REACT_APP_MEDIA_ASSETS_URL +
-                        "/" +
-                        item?.banner
+                        item?.contentType === "image"
+                          ? process.env.REACT_APP_MEDIA_ASSETS_URL +
+                            "/" +
+                            item?.banner
+                          : item?.bannerUrl
                       }
                       blogTitle={item?.title}
                       tag={item?.category}
                       date={getDate(item?.date)}
                       key={item?.id}
                       id={item?.id}
+                      contentType={item?.contentType}
                     />
                   ))}
             </div>

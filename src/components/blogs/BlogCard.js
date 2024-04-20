@@ -22,10 +22,12 @@ const BlogCardStyle = styled.div`
     border-radius: 18px;
     overflow: clip;
     position: relative;
-    img {
+    img,
+    iframe {
       width: 100%;
-      height: 100%;
+      height: 250px;
       object-fit: cover;
+      border: none;
     }
     .blog__card__tag {
       padding: 5px 15px;
@@ -93,7 +95,15 @@ const BlogCardStyle = styled.div`
   }
 `;
 
-const BlogCard = ({ blogSrc, blogTitle, tag, author, date, id }) => {
+const BlogCard = ({
+  blogSrc,
+  blogTitle,
+  tag,
+  author,
+  date,
+  id,
+  contentType = "image",
+}) => {
   const navigate = useNavigate();
 
   const handleBlogClick = (id) => {
@@ -103,7 +113,11 @@ const BlogCard = ({ blogSrc, blogTitle, tag, author, date, id }) => {
   return (
     <BlogCardStyle onClick={() => handleBlogClick(id)}>
       <div className="blog__card__image">
-        <img src={blogSrc} alt={blogTitle} />
+        {contentType === "image" ? (
+          <img src={blogSrc} alt={blogTitle} />
+        ) : (
+          <iframe src={blogSrc}></iframe>
+        )}
         <h4 className="blog__card__tag">{tag}</h4>
       </div>
       <h3 className="blog__card__title">{blogTitle}</h3>

@@ -37,10 +37,12 @@ const RecentBlogsStyle = styled.div`
         border-radius: 18px;
         margin-bottom: 18px;
         overflow: clip;
-        img {
+        img,
+        iframe {
           width: 100%;
-          height: 100%;
+          height: 220px;
           object-fit: cover;
+          border: none;
         }
       }
       .recent__blog__content {
@@ -89,10 +91,14 @@ const RecentBlogs = ({ recentTitle = "Recent Blogs" }) => {
               key={id}
             >
               <div className="recent__blog__image">
-                <img
-                  src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + banner}
-                  alt={blogTitle}
-                />
+                {blog?.contentType === "image" ? (
+                  <img
+                    src={process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + banner}
+                    alt={blogTitle}
+                  />
+                ) : (
+                  <iframe src={blog?.bannerUrl}></iframe>
+                )}
               </div>
               <div className="recent__blog__content">
                 <h3 className="recent__blog__title">{blogTitle}</h3>

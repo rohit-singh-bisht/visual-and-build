@@ -71,10 +71,12 @@ const HomeBlogsStyle = styled.section`
       }
       .blog__image {
         margin-bottom: 24px;
-        img {
+        img,
+        iframe {
           width: 100%;
           height: 300px;
           object-fit: cover;
+          border: none;
         }
       }
       .main__blog__metadata {
@@ -208,7 +210,7 @@ const HomeBlogs = () => {
                     height={285}
                     style={{ borderRadius: "8px" }}
                   />
-                ) : (
+                ) : blogsData?.[0]?.contentType === "image" ? (
                   <img
                     src={
                       process.env.REACT_APP_MEDIA_ASSETS_URL +
@@ -217,9 +219,14 @@ const HomeBlogs = () => {
                     }
                     alt={"blog"}
                   />
+                ) : (
+                  <iframe src={blogsData?.[0]?.bannerUrl}></iframe>
                 )}
               </div>
-              <h2 className="main__blog__title">
+              <h2
+                className="main__blog__title"
+                onClick={() => navigate(`/blog/${blogsData?.[0]?.id}`)}
+              >
                 {isFetchingBlogs ? (
                   <Skeleton
                     variant="rectangular"
@@ -287,13 +294,18 @@ const HomeBlogs = () => {
             {blogsData?.map((item) => (
               <BlogCard
                 blogSrc={
-                  process.env.REACT_APP_MEDIA_ASSETS_URL + "/" + item?.banner
+                  item?.contentType === "image"
+                    ? process.env.REACT_APP_MEDIA_ASSETS_URL +
+                      "/" +
+                      item?.banner
+                    : item?.bannerUrl
                 }
                 blogTitle={item?.title}
                 tag={item?.category}
                 date={getDate(item?.date)}
                 key={item?.id}
                 id={item?.id}
+                contentType={item?.contentType}
               />
             ))}
           </>
