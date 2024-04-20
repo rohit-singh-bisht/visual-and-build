@@ -6,6 +6,7 @@ import { Skeleton } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import GroupBuyGrid from "../../components/common/GroupBuyGrid";
 import FilterableProducts from "../../components/search/FilterableProducts";
+import { useAppContext } from "../../context/useAppContext";
 
 const CategoryStyle = styled.div`
   .categories {
@@ -34,6 +35,7 @@ const Search = ({
   showProducts = true,
   showRelated = true,
 }) => {
+  const { categoriesData: contextCategories } = useAppContext();
   const [categoriesData, setCategoriesData] = useState([]);
   const [brandsData, setBrandsData] = useState([]);
   const [fetchCategories, { isLoading: isFetchingCategories }] = useRequest();
@@ -46,12 +48,12 @@ const Search = ({
   useEffect(() => {
     (async function () {
       const categoryData = await fetchCategories({
-        path: `/category?limit=100&page=1`,
+        path: `/category/categories/json-tree`,
       });
       const brandData = await fetchBrands({
         path: `/brand?limit=100&page=1`,
       });
-      setCategoriesData(categoryData?.data?.docs);
+      setCategoriesData(categoryData?.data);
       setBrandsData(brandData?.data?.docs);
     })();
     // eslint-disable-next-line
@@ -84,7 +86,7 @@ const Search = ({
             </>
           ) : (
             <>
-              {categoriesData?.map((item) => (
+              {contextCategories?.data?.docs?.map((item) => (
                 <CategoryCard
                   key={item?.id}
                   bannerUrl={item?.bannerUrl}

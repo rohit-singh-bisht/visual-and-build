@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useDebounce from "../../hooks/useDebounce";
 import { useRequest } from "../../hooks/useRequest";
 import Slider from "@mui/material/Slider";
+import { GoChevronDown } from "react-icons/go";
 
 const FilterStyle = styled.div`
   .filter__wrapper {
@@ -64,13 +65,18 @@ const FilterStyle = styled.div`
     gap: 8px;
     margin: 10px 0;
     input {
+      cursor: pointer;
       &:selected {
         + label {
           font-weight: 700;
         }
+        + .label {
+          font-weight: 700;
+        }
       }
     }
-    label {
+    label,
+    .label {
       font-size: 12px;
       font-weight: 400;
       line-height: 18px;
@@ -106,6 +112,31 @@ const FilterStyle = styled.div`
   }
 `;
 
+const FilterDropdownStyle = styled.div`
+  &.active {
+    .dropdown {
+      display: block;
+    }
+    .label {
+      .icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  .dropdown {
+    padding-left: 20px;
+    display: none;
+  }
+  .label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .icon {
+      font-size: 16px;
+    }
+  }
+`;
+
 function valuetext(value) {
   return `Rs. ${value}`;
 }
@@ -117,6 +148,7 @@ const Filters = ({
   setSearchInput,
   priceRange = [1000, 6500],
   setPriceRange,
+  locationRange = [5, 15],
 }) => {
   const { search, pathname } = useLocation();
   const navigate = useNavigate();
@@ -127,6 +159,7 @@ const Filters = ({
   const [brands, setBrands] = useState([]);
   const [fetchSearch] = useRequest();
   const [priceValue, setPriceValue] = useState(priceRange);
+  const [locationValue, setLocationValue] = useState(locationRange);
 
   useDebounce(
     () => {
@@ -197,7 +230,20 @@ const Filters = ({
   };
 
   const handleSliderChange = (event, newValue) => {
-    setPriceValue(newValue);
+    console.log(event, "event");
+    if (event?.target?.name === "price") {
+      setPriceValue(newValue);
+    }
+    if (event?.target?.name === "location") {
+      setLocationValue(newValue);
+    }
+  };
+
+  const toggleVisibility = (event) => {
+    const parentElement = event.target.parentNode.parentNode;
+    if (parentElement) {
+      parentElement.classList.toggle("active");
+    }
   };
 
   return (
@@ -254,18 +300,47 @@ const Filters = ({
         </div>
 
         {categoriesData?.map((item) => (
-          <div className="filter__group" key={item?._id}>
-            <input
-              type="checkbox"
-              name="categories"
-              className="checkbox"
-              id={`category${item?._id}`}
-              value={item?._id}
-              checked={categoryNames?.includes(item?._id)}
-              onChange={handleChange}
-            />
-            <label htmlFor={`category${item?._id}`}>{item?.name}</label>
-          </div>
+          <FilterDropdownStyle className="filter__wrap">
+            <div className="filter__group" key={item?._id}>
+              <input
+                type="checkbox"
+                name="categories"
+                className="checkbox"
+                id={`category${item?._id}`}
+                value={item?._id}
+                checked={categoryNames?.includes(item?._id)}
+                onChange={handleChange}
+              />
+              {!item?.children?.length ? (
+                <label className="label" htmlFor={`category${item?._id}`}>
+                  {item?.name}
+                </label>
+              ) : (
+                <div className="label" onClick={toggleVisibility}>
+                  {item?.name} <GoChevronDown className="icon" />
+                </div>
+              )}
+            </div>
+            <div className="dropdown">
+              {item?.children?.length > 0 &&
+                item?.children?.map((child) => (
+                  <div className="filter__group" key={child?._id}>
+                    <input
+                      type="checkbox"
+                      name="categories"
+                      className="checkbox"
+                      id={`category${child?._id}`}
+                      value={child?._id}
+                      checked={categoryNames?.includes(child?._id)}
+                      onChange={handleChange}
+                    />
+                    <label className="label" htmlFor={`category${child?._id}`}>
+                      {child?.name}
+                    </label>
+                  </div>
+                ))}
+            </div>
+          </FilterDropdownStyle>
         ))}
       </div>
       <hr
@@ -360,6 +435,7 @@ const Filters = ({
           min={1000}
           step={100}
           max={8000}
+          name={"price"}
         />
         <div className="slider__input__wrapper">
           <input
@@ -373,7 +449,6 @@ const Filters = ({
               if (newPriceValue[0] >= newPriceValue[1]) {
                 newPriceValue[0] = newPriceValue[1];
               }
-              console.log("newPriceValue", newPriceValue);
               setPriceValue(newPriceValue);
             }}
           />
@@ -388,6 +463,77 @@ const Filters = ({
               setPriceValue(newPriceValue);
             }}
           />
+        </div>
+      </div>
+      <div className="filter__wrapper">
+        <h3 className="filter__title">Location</h3>
+
+        <Slider
+          getAriaLabel={() => "Location"}
+          value={locationValue}
+          onChange={handleSliderChange}
+          valueLabelDisplay="auto"
+          getAriaValueText={valuetext}
+          className="range__slider"
+          min={5}
+          step={1}
+          max={25}
+          name={"location"}
+        />
+        <div className="slider__input__wrapper">
+          <div style={{ position: "relative" }}>
+            <input
+              type="number"
+              value={locationValue?.[0]}
+              className="slider__input"
+              max={5}
+              onChange={(e) => {
+                const newLocationValue = [...locationValue];
+                newLocationValue[0] = Number(e.target.value);
+                if (newLocationValue[0] >= newLocationValue[1]) {
+                  newLocationValue[0] = newLocationValue[1];
+                }
+                setLocationValue(newLocationValue);
+              }}
+              style={{ paddingRight: "25px" }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                right: "6px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                fontSize: "12px",
+              }}
+            >
+              km
+            </span>
+          </div>
+          <div style={{ position: "relative" }}>
+            <input
+              type="number"
+              value={locationValue?.[1]}
+              className="slider__input"
+              max={25}
+              onChange={(e) => {
+                const newLocationValue = [...locationValue];
+                newLocationValue[1] = e.target.value;
+                setLocationValue(newLocationValue);
+              }}
+              style={{ paddingRight: "25px" }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                right: "6px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                fontSize: "12px",
+              }}
+            >
+              km
+            </span>
+          </div>
         </div>
       </div>
     </FilterStyle>
