@@ -57,6 +57,11 @@ const HeaderStyle = styled.header`
       cursor: pointer;
     }
   }
+  .canadian__flag {
+    padding: 0 5px;
+    background-color: #fff;
+    margin-bottom: 4px;
+  }
   .two__liners {
     color: #fff;
     font-size: 12px;
@@ -145,6 +150,7 @@ const Header = ({ setIsAuthForm }) => {
               </nav>
               <Searchbar />
               <div className="other__links">
+                <div className="canadian__flag">🇨🇦</div>
                 <div
                   onClick={() => {
                     !isLoggedIn ? setIsAuthForm(true) : navigate("/account/");
