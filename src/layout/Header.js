@@ -9,6 +9,7 @@ import { useAppContext } from "../context/useAppContext";
 import { ReactComponent as HamburgerIcon } from "../assets/hamburger.svg";
 import { useAuth } from "../hooks/useAuth";
 import StyledMask from "../components/common/StyledMask";
+import CanadaIcon from "../assets/canada.png";
 
 const HeaderStyle = styled.header`
   position: fixed;
@@ -57,10 +58,19 @@ const HeaderStyle = styled.header`
       cursor: pointer;
     }
   }
+  .flag__account__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
   .canadian__flag {
-    padding: 0 5px;
-    background-color: #fff;
-    margin-bottom: 4px;
+    padding: 0 2px;
+    height: 18px;
+    display: inline-block;
+    img {
+      outline: 1px solid #fff;
+      border-radius: 50%;
+    }
   }
   .two__liners {
     color: #fff;
@@ -150,15 +160,19 @@ const Header = ({ setIsAuthForm }) => {
               </nav>
               <Searchbar />
               <div className="other__links">
-                <div className="canadian__flag">🇨🇦</div>
                 <div
                   onClick={() => {
                     !isLoggedIn ? setIsAuthForm(true) : navigate("/account/");
                   }}
-                  className="two__liners"
+                  className="flag__account__wrapper"
                 >
-                  Hello, sign in
-                  <span>Account & Lists</span>
+                  <span className="canadian__flag">
+                    <img src={CanadaIcon} />
+                  </span>
+                  <div className="two__liners">
+                    Hello, sign in
+                    <span>Account & Lists</span>
+                  </div>
                 </div>
                 <Link to={"/account/purchase-history"} className="two__liners">
                   Returns
