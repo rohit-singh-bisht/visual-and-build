@@ -17,9 +17,9 @@ import jsPDF from "jspdf";
 const TransactionDetailsStyle = styled.div`
   flex: 1;
   .bold__title {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
-    line-height: 18px;
+    line-height: 22px;
     text-align: left;
     color: #333333;
     margin-bottom: 8px;
@@ -174,6 +174,19 @@ const TransactionDetailsStyle = styled.div`
       }
     }
   }
+  .transaction__logs {
+    border: 0.75px solid #d9d9d9;
+    margin-top: 10px;
+    padding: 12px;
+    .log__info {
+      font-size: 12px;
+      margin: 4px 0;
+      line-height: 20px;
+      span {
+        font-weight: 600;
+      }
+    }
+  }
   .transaction__order__status {
     border: 0.75px solid #d9d9d9;
     padding: 40px 0 32px;
@@ -188,7 +201,8 @@ const TransactionDetailsStyle = styled.div`
         border-color: #3f8e00;
       }
     }
-    .cancelled {
+    .cancelled,
+    .return {
       .Mui-active,
       .Mui-completed {
         color: #ff0000;
@@ -442,6 +456,28 @@ const TransactionDetails = ({ setPageTitle }) => {
             </div>
           </div>
         </div>
+        {transactionData?.data?.logs?.length > 0 && (
+          <div className="transaction__logs">
+            <div className="bold__title">Logs:</div>
+            {transactionData?.data?.logs?.map((item) => (
+              <div className="log__info">
+                {item?.log} -{" "}
+                <span>
+                  {new Date(item?.date).toLocaleString("en-GB", {
+                    timeZone: "UTC",
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    second: "numeric",
+                  })}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="transaction__order__status">
           <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map((label, index) => (
@@ -450,20 +486,24 @@ const TransactionDetails = ({ setPageTitle }) => {
                   {transactionData?.data?.orderStatus === "cancelled" &&
                   index === 0
                     ? "Order Cancelled"
+                    : transactionData?.data?.orderStatus === "return" &&
+                      index === 0
+                    ? "Order Returned"
                     : label}
                 </StepLabel>
               </Step>
             ))}
           </Stepper>
           <div className="transaction__order__action">
-            {transactionData?.data?.orderStatus !== "cancelled" && (
-              <button
-                className="dark"
-                onClick={() => setIsProductReturnActive(true)}
-              >
-                Return Product
-              </button>
-            )}
+            {transactionData?.data?.orderStatus !== "cancelled" &&
+              transactionData?.data?.orderStatus !== "return" && (
+                <button
+                  className="dark"
+                  onClick={() => setIsProductReturnActive(true)}
+                >
+                  Return Product
+                </button>
+              )}
             {isDesktop && <div style={{ flex: 1 }} />}
             <button
               className="dark"
