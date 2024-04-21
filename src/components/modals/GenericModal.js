@@ -8,7 +8,7 @@ const GenericModalStyle = styled.div`
   inset: 0;
   z-index: 9;
   .modal {
-    max-width: 900px;
+    max-width: 700px;
     width: 100%;
     border-radius: 5px;
     overflow: clip;
@@ -22,14 +22,14 @@ const GenericModalStyle = styled.div`
   .modal__header__title {
     background: #ae0000;
     color: #fff;
-    font-size: 26px;
+    font-size: 20px;
     font-weight: 600;
     line-height: 30px;
-    padding: 32px 52px;
+    padding: 20px 40px;
   }
   .modal__body {
-    padding: 36px 40px 60px;
-    height: 400px;
+    padding: 30px;
+    height: 350px;
     overflow: auto;
     &::-webkit-scrollbar {
       display: none;
@@ -73,7 +73,7 @@ const GenericModalStyle = styled.div`
   }
   .modal__footer {
     border-top: 1px solid #000;
-    padding: 25px 35px 30px;
+    padding: 20px 40px;
     display: flex;
     justify-content: space-between;
     button {

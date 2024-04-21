@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import GenericModal from "./GenericModal";
 import { useRequest } from "../../hooks/useRequest";
@@ -7,30 +7,48 @@ import Progress from "../common/Progress";
 
 const CreateInstaCartModalStyle = styled.div`
   .modal__body {
-    padding: 45px 52px;
+    padding: 30px 40px !important;
   }
   label {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 500;
-    line-height: 30px;
+    line-height: 24px;
     text-align: left;
     color: #929292;
     display: inline-block;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
   }
-  input {
+  input,
+  .select {
     width: 100%;
-    height: 65px;
+    height: 54px;
     border-radius: 10px;
     border: 1px solid #000000;
     font-size: 20px;
     padding: 0 18px;
+  }
+  .select {
+    margin-bottom: 30px;
+  }
+  select {
+    width: 100%;
+    outline: 0px;
+    border: 0px;
+    height: 50px;
+    font-size: 16px;
   }
 `;
 
 const CreateInstaCartModal = ({ onMaskClick }) => {
   const [instaCartName, setInstaCartName] = useState("");
   const [createInstaCart, { isLoading }] = useRequest();
+  const [fetchInstaCarts, { state: instacarts }] = useRequest(
+    `/instacart?limit=10&page=1`
+  );
+
+  useEffect(() => {
+    fetchInstaCarts();
+  }, []);
 
   const handlePrimaryClick = useCallback(async () => {
     if (!instaCartName) return toast.error("Please enter your Instacart name");
@@ -55,6 +73,21 @@ const CreateInstaCartModal = ({ onMaskClick }) => {
         onMaskClick={onMaskClick}
         onPrimaryButtonClick={handlePrimaryClick}
       >
+        <label htmlFor="parentSelect">Parent Instacart</label>
+        <div className="select">
+          <select name="parentInstacart" id="parentSelect">
+            <option selected disabled>
+              Select Instacart
+            </option>
+            {instacarts &&
+              instacarts?.data?.length > 0 &&
+              instacarts?.data
+                ?.filter((item) => item?.isInstabuild)
+                ?.map((item) => {
+                  return <option>{item?.name}</option>;
+                })}
+          </select>
+        </div>
         <label htmlFor="name">Name Of the Cart</label>
         <input
           type="text"
