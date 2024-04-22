@@ -72,6 +72,13 @@ const ProfileInformation = () => {
     email: userInfo?.email,
     password: "",
     phone: userInfo?.phone,
+    businessName: "",
+    businessPhone: "",
+    businessAltPhone: "",
+    businessAddress: "",
+    city: "",
+    province: "",
+    postalCode: "",
   });
 
   const handleChange = (e) => {
@@ -143,46 +150,82 @@ const ProfileInformation = () => {
           <div className="input__wrapper">
             <div className="input_group">
               <label>Business Name</label>
-              <input type="text" />
+              <input
+                type="text"
+                name="businessName"
+                value={profileInformation?.businessName}
+                onChange={handleChange}
+              />
             </div>
             <div className="input_group"></div>
           </div>
           <div className="input__wrapper">
             <div className="input_group">
               <label>Primary Business Phone</label>
-              <input type="text" />
+              <input
+                type="text"
+                name="businessPhone"
+                value={profileInformation?.businessPhone}
+                onChange={handleChange}
+              />
             </div>
             <div className="input_group">
               <label>Secondary Business Phone (Optional)</label>
-              <input type="text" />
+              <input
+                type="text"
+                name="businessAltPhone"
+                value={profileInformation?.businessAltPhone}
+                onChange={handleChange}
+              />
             </div>
           </div>
           <div className="input__wrapper">
             <div className="input_group">
               <label>Business Address</label>
-              <input type="text" />
+              <input
+                type="text"
+                name="businessAddress"
+                value={profileInformation?.businessAddress}
+                onChange={handleChange}
+              />
             </div>
             <div className="input_group">
               <label>City</label>
-              <input type="text" />
+              <input
+                type="text"
+                name="city"
+                value={profileInformation?.city}
+                onChange={handleChange}
+              />
             </div>
           </div>
           <div className="input__wrapper">
             <div className="input_group">
               <label>Province</label>
-              <div className="divselect">
+              {/* <div className="divselect">
                 <select>
                   <option>India</option>
                   <option>British Columbia </option>
                 </select>
-              </div>
+              </div> */}
+              <input
+                type="text"
+                name="province"
+                value={profileInformation?.province}
+                onChange={handleChange}
+              />
             </div>
             <div className="input_group">
               <label>Postal Code – A0A 0A0</label>
-              <input type="text" />
+              <input
+                type="text"
+                name="postalCode"
+                value={profileInformation?.postalCode}
+                onChange={handleChange}
+              />
             </div>
           </div>
-          <div className="input__wrapper">
+          {/* <div className="input__wrapper">
             <div className="input_group">
               <label>Business or Trade</label>
               <div className="divselect">
@@ -193,8 +236,8 @@ const ProfileInformation = () => {
               </div>
             </div>
             <div className="input_group"></div>
-          </div>
-          <Button type={"save"} title={"Save Changes"} />
+          </div> */}
+          <Button type={"save"} title={"Save Changes"} onClick={handleSave} />
           <div className="page__subtitle">Update Email</div>
           <p className="text">
             After saving your new email, you will be signed out and prompted to
