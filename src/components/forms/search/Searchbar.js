@@ -12,8 +12,7 @@ const SearchbarStyle = styled.form`
   position: relative;
   border-radius: 3px;
   overflow: clip;
-  max-width: 400px;
-  width: 100%;
+  flex: 1;
   input {
     height: 39px;
     width: 100%;
@@ -38,9 +37,8 @@ const SearchbarStyle = styled.form`
 
 const SearchbarStyleWrapper = styled.div`
   position: relative;
-  max-width: 400px;
-  width: 100%;
   z-index: 9;
+  flex: 1;
   .search__results {
     max-height: 200px;
     overflow: scroll;

@@ -22,8 +22,8 @@ const HeaderStyle = styled.header`
     height: 74px;
     display: flex;
     align-items: center;
+    gap: 4vw;
     padding: 0 50px;
-    gap: 70px;
     width: 100%;
     max-width: 1440px;
     margin: auto;
