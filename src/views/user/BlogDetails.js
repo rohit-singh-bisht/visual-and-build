@@ -7,6 +7,7 @@ import { useRequest } from "../../hooks/useRequest";
 import { ReactComponent as ClockIcon } from "../../assets/clock.svg";
 import { Skeleton } from "@mui/material";
 import { getDate } from "../../utils/helper";
+import parse from "html-react-parser";
 
 const BlogDetailsStyle = styled.div`
   padding: 60px 0;
@@ -101,7 +102,9 @@ const BlogDetails = () => {
                   <iframe src={bannerUrl}></iframe>
                 )}
               </div>
-              <div className="blog__details__description">{description}</div>
+              <div className="blog__details__description">
+                {description && parse(description)}
+              </div>
             </div>
           ) : (
             <div style={{ flex: 1 }}>

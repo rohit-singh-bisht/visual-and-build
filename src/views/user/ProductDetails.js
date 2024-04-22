@@ -385,7 +385,7 @@ const ProductDetails = () => {
             <ProductInformationTabs
               specifications={productDetails?.specs}
               description={productDetails?.description}
-              return={productDetails?.return}
+              returnText={productDetails?.returnApplicable}
             />
           </div>
           <div className="related__product">

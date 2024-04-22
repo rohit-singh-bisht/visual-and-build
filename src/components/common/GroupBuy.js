@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { getProductImages } from "../../utils/helper";
 import AddToCartModal from "../modals/AddToCartModal";
 import CreateInstaCartModal from "../modals/CreateInstaCartModal";
+import parse from "html-react-parser";
 
 export const GroupBuyStyle = styled.div`
   display: flex;
@@ -166,7 +167,9 @@ const GroupBuy = ({ product, reverse }) => {
           >
             {productTitle}
           </p>
-          <p className="product__description">{description}</p>
+          <p className="product__description">
+            {description && parse(description)}
+          </p>
           <div className="product__price">
             <div className="product__selling__price">
               {priceSymbol + " " + productPrice.toFixed(2)}
