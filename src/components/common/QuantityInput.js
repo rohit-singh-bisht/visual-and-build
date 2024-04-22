@@ -56,7 +56,7 @@ const QuantityInput = ({
 
   const handleClick = (e) => {
     if (isDisabled) return;
-    if (e === "remove" && count !== 0) {
+    if (e === "remove" && count !== 1) {
       setCount((prev) => prev - 1);
       handleProductQuantity && handleProductQuantity((prev) => prev - 1);
       handleDecrement && handleDecrement();
