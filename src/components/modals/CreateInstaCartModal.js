@@ -45,6 +45,7 @@ const CreateInstaCartModal = ({ onMaskClick }) => {
   const [fetchInstaCarts, { state: instacarts }] = useRequest(
     `/instacart?limit=10&page=1`
   );
+  const [parentInstacart, setParentInstacart] = useState("");
 
   useEffect(() => {
     fetchInstaCarts();
@@ -55,7 +56,7 @@ const CreateInstaCartModal = ({ onMaskClick }) => {
     const response = await createInstaCart({
       path: `/instacart`,
       method: "POST",
-      body: JSON.stringify({ name: instaCartName }),
+      body: JSON.stringify({ name: instaCartName, parent: parentInstacart }),
     });
     if (!response.success) {
       return toast.error(response.message);
@@ -75,7 +76,11 @@ const CreateInstaCartModal = ({ onMaskClick }) => {
       >
         <label htmlFor="parentSelect">Parent Instacart</label>
         <div className="select">
-          <select name="parentInstacart" id="parentSelect">
+          <select
+            name="parentInstacart"
+            onChange={(e) => setParentInstacart(e.target.value)}
+            id="parentSelect"
+          >
             <option selected disabled>
               Select Instacart
             </option>

@@ -43,12 +43,16 @@ const tabsList = [
       handleOrderNow,
       orderSummaryData,
       checkoutAddress,
+      setBillingType,
+      billingType,
     }) => (
       <Information
         handleChangeBilling={handleChangeBilling}
         handleOrderNow={handleOrderNow}
         orderSummaryData={orderSummaryData}
         checkoutAddress={checkoutAddress}
+        setBillingType={setBillingType}
+        billingType={billingType}
       />
     ),
   },
@@ -76,6 +80,7 @@ const Checkout = () => {
     shipping: "",
   });
   const [createOrderData, setCreateOrderData] = useState();
+  const [billingType, setBillingType] = useState("deliver");
 
   useEffect(() => {
     if (!checkoutCartId) return navigate("/cart");
@@ -125,6 +130,7 @@ const Checkout = () => {
       products,
       subtotal: orderSummaryData?.totalAmount,
       coupon: appliedCoupon,
+      deliveryType: billingType,
       paymentRefNumber: "",
       billingAddress: checkoutAddress?.billing,
       shippingAddress: checkoutAddress?.shipping,
@@ -149,6 +155,8 @@ const Checkout = () => {
               orderSummaryData,
               checkoutAddress,
               createOrderData,
+              billingType,
+              setBillingType,
             })}
         </div>
       </CheckoutStyle>

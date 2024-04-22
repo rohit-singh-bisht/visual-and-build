@@ -28,6 +28,11 @@ const InformationStyle = styled.div`
       .checkout__billing__details {
         margin-bottom: 15.75px;
       }
+      .checkout__billing__type__title {
+        font-size: 24px;
+        line-height: 32px;
+        font-weight: 600;
+      }
     }
     .checkout__order__summary__wrapper {
       width: 445px;
@@ -62,6 +67,24 @@ const InformationStyle = styled.div`
       }
     }
   }
+  .checkout__billing__type__select {
+    display: flex;
+    gap: 40px;
+    margin: 20px 0 40px;
+    .radio {
+      display: flex;
+      gap: 8px;
+      input {
+        accent-color: #ae0000;
+      }
+      label {
+        font-size: 16px;
+        line-height: 28px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+    }
+  }
   @media (max-width: 768px) {
     .checkout__wrapper {
       flex-wrap: wrap;
@@ -82,6 +105,8 @@ const Information = ({
   handleOrderNow,
   orderSummaryData,
   checkoutAddress,
+  setBillingType,
+  billingType,
 }) => {
   const [
     fetchAddresses,
@@ -99,6 +124,32 @@ const Information = ({
       <InformationStyle>
         <div className="checkout__wrapper">
           <div className="checkout__billing__wrapper">
+            <h2 className="checkout__billing__type__title">Billing Type</h2>
+            <div className="checkout__billing__type__select">
+              <div className="radio">
+                <input
+                  type="radio"
+                  name="deliveryType"
+                  checked={billingType === "deliver"}
+                  value="deliver"
+                  id="delivery"
+                  onChange={(e) => setBillingType("deliver")}
+                />
+                <label for="delivery">Delivery</label>
+              </div>
+              <div className="radio">
+                <input
+                  type="radio"
+                  name="deliveryType"
+                  value="pickup"
+                  id="pickup"
+                  checked={billingType === "pickup"}
+                  onChange={(e) => setBillingType("pickup")}
+                />
+                <label for="pickup">Pickup</label>
+              </div>
+            </div>
+
             {addressData?.data?.docs?.length > 0 ? (
               <h2 className="checkout__shipping__title">Shipping Details</h2>
             ) : (
