@@ -138,7 +138,7 @@ const PurchaseHistorySort = styled.div`
       color: #303030;
     }
     .products__sorting__dropdown__wrapper {
-      width: 180px;
+      width: 130px;
     }
   }
 `;
@@ -225,6 +225,9 @@ const orderStatusOptions = [
 
 const PurchaseHistory = () => {
   const [getOrderHistory, { isLoading }] = useRequest();
+  const [fetchInstaCarts, { state: instacarts }] = useRequest(
+    `/instacart?limit=10&page=1`
+  );
   const [pageNumber, setPageNumber] = useState(1);
   const [limitNumber, setLimitNumber] = useState(10);
   const [orderHistory, setOrderHistory] = useState([]);
@@ -234,6 +237,13 @@ const PurchaseHistory = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [sortLabel, setSortLabel] = useState(sortingOptions[0]?.label);
   const [orderStatus, setOrderStatus] = useState("");
+  const [project, setProject] = useState("");
+  const [projectOptions, setProjectOptions] = useState([
+    {
+      label: "Select Option",
+      value: "",
+    },
+  ]);
   const [date, setDate] = useState({
     startDate: "",
     endDate: "",
@@ -250,7 +260,8 @@ const PurchaseHistory = () => {
           orderStatus,
           sortOrder,
           sortBy,
-          date
+          date,
+          project
         );
     },
     [
@@ -261,6 +272,7 @@ const PurchaseHistory = () => {
       sortOrder,
       sortBy,
       date,
+      project,
     ],
     500
   );
@@ -272,7 +284,8 @@ const PurchaseHistory = () => {
     orderStatus,
     sortOrder,
     sortBy,
-    date
+    date,
+    project
   ) => {
     const path = `/order?${limitNumber ? `limit=${limitNumber}` : ""}${
       pageNumber ? `&page=${pageNumber}` : ""
@@ -284,7 +297,7 @@ const PurchaseHistory = () => {
       date?.startDate && date?.endDate
         ? `&startDate=${date?.startDate}&endDate=${date?.endDate}`
         : ""
-    }`;
+    }${project && `&project=${project}`}`;
     const response = await getOrderHistory({ path });
     if (response.success) {
       setOrderHistory(response?.data);
@@ -330,7 +343,30 @@ const PurchaseHistory = () => {
       endDate: "",
     });
     setSearchValue("");
+    setProject("");
   };
+
+  useEffect(() => {
+    fetchInstaCarts();
+  }, []);
+
+  useEffect(() => {
+    if (instacarts?.data?.length) {
+      const options = instacarts?.data
+        ?.filter((item) => item?.isInstabuild)
+        ?.map((item) => ({
+          label: item?.name,
+          value: item?._id,
+        }));
+      setProjectOptions((prev) => [
+        {
+          label: "Select Option",
+          value: "",
+        },
+        ...options,
+      ]);
+    }
+  }, [instacarts]);
 
   return (
     <PurchaseHistoryStyle>
@@ -358,6 +394,18 @@ const PurchaseHistory = () => {
               onKeyDown={(e) => e.preventDefault()}
             />
           </div>
+        </div>
+        <div className="purchase__history__filter">
+          <p className="filter__title">Project</p>
+          <Sort
+            sortTitle=""
+            sortingOptions={projectOptions}
+            label={
+              projectOptions?.find((item) => item?.value === project)?.label
+            }
+            className={"purchase__history__sorting__styled"}
+            onSortClick={(item) => setProject(item?.value)}
+          />
         </div>
         <div className="purchase__history__filter">
           <p className="filter__title">Order Status</p>
