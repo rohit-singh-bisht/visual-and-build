@@ -115,6 +115,14 @@ const ProductDetailsStyle = styled.div`
         line-height: 22.5px;
         text-decoration: line-through;
       }
+      .limited__discount__tag {
+        font-size: 8px;
+        padding: 4px 10px;
+        background-color: #ae0000;
+        color: #fff;
+        display: inline-block;
+        border-radius: 4px;
+      }
     }
     .product__details__options {
       margin-top: 34px;
@@ -333,9 +341,12 @@ const ProductDetails = () => {
                       ).toFixed(2)}
                   </div>
                   {productDetails?.discount && (
-                    <div className="original__price">
-                      {priceSymbol + productDetails?.price.toFixed(2)}
-                    </div>
+                    <>
+                      <div className="original__price">
+                        {priceSymbol + productDetails?.price.toFixed(2)}
+                      </div>
+                      <div className="limited__discount__tag">Limited</div>
+                    </>
                   )}
                 </div>
                 <div className="product__details__options">

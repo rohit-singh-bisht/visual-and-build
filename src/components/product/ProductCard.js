@@ -6,7 +6,7 @@ import StarRating from "../common/StarRating";
 export const ProductCardStyle = styled.div`
   border-radius: 4px;
   border: 0.75px solid #d9d9d9;
-  padding: 18.75px 18.75px 37.75px;
+  padding: 16px 15px 24px;
   width: 100%;
   cursor: pointer;
   .image {
@@ -58,6 +58,16 @@ export const ProductCardStyle = styled.div`
         line-height: 22.5px;
         text-decoration-line: line-through;
       }
+    }
+    .limited__discount__tag {
+      font-size: 8px;
+      padding: 4px 10px;
+      background-color: #ae0000;
+      color: #fff;
+      display: inline-block;
+      border-radius: 4px;
+      margin-top: -4px;
+      transform: translateY(-4px);
     }
   }
   @media (max-width: 768px) {
@@ -111,6 +121,11 @@ const ProductCard = ({
                 </div>
               )}
             </div>
+            {productPrice && (
+              <div>
+                <div className="limited__discount__tag">Limited</div>
+              </div>
+            )}
           </div>
         </ProductCardStyle>
       ) : (
