@@ -88,7 +88,7 @@ const Footer = () => {
   const [
     fetchCategories,
     { isLoading: isFetchingCategories, state: category },
-  ] = useRequest(`/category?limit=6&page=1&parent=true`);
+  ] = useRequest(`/category?limit=5&page=1&parent=true`);
 
   useEffect(() => {
     !categoryData && fetchCategories();
