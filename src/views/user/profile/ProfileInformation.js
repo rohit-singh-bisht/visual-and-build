@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../../../components/common/Button";
 import { useRequest } from "../../../hooks/useRequest";
 import { toast } from "react-toastify";
 import Progress from "../../../components/common/Progress";
-import { useAppContext } from "../../../context/useAppContext";
 
 const ProfileInformationStyle = styled.div`
   .text {
@@ -65,13 +64,12 @@ const ProfileInformationStyle = styled.div`
 
 const ProfileInformation = () => {
   const [updateProfileInformation, { isLoading }] = useRequest();
-  const { user } = useAppContext();
-  const { user: userInfo } = user;
+  const [fetchAccount, { state: accountState }] = useRequest(`/account`);
   const [profileInformation, setProfileInformation] = useState({
-    name: userInfo?.name,
-    email: userInfo?.email,
+    name: "",
+    email: "",
     password: "",
-    phone: userInfo?.phone,
+    phone: "",
     businessName: "",
     businessPhone: "",
     businessAltPhone: "",
@@ -112,6 +110,24 @@ const ProfileInformation = () => {
       toast.error(response.message);
     }
   };
+
+  useEffect(() => {
+    fetchAccount().then((data) => {
+      setProfileInformation({
+        name: data?.data?.name,
+        email: data?.data?.email,
+        password: "",
+        phone: data?.data?.phone,
+        businessName: data?.data?.businessName,
+        businessPhone: data?.data?.businessPhone,
+        businessAltPhone: data?.data?.businessAltPhone,
+        businessAddress: data?.data?.businessAddress,
+        city: data?.data?.city,
+        province: data?.data?.province,
+        postalCode: data?.data?.ppostalCode,
+      });
+    });
+  }, []);
 
   return (
     <>

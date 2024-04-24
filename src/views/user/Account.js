@@ -40,7 +40,8 @@ const Account = () => {
   const accountData = [
     {
       title: `Hi ${accountState?.data?.name}`,
-      subtitle: `V&B ID: ${accountState?.data?.id}`,
+      subtitle:
+        accountState?.data?.vbId && `V&B ID: ${accountState?.data?.vbId}`,
       sub1: accountState?.data?.businessName,
       sub2: accountState?.data?.email,
       sub3: accountState?.data?.phone,
